@@ -16,8 +16,13 @@
  `python manage.py runserver`
  
 
-#paths 
-### localhost:8000/admin 
-### localhost:8000/api/users/
+## paths:
+### localhost:8000/admin/ 
+### localhost:8000/api/users/ 
+### localhost:8000/api/users/login/ 
+### localhost:8000/api/users/logout/ 
+
+
+
 
 
