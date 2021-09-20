@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer, UserLoginSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [DjangoModelPermissions]
 
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
@@ -25,3 +25,12 @@ class UserViewSet(viewsets.ModelViewSet):
         }
         return Response(data, status=status.HTTP_201_CREATED)
 
+
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    def logout(self, request):
+        user = request.user
+        if user:
+            user.auth_token.delete()
+            return Response({'Token eliminado con exito'},status=status.HTTP_200_OK)
+        
+        return Response({'Token inexistente'},status=status.HTTP_404_NOT_FOUND)
