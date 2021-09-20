@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         Token.objects.create(user = user)
         return user
 
+
 class UserLoginSerializer(serializers.Serializer):
 
     username = serializers.CharField(min_length=4, max_length=64)
