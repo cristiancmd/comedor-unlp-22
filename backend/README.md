@@ -12,9 +12,11 @@
 **Crear admin de django**
  `python manage.py createsuperuser`
 
+**Iniciar el servidor:**
+ `python manage.py runserver`
+ 
 
 #paths 
-### python manage.py runserver 
 ### localhost:8000/admin 
 ### localhost:8000/api/users/
 
