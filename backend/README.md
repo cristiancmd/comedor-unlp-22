@@ -3,7 +3,7 @@
 **Dentro del proyecto para instalar las dependencias:**
 `pip install -r requirements.txt`
 
-**Configuración de las credenciales de la base:**
+**Configuraciones locales:**
 `cp comedor/local_settings_example.py comedor/local_settings.py`
 
 **Correr migraciones de la base:**
