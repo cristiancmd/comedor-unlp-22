@@ -1,12 +1,16 @@
   /* STRUCTURE */
 
+#titulo {
+  padding-top: 2%;
+  padding-left: 5%;
+}
+
  #el_wrapper {
   display: flex;
   align-items: center;
   flex-direction: column; 
   justify-content: center;
   width: 100%;
-  min-height: 100vh;
   padding: 20px;
   background-color: white;
 }
@@ -24,7 +28,7 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
 
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   margin-left: 13%;
   padding-right: 110px;
