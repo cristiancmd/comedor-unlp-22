@@ -1,3 +1,4 @@
+from .models import Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import Token
@@ -36,3 +37,27 @@ class UserLoginSerializer(serializers.Serializer):
         #Generar o recuperar token
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['user'], token.key    
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = ('__all__')
+
+
+class ComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Component
+        fields = ('__all__')
+
+class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IngredientsWithMeasure
+        fields = ('__all__')        
+
+
+class MenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ('__all__')        
+

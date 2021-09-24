@@ -22,7 +22,7 @@ CAMPUS = [
 
 class Ingredient(models.Model):
     name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
-    measure = models.CharField(_("Unidad de medida"), choices=MEASURE)
+    measure = models.CharField(_("Unidad de medida"),max_length=30, choices=MEASURE)
 
     class Meta:
         verbose_name = _("Ingrediente")
@@ -63,14 +63,14 @@ class IngredientsWithMeasure(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
-    starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="menus")
-    principal = models.ManyToManyField(Component, verbose_name="Plato principal", related_name="menus")
-    dessert = models.ManyToManyField(Component, verbose_name="Postre", related_name="menus")
-    drink = models.ManyToManyField(Component, verbose_name="Bebida", related_name="menus")
+    name = models.CharField(_("Nombre"), max_length=60, validators=[alphabetical])
+    starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="starter_menus")
+    principal = models.ManyToManyField(Component, verbose_name="Plato principal", related_name="principal_menus")
+    dessert = models.ManyToManyField(Component, verbose_name="Postre", related_name="dessert_menus")
+    drink = models.ManyToManyField(Component, verbose_name="Bebida", related_name="drink_menus")
     celiac = models.BooleanField(_("Menú celíaco"), default=False, null=True, blank=True)
     vegetarian = models.BooleanField(_("Menú vegetariano"), default=False, null=True, blank=True)
-    image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='menus')
+    image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='image_menus')
     enabled = models.BooleanField(_("Habilitado"), default=True)
     # campus = models.CharField(_("Sedes"), max_length=20, choices=CAMPUS)
     # dates = models.ManyToManyField(datetime, "Días", null=True)
@@ -78,8 +78,8 @@ class Menu(models.Model):
     price = models.FloatField(_("Precio"))
 
     class Meta:
-        verbose_name = _("Menú")
-        verbose_name_plural = _("Menús")
+        verbose_name = _("Menu")
+        verbose_name_plural = _("Menus")
 
     def __str__(self):
         return self.name
