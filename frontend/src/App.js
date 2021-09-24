@@ -6,6 +6,7 @@ import header from './componentes/header/header';
 import header_login from './componentes/header_login/header_login';
 import login from './componentes/login/login';
 import listado_de_menus from './componentes/listado_de_menus/listado_de_menus';
+import habilitar_menu from './componentes/habilitar_menu/habilitar_menu';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
       <Route exact path='/home'/> 
       <Route exact path='/listado_de_menus' component={listado_de_menus}/> 
       <Route exact path='/detalle/:id'/> 
-      <Route exact path='/habilitar/:id'/> 
+      <Route exact path='/habilitar/:id' component={habilitar_menu}/> 
       <Route exact path='/listados'/> 
     </Router>
   );

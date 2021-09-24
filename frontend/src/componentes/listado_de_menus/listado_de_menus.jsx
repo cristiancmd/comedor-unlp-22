@@ -94,13 +94,13 @@ const Listado_de_menus = () => {
                   <td>{menu.nombre}</td>
                   {
                     5 === 5?
-                    <td><span>&#10003;</span></td>:
-                    <td><span>&#x2715;</span></td>
+                    <td><span className="tilde_vegetariano">&#10003;</span></td>:
+                    <td><span className="tilde_vegetariano">&#x2715;</span></td>
                   }
                   {
                     5 === 6?
-                    <td><span>&#10003;</span></td>:
-                    <td><span>&#x2715;</span></td>
+                    <td><span className="tilde_celiaco">&#10003;</span></td>:
+                    <td><span className="tilde_celiaco">&#x2715;</span></td>
                   }
                   <td>
                     <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>

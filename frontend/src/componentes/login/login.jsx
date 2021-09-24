@@ -20,7 +20,7 @@ const Login = () => {
     return(
         <>
             {Header_login()}
-            <h1 id="titulo">Acceso a comedor</h1>
+            <h1 id="titulo_login">Acceso a comedor</h1>
             <div id="el_wrapper" className="wrapper fadeInDown">
                 <div id="formContent">
 

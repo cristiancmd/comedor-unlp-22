@@ -1,7 +1,5 @@
 import './header_login.css'
 import icono_facultad from '../../imagenes/icono_facultad.png'
-import icono_home from '../../imagenes/icono_home.png'
-import { Link } from 'react-router-dom';
 
 const Header_login = () => {
     return(
