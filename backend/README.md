@@ -22,6 +22,15 @@
 ### localhost:8000/api/users/login/ 
 ### localhost:8000/api/users/logout/ 
 
+### localhost:8000/api/ingredients/ 
+### localhost:8000/api/components/ 
+### localhost:8000/api/ingredientswithmeasure/ 
+
+
+
+
+
+
 
 
 
