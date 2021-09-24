@@ -1,0 +1,9 @@
+#contenedor_de_icono_facultad {
+    width: 100%;
+}
+
+#contenedor_de_barra_de_navegacion {
+    height: 70px;
+    width: 100%;
+    background: red;
+}

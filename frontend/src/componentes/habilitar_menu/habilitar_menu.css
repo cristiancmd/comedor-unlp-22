@@ -1,0 +1,33 @@
+#titulo {
+    text-align: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#contenedor_del_menu {
+    float: left;
+    width: 50%;
+    padding-left: 10%;
+    padding-right: 3%;
+}
+
+#imagen_del_menu {
+    width: 100%;
+}
+
+#contenedor_de_los_input {
+    float: left;
+    width: 50%;
+    padding-right: 10%;
+    padding-left: 3%;
+}
+
+#boton_con_una_fecha {
+    margin-left: 2.2%;
+    margin-right: 2.2%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+
+}
