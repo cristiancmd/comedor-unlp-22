@@ -1,8 +1,8 @@
-#contenedor_de_icono_facultad {
+#contenedor_de_icono_facultad_header {
     width: 100%;
 }
 
-#contenedor_de_barra_de_navegacion {
+#contenedor_de_barra_de_navegacion_header {
     height: 70px;
     width: 100%;
     background: red;
@@ -10,18 +10,18 @@
 
 #icono_home {
     float: left;
-    height: calc(75% + 9px);
-    width: calc(3% + 80px);
-    padding-top: 9px;
-    padding-left: 40px;
-    padding-right: 40px;
+    height: 75.4%;
+    width: 7%;
+    margin-top: 0.4%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .boton {
     float: left;
-    padding-top: 20px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-top: 1.2%;
+    padding-left: 2%;
+    padding-right: 2%;
     color: white;
 }
 

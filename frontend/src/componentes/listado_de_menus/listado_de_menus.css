@@ -1,7 +1,7 @@
-#contenedor {
-    padding-left: 150px;
-    padding-right: 150px;
-    padding-bottom: 50px;
+#contenedor_listado_de_menus {
+    margin-left: 7.5%;
+    padding-right: 7.5%;
+    padding-bottom: 2%;
 }
 
 .titulo_de_columna {

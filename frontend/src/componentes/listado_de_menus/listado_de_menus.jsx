@@ -1,10 +1,10 @@
 import './listado_de_menus.css'
-import React from 'react';
-import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import Header from '../header/header';
+import React from 'react'
+import axios from "axios"
+import "bootstrap/dist/css/bootstrap.min.css"
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import Header from '../header/header'
 
 const Listado_de_menus = () => {
 
@@ -72,7 +72,7 @@ const Listado_de_menus = () => {
   return (
     <>
       {Header()}
-      <div id="contenedor" className="App">
+      <div id="contenedor_listado_de_menus" className="App">
         <br/><br/>
         <button className="btn btn-primary" onClick={()=>{setNuevoMenu({}); setModalInsertar(true)}}>Cargar menú</button>
         <br/><br/>

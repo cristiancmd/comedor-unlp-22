@@ -1,146 +1,54 @@
-  /* STRUCTURE */
-
 #titulo_login {
-  padding-top: 2%;
-  padding-left: 5%;
+    padding-top: 2%;
+    padding-left: 5%;
 }
 
- #el_wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column; 
-  justify-content: center;
-  width: 100%;
-  padding: 20px;
-  background-color: white;
+#contenedor {
+    width: 27%;
+    height: auto;
+    margin-left: 36.5%;
+    margin-right: 36.5%;
+    margin-top: 1%;
+    padding-top: 3%;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    border-radius: 5%;
+    background: rgba(196, 196, 196, 0.39);
+    border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-#formContent {
-  position: absolute;
-  width: 518px;
-  height: 546px;
-  left: 461px;
-  top: 321px;
-  
-  background: rgba(196, 196, 196, 0.39);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-
-  top: 55%;
-  transform: translateY(-50%);
-  margin-left: 13%;
-  padding-right: 110px;
-  padding-left: 110px;
-  padding-bottom: 585px;
+#contenedor_de_icono {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20%;
 }
 
-  
-  
-  /* FORM TYPOGRAPHY*/
+#icono {
+    width: 50%;
+}
 
-#dni_que_no_es_input {
-  padding-left: 5px;
+#dni {
+    width: 100%;
 }
 
 #contraseña_que_no_es_input {
-  padding-top: 15px;
-  padding-left: 5px;
+    margin-top: 6%;
 }
-  
-  #boton_inicio_de_sesion  {
+
+#contraseña {
+    width: 100%;
+}
+
+#boton_inicio_de_sesion  {
     width: 100%;
     background-color: #3682d8;
-    border: none;
     color: white;
-    padding: 15px;
+    border-radius: 6px;
+    padding: 3%;
+    margin-top: 8%;
+    margin-bottom: 10%;
+}
+
+#mensaje_de_error_login {
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-    margin: 5px 20px 40px 5px;
-  }
-  
-  #dni {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 100%;
-    border: 2px solid #f6f6f6;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-  }
-  
-  #dni:focus {
-    background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  #dni:placeholder {
-    color: #cccccc;
-  }
-
-  #dni::placeholder {
-    text-align: left;
-    padding: 0px;
-  }
-
-  #password {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 100%;
-    border: 2px solid #f6f6f6;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-  }
-  
-  #password:focus {
-    background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  #password:placeholder {
-    color: #cccccc;
-  }
-
-  #password::placeholder {
-    text-align: left;
-    padding: 0px;
-  }
-  
-  
-  
-  /* OTHERS */
-  
-  *:focus {
-      outline: none;
-  } 
-  
-  #icon {
-    width:90%;
-    height: 90%;
-    padding: 50px;
-  }
-
-  #contenedor_de_icono {
-    display: flex;
-    justify-content: center;
-  }
+}

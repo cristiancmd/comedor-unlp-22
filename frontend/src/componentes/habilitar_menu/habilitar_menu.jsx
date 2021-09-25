@@ -1,6 +1,6 @@
 import './habilitar_menu.css'
-import React from 'react';
-import Header from '../header/header';
+import React from 'react'
+import Header from '../header/header'
 
 
 
@@ -26,7 +26,7 @@ const Habilitar_menu = () => {
     }
 
     const borrar_fecha = (fecha) => {
-        let fechas_sin_la_fecha_a_eliminar = fechas.filter(una_fecha => una_fecha != fecha);
+        let fechas_sin_la_fecha_a_eliminar = fechas.filter(una_fecha => una_fecha !== fecha);
         setFecha(fechas_sin_la_fecha_a_eliminar);
         console.log(fecha);
     }
@@ -35,8 +35,8 @@ const Habilitar_menu = () => {
         <>
             {Header()}
             <div>
-                <h1 id="titulo">Habilitar menú</h1>
-                <div id="contenedor">
+                <h1 id="titulo_habilitar_menu">Habilitar menú</h1>
+                <div>
                     <div id="contenedor_del_menu">
                         <h3>Milanesas con papas fritas</h3>
                         <img src={imagen_del_menu} id="imagen_del_menu"/>
