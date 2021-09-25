@@ -7,7 +7,7 @@ router.register('users', UserViewSet)
 router.register('ingredients', IngredientViewSet)
 router.register('components', ComponentViewSet)
 router.register('ingredientswithmeasure', IngredientsWithMeasureViewSet)
-router.register('menus', MenuViewSet, basename='menus')
+router.register('menus', MenuViewSet)
 
 
 

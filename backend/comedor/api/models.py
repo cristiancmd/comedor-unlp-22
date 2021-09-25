@@ -39,7 +39,6 @@ class Component(models.Model):
     name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
     ingredients = models.ManyToManyField(Ingredient, verbose_name="Ingredientes",
                                          through="IngredientsWithMeasure")
-
     class Meta:
         verbose_name = _("Componente/Plato")
         verbose_name_plural = _("Componentes/Platos")
@@ -49,7 +48,7 @@ class Component(models.Model):
 
 
 class IngredientsWithMeasure(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="component_ingredients")
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     amount = models.IntegerField(_("Cantidad"))
 

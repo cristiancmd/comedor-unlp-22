@@ -57,6 +57,6 @@ class IngredientsWithMeasureViewSet(viewsets.ModelViewSet):
 
 
 class MenuViewSet(viewsets.ModelViewSet):
-    queryset = Menu.objects.all
+    queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)  
