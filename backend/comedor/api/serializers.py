@@ -46,18 +46,24 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class ComponentSerializer(serializers.ModelSerializer):
+    #ingredients = serializers.StringRelatedField(many=True)
     class Meta:
         model = Component
         fields = ('__all__')
+        depth = 1
 
 class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
+    #ingredient = serializers.StringRelatedField()
+    #component = serializers.StringRelatedField()
     class Meta:
         model = IngredientsWithMeasure
         fields = ('__all__')        
-
+        depth = 1
 
 class MenuSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Menu
-        fields = ('__all__')        
+        model = Menu   
+        fields = '__all__'
+        depth = 2
 
