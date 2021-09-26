@@ -11,6 +11,9 @@
 
 **Crear admin de django**
  `python manage.py createsuperuser`
+ 
+**Cargar datos de prueba:**
+`python manage.py loaddata api/fixtures/init_data.json`
 
 **Iniciar el servidor:**
  `python manage.py runserver`
