@@ -97,6 +97,17 @@ class IngredientsWithMeasure(models.Model):
                f"de {self.ingredient.name}"
 
 
+class EnabledDate(models.Model):
+    date = models.DateField(_("Fecha"))
+
+    class Meta:
+        verbose_name = "Fecha habilitada"
+        verbose_name_plural = "Fechas habilitadas"
+
+    def __str__(self):
+        return str(self.date)
+
+
 class Menu(models.Model):
     name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
     starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="menus_starter")
@@ -108,7 +119,7 @@ class Menu(models.Model):
     image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='menus')
     enabled = models.BooleanField(_("Habilitado"), default=True)
     campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="menus")
-    # dates = models.ManyToManyField(datetime, "Días", null=True)
+    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="menus")
     servings = models.IntegerField(_("Porciones"))
     price = models.FloatField(_("Precio"))
 
