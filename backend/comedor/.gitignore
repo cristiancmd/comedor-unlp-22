@@ -1,3 +1,6 @@
 comedor/local_settings.py
 
 db.sqlite3
+
+# Pycharm project files
+.idea/
