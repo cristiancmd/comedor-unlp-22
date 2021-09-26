@@ -1,0 +1,43 @@
+#titulo_menus_habilitados {
+    text-align: center;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#elegir_fecha_menus_habilitados {
+    text-align: center;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#fecha_menus_habilitados {
+    width: 10%;
+    margin-left: 45%;
+    margin-right: 45%;
+    margin-bottom: 1%;
+    text-align: center;
+}
+
+#contenedor_menus_habilitados {
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    padding-bottom: 2%;
+}
+
+#lista_de_titulos_de_columnas_menus_habilitados {
+    background: lightgray;
+}
+
+.titulo_de_columna_menus_habilitados {
+    width: 25%;
+}
+
+.tilde_vegetariano_menus_habilitados {
+    margin-left: 9.75%;
+}
+
+.tilde_celiaco_menus_habilitados {
+    margin-left: 5.5%;
+}

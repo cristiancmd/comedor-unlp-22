@@ -7,6 +7,7 @@ import header_login from './componentes/header_login/header_login';
 import login from './componentes/login/login';
 import listado_de_menus from './componentes/listado_de_menus/listado_de_menus';
 import habilitar_menu from './componentes/habilitar_menu/habilitar_menu';
+import menus_habilitados from './componentes/menus_habilitados/menus_habilitados';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Route exact path='/header' component={header}/> 
       <Route exact path='/header_login' component={header_login}/> 
       <Route exact path='/login' component={login}/> 
-      <Route exact path='/home'/> 
+      <Route exact path='/home' component={menus_habilitados}/> 
       <Route exact path='/listado_de_menus' component={listado_de_menus}/> 
       <Route exact path='/detalle/:id'/> 
       <Route exact path='/habilitar/:id' component={habilitar_menu}/> 

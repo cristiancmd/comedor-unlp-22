@@ -78,7 +78,7 @@ const Listado_de_menus = () => {
         <br/><br/>
         <h2>Menús</h2>
         <br/>
-        <table className="table ">
+        <table className="table">
           <thead>
             <tr id="lista_de_titulos_de_columnas">
               <th className="titulo_de_columna">Nombre</th>
