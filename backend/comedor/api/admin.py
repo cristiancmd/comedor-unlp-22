@@ -1,11 +1,21 @@
 from django.contrib import admin
-from .models import Ingredient, IngredientsWithMeasure,Component,Menu
+from .models import *
 
 
-# testeando un poquito el modelo en el admin
+# Register your models here.
+class IngredientsWithMeasureAdmin(admin.StackedInline):
+    model = IngredientsWithMeasure
+    extra = 0
+
+
+class ComponentAdmin(admin.ModelAdmin):
+    model = Component
+    inlines = [IngredientsWithMeasureAdmin]
+
 
 admin.site.register(Ingredient)
-admin.site.register(IngredientsWithMeasure)
-admin.site.register(Component)
+admin.site.register(Ticket)
+admin.site.register(EnabledDate)
 admin.site.register(Menu)
-
+admin.site.register(CustomUser)
+admin.site.register(Component, ComponentAdmin)

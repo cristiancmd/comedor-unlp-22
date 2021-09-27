@@ -7,6 +7,9 @@ from django.core.validators import RegexValidator
 alphabetical = RegexValidator(
     r'^[a-zA-ZÀ-ÿ\u00f1\u00d1\'\s\-]+$', 'Este campo solo acepta caracteres alfabéticos.')
 
+numbers = RegexValidator(
+    r'^[0-9]+$', 'Este campo solo acepta caracteres númericos.')
+
 
 def date_is_valid(value):
     try:

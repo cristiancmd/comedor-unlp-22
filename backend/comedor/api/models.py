@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from .validators import *
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,18 +12,52 @@ MEASURE = [
     ("LT", "Litro")
 ]
 
-CAMPUS = [
-    ("SEDE-I", "Sede I Bosque Oeste: calle 50 entre 116 y 117"),
-    ("SEDE-II", "Sede II Bosque Este: boulevard 120 entre 61 y 62 N° 1439"),
-    ("SEDE-III", "Sede III ATULP: av. 44 Nº 733 entre 9 y 10, Asociación "
-                 "de Trabajadores de la UNLP"),
-    ("SEDE-IV", "Sede IV Club Everton: 14 entre 63 y 64, salón planta baja")
+USER_TYPE = [
+    ("DT", "Docente"),
+    ("ND", "No docente"),
+    ("ES", "Estudiante")
 ]
 
 
+INSTITUTIONS = [
+    ("FAU", "Facultad de Arquitectura y Urbanismo"),
+    ("FBA", "Facultad de Artes"),
+    ("FAGRO", "Facultad de Ciencias Agrarias y Forestales"),
+    ("FCAGLP", "Facultad de Ciencias Astronómicas y Geofísicas"),
+    ("ENOCO", "Facultad de Ciencias Económicas"),
+    ("EXAC", "Facultad de Ciencias Exactas"),
+    ("JURSOC", "Facultad de Ciencias Jurídicas y Sociales"),
+    ("MED", "Facultad de Ciencias Médicas"),
+    ("FCNYM", "Facultad de Ciencias Naturales y Museo"),
+    ("FCV", "Facultad de Ciencias Veterinarias"),
+    ("FAHCE", "Facultad de Humanidades y Ciencias de la Educación"),
+    ("INFO", "Facultad de Informática"),
+    ("ING", "Facultad de Ingeniería"),
+    ("ODON", "Facultad de Odontología"),
+    ("PERIO", "Facultad de Periodismo y Comunicación Social"),
+    ("PSICO", "Facultad de Psicología"),
+    ("FTS", "Facultad de Trabajo Social")
+]
+
+
+class Campus(models.Model):
+    name = models.CharField(_("Nombre"), max_length=30)
+    address = models.CharField(_("Dirección"), max_length=60)
+
+    class Meta:
+        verbose_name = _("Sede")
+        verbose_name_plural = _("Sedes")
+
+    def __unicode__(self):
+        return u"%s" % self.name
+
+    def __str__(self):
+        return self.name
+
+
 class Ingredient(models.Model):
-    name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
-    measure = models.CharField(_("Unidad de medida"),max_length=30, choices=MEASURE)
+    name = models.CharField(_("Nombre"), max_length=30)
+    measure = models.CharField(_("Unidad de medida"), max_length=2, choices=MEASURE)
 
     class Meta:
         verbose_name = _("Ingrediente")
@@ -61,18 +96,29 @@ class IngredientsWithMeasure(models.Model):
                f"de {self.ingredient.name}"
 
 
+class EnabledDate(models.Model):
+    date = models.DateField(_("Fecha"))
+
+    class Meta:
+        verbose_name = "Fecha habilitada"
+        verbose_name_plural = "Fechas habilitadas"
+
+    def __str__(self):
+        return str(self.date)
+
+
 class Menu(models.Model):
-    name = models.CharField(_("Nombre"), max_length=60, validators=[alphabetical])
-    starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="starter_menus")
-    principal = models.ManyToManyField(Component, verbose_name="Plato principal", related_name="principal_menus")
-    dessert = models.ManyToManyField(Component, verbose_name="Postre", related_name="dessert_menus")
-    drink = models.ManyToManyField(Component, verbose_name="Bebida", related_name="drink_menus")
+    name = models.CharField(_("Nombre"), max_length=64, validators=[alphabetical])
+    starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="menus_starter")
+    principal = models.ManyToManyField(Component, verbose_name="Plato principal", related_name="menus_principal")
+    dessert = models.ManyToManyField(Component, verbose_name="Postre", related_name="menus_dessert")
+    drink = models.ManyToManyField(Component, verbose_name="Bebida", related_name="menus_drink")
     celiac = models.BooleanField(_("Menú celíaco"), default=False, null=True, blank=True)
     vegetarian = models.BooleanField(_("Menú vegetariano"), default=False, null=True, blank=True)
     image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='image_menus')
     enabled = models.BooleanField(_("Habilitado"), default=True)
-    # campus = models.CharField(_("Sedes"), max_length=20, choices=CAMPUS)
-    # dates = models.ManyToManyField(datetime, "Días", null=True)
+    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus")
+    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus")
     servings = models.IntegerField(_("Porciones"))
     price = models.FloatField(_("Precio"))
 
@@ -82,3 +128,34 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CustomUser(User):
+    firstname = models.CharField(_("Nombre"), max_length=60, validators=[alphabetical])
+    lastname = models.CharField(_("Apellido"), max_length=60, validators=[alphabetical])
+    dni = models.CharField(_("DNI"), max_length=8, validators=[numbers])
+    type = models.CharField(_("Condición"), max_length=5, choices=USER_TYPE)
+    institution = models.CharField(_("Facultad"), max_length=10, choices=INSTITUTIONS)
+
+    class Meta:
+        verbose_name = _("Usuario")
+        verbose_name_plural = _("Usuario")
+
+    def __str__(self):
+        return f'{self.firstname} {self.lastname}'
+
+
+class Ticket(models.Model):
+    menu = models.ForeignKey(Menu, verbose_name="Menú", related_name="tickets", on_delete=models.CASCADE)
+    price = models.FloatField(_("Precio"))
+    date = models.DateField(_("Fecha"))
+    take_away = models.BooleanField(_("Vianda"), default=False)
+    campus = models.ForeignKey(Campus, related_name="tickets", on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name="Pertenece a", related_name="tickets", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("Ticket")
+        verbose_name_plural = _("Tickets")
+
+    def __str__(self):
+        return f'{self.pk} - {self.date}'
