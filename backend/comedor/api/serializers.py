@@ -1,10 +1,8 @@
 from .models import Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework.authtoken.views import Token
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
-import collections
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -44,17 +42,23 @@ class UserLoginSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('__all__')
+        fields = ('pk', 'name', 'measure')
+
+
+class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
+    ingredient = IngredientSerializer()
+
+    class Meta:
+        model = IngredientsWithMeasure
+        fields = ('pk', 'amount', 'ingredient')
 
 
 class ComponentSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(many=True)
-
-    # ingredients = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all(), many=True)
+    ingredients = IngredientsWithMeasureSerializer(many=True)
 
     class Meta:
         model = Component
-        fields = ('__all__')
+        fields = ('pk', 'name', 'ingredients')
         depth = 1
 
     def create(self, validated_data):
@@ -63,15 +67,6 @@ class ComponentSerializer(serializers.ModelSerializer):
         for data in ingredients_data:
             Ingredient.objects.create(**data, component=component)
         return component
-
-
-class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
-    ingredient = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
-    component = serializers.PrimaryKeyRelatedField(queryset=Component.objects.all())
-
-    class Meta:
-        model = IngredientsWithMeasure
-        fields = ('__all__')
 
 
 class MenuSerializer(serializers.ModelSerializer):
