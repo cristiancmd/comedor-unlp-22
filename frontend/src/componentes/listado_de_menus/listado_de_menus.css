@@ -1,7 +1,7 @@
-#contenedor {
-    padding-left: 150px;
-    padding-right: 150px;
-    padding-bottom: 50px;
+#contenedor_listado_de_menus {
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    margin-bottom: 2%;
 }
 
 .titulo_de_columna {
@@ -10,4 +10,12 @@
 
 #lista_de_titulos_de_columnas {
     background: lightgray;
+}
+
+.tilde_vegetariano {
+    margin-left: 9.75%;
+}
+
+.tilde_celiaco {
+    margin-left: 5.5%;
 }

@@ -1,10 +1,16 @@
 **python 3.9**
+Crear un virtualenv con python 3.9
+
+**Activar el virtualenv**
 
 **Dentro del proyecto para instalar las dependencias:**
 `pip install -r requirements.txt`
 
 **Configuraciones locales:**
 `cp comedor/local_settings_example.py comedor/local_settings.py`
+
+**Si existe una base de datos sqlite**
+Borrar el archivo `bd.sqlite3`
 
 **Correr migraciones de la base:**
  `python manage.py migrate`
@@ -24,6 +30,15 @@
 ### localhost:8000/api/users/ 
 ### localhost:8000/api/users/login/ 
 ### localhost:8000/api/users/logout/ 
+
+### localhost:8000/api/ingredients/ 
+### localhost:8000/api/components/ 
+### localhost:8000/api/ingredientswithmeasure/ 
+
+
+
+
+
 
 
 

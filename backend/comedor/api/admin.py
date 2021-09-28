@@ -13,9 +13,11 @@ class ComponentAdmin(admin.ModelAdmin):
     inlines = [IngredientsWithMeasureAdmin]
 
 
+admin.site.register(Campus)
 admin.site.register(Ingredient)
 admin.site.register(Ticket)
 admin.site.register(EnabledDate)
 admin.site.register(Menu)
 admin.site.register(CustomUser)
 admin.site.register(Component, ComponentAdmin)
+
