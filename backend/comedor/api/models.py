@@ -74,7 +74,6 @@ class Component(models.Model):
     name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
     ingredients = models.ManyToManyField(Ingredient, verbose_name="Ingredientes",
                                          through="IngredientsWithMeasure")
-
     class Meta:
         verbose_name = _("Componente/Plato")
         verbose_name_plural = _("Componentes/Platos")
@@ -84,7 +83,7 @@ class Component(models.Model):
 
 
 class IngredientsWithMeasure(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="component_ingredients")
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     amount = models.IntegerField(_("Cantidad"))
 
@@ -109,23 +108,23 @@ class EnabledDate(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(_("Nombre"), max_length=30, validators=[alphabetical])
+    name = models.CharField(_("Nombre"), max_length=64, validators=[alphabetical])
     starter = models.ManyToManyField(Component, verbose_name="Entrada", related_name="menus_starter")
     principal = models.ManyToManyField(Component, verbose_name="Plato principal", related_name="menus_principal")
     dessert = models.ManyToManyField(Component, verbose_name="Postre", related_name="menus_dessert")
     drink = models.ManyToManyField(Component, verbose_name="Bebida", related_name="menus_drink")
     celiac = models.BooleanField(_("Menú celíaco"), default=False, null=True, blank=True)
     vegetarian = models.BooleanField(_("Menú vegetariano"), default=False, null=True, blank=True)
-    image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='menus')
+    image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='image_menus')
     enabled = models.BooleanField(_("Habilitado"), default=True)
-    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="menus")
-    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="menus")
+    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus")
+    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus")
     servings = models.IntegerField(_("Porciones"))
     price = models.FloatField(_("Precio"))
 
     class Meta:
-        verbose_name = _("Menú")
-        verbose_name_plural = _("Menús")
+        verbose_name = _("Menu")
+        verbose_name_plural = _("Menus")
 
     def __str__(self):
         return self.name

@@ -1,0 +1,36 @@
+#contenedor_de_icono_facultad_header {
+    width: 100%;
+}
+
+#contenedor_de_barra_de_navegacion_header {
+    height: 70px;
+    width: 100%;
+    background: red;
+}
+
+#icono_home {
+    float: left;
+    height: 75.4%;
+    width: 7%;
+    margin-top: 0.4%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.boton {
+    float: left;
+    padding-top: 1.2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    color: white;
+}
+
+#contenedor_cerrar_sesion {
+    float: right;
+}
+
+#cerrar_sesion {
+    position: absolute;
+    top: 10.5%;
+    right: 3%;
+}
