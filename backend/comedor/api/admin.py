@@ -20,3 +20,4 @@ admin.site.register(EnabledDate)
 admin.site.register(Menu)
 admin.site.register(CustomUser)
 admin.site.register(Component, ComponentAdmin)
+
