@@ -45,29 +45,62 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ('pk', 'name', 'measure')
 
 
+
 class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
-    ingredient = IngredientSerializer()
+    ingredient = IngredientSerializer(read_only=True)
+    ingredient_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, source='ingredient', queryset=Ingredient.objects.all())
 
     class Meta:
         model = IngredientsWithMeasure
-        fields = ('pk', 'amount', 'ingredient')
+        fields = ('pk', 'amount', 'ingredient','ingredient_id')        
+
+
+
+
+
+class IngredientComponentSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = IngredientsWithMeasure
+        fields = ('ingredient_id', 'amount')        
+
 
 
 class ComponentSerializer(serializers.ModelSerializer):
-    ingredients = IngredientsWithMeasureSerializer(many=True)
-
+    #ingredients = IngredientsWithMeasureSerializer(many=True)
+    ingredients = serializers.SerializerMethodField()
     class Meta:
         model = Component
         fields = ('pk', 'name', 'ingredients')
-        depth = 1
+        
+  
+    def get_ingredients(self, ingredient_instance):
+        query_datas = IngredientsWithMeasure.objects.filter(ingredient=ingredient_instance)
+        return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas] 
+
+
+
+class ComponentCreateSerializer(serializers.ModelSerializer):
+    ingredients = IngredientsWithMeasureSerializer(many=True)
+    
+    class Meta:
+        model = Component
+        fields = ('pk', 'name', 'ingredients')
+        
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
-        component = Component.objects.create(**validated_data)
+        c = Component.objects.create(**validated_data)
         for data in ingredients_data:
-            Ingredient.objects.create(**data, component=component)
-        return component
-
+            
+            IngredientsWithMeasure.objects.create(
+                component = c,
+                ingredient = data.get('ingredient'),
+                amount = data.get('amount')
+            )
+        c = ComponentSerializer()
+        return c
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:

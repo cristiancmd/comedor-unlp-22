@@ -1,4 +1,5 @@
 
+from rest_framework.views import APIView
 from .models import Ingredient, Component, IngredientsWithMeasure, Menu
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -37,7 +38,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         return Response({'Token inexistente'},status=status.HTTP_404_NOT_FOUND)
 
-
+""" 
 @permission_classes([AllowAny])
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
@@ -52,29 +53,60 @@ class IngredientViewSet(viewsets.ModelViewSet):
         data = {
             'ingredient': IngredientSerializer(ingredient).data,
         }
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response(data, status=status.HTTP_201_CREATED) """
 
-
+'''
 class ComponentViewSet(viewsets.ModelViewSet):
     queryset = Component.objects.all()
     serializer_class = ComponentSerializer
     authentication_classes = (TokenAuthentication,)
 
+    
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def post(self, request):
         serializer = ComponentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        ingredient = serializer.save()
+        component = serializer.save()
         data = {
-            'ingredient': ComponentSerializer(ingredient).data,
+            'component': ComponentSerializer(component).data,
         }
         return Response(data, status=status.HTTP_201_CREATED)
+    '''
+class Components(APIView):
+    authentication_classes = (TokenAuthentication,)
+    
+    def get(self, request, format=None):
+        components = Component.objects.all()
+        serializer = ComponentSerializer(components, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ComponentCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            saved_obj = serializer.save()
+            response_data = ComponentSerializer(saved_obj).data
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
 
-class IngredientsWithMeasureViewSet(viewsets.ModelViewSet):
+""" class IngredientsWithMeasureViewSet(viewsets.ModelViewSet):
     queryset = IngredientsWithMeasure.objects.all()
     serializer_class = IngredientsWithMeasureSerializer
-    authentication_classes = (TokenAuthentication,)  
+    authentication_classes = (TokenAuthentication,)   """
+
+class Ingredients(APIView):
+    def get(self, request, format=None):
+        ingredients = Ingredient.objects.all()
+        serializer = IngredientSerializer(ingredients, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = IngredientSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class MenuViewSet(viewsets.ModelViewSet):
