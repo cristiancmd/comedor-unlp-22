@@ -14,7 +14,7 @@ const Header = () => {
                 <Link to={"/listado_de_menus"}><h5 className="boton">Menús</h5></Link>
                 <Link to={"/listados"}><h5 className="boton">Listados</h5></Link>
                 <div id="contenedor_cerrar_sesion">
-                    <button type="button" class="btn btn-outline-light" id="cerrar_sesion"><h5>Cerrar sesión</h5></button>
+                    <button type="button" className="btn btn-outline-light" id="cerrar_sesion"><h5>Cerrar sesión</h5></button>
                 </div>
             </div>
         </>
