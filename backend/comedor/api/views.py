@@ -1,4 +1,5 @@
 
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from .models import Ingredient, Component, IngredientsWithMeasure, Menu
 from django.shortcuts import render
@@ -75,7 +76,7 @@ class ComponentViewSet(viewsets.ModelViewSet):
 class Components(APIView):
     authentication_classes = (TokenAuthentication,)
     
-    def get(self, request, format=None):
+    def get(self, request):
         components = Component.objects.all()
         serializer = ComponentSerializer(components, many=True)
         return Response(serializer.data)
@@ -88,6 +89,12 @@ class Components(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
+    def get_object(self, pk):
+        try:
+            return Component.objects.get(pk=pk)
+        except Component.DoesNotExist:
+            raise status.HTTP_404_NOT_FOUND
+    
 
 """ class IngredientsWithMeasureViewSet(viewsets.ModelViewSet):
     queryset = IngredientsWithMeasure.objects.all()

@@ -42,7 +42,7 @@ class UserLoginSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('pk', 'name', 'measure')
+        fields = ('__all__')
 
 
 
@@ -53,14 +53,13 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientsWithMeasure
-        fields = ('pk', 'amount', 'ingredient','ingredient_id')        
-
+        fields = ('amount', 'ingredient','ingredient_id')        
 
 
 
 
 class IngredientComponentSerializer(serializers.ModelSerializer):
-    
+    ingredients = IngredientSerializer(many=True)
     class Meta:
         model = IngredientsWithMeasure
         fields = ('ingredient_id', 'amount')        
@@ -68,16 +67,18 @@ class IngredientComponentSerializer(serializers.ModelSerializer):
 
 
 class ComponentSerializer(serializers.ModelSerializer):
-    #ingredients = IngredientsWithMeasureSerializer(many=True)
-    ingredients = serializers.SerializerMethodField()
+    # ingredients = IngredientsWithMeasureSerializer(many=True)
+    ingredients = IngredientSerializer(many=True)
     class Meta:
         model = Component
         fields = ('pk', 'name', 'ingredients')
+        
         
   
     def get_ingredients(self, ingredient_instance):
         query_datas = IngredientsWithMeasure.objects.filter(ingredient=ingredient_instance)
         return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas] 
+ 
 
 
 
@@ -86,7 +87,7 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Component
-        fields = ('pk', 'name', 'ingredients')
+        fields = ('id', 'name', 'ingredients')
         
 
     def create(self, validated_data):
@@ -99,8 +100,9 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
                 ingredient = data.get('ingredient'),
                 amount = data.get('amount')
             )
-        c = ComponentSerializer()
         return c
+
+
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
