@@ -104,8 +104,14 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(serializers.ModelSerializer):
+    # starter = ComponentSerializer(many=True)
+    # principal = ComponentSerializer(many=True)
+    # dessert = ComponentSerializer(many=True)
+    # drink = ComponentSerializer(many=True)
+
     class Meta:
         model = Menu
-        fields = '__all__'
-        depth = 2
+        fields = ('price','starter','principal','dessert','drink', 'enabled', 
+        'campus','enabled_dates','servings')
+        depth = 1
 
