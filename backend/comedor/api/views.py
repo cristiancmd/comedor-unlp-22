@@ -63,10 +63,6 @@ class Components(APIView):
             raise status.HTTP_404_NOT_FOUND
     
 
-""" class IngredientsWithMeasureViewSet(viewsets.ModelViewSet):
-    queryset = IngredientsWithMeasure.objects.all()
-    serializer_class = IngredientsWithMeasureSerializer
-    authentication_classes = (TokenAuthentication,)   """
 
 class Ingredients(APIView):
     def get(self, request, format=None):

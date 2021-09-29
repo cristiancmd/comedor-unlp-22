@@ -59,24 +59,23 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
 
 
 class IngredientComponentSerializer(serializers.ModelSerializer):
-    ingredients = IngredientSerializer(many=True)
+
     class Meta:
         model = IngredientsWithMeasure
         fields = ('ingredient_id', 'amount')        
+        depth = 1
 
 
 
 class ComponentSerializer(serializers.ModelSerializer):
-    # ingredients = IngredientsWithMeasureSerializer(many=True)
-    ingredients = IngredientSerializer(many=True)
+    ingredients = serializers.SerializerMethodField()
+
     class Meta:
         model = Component
-        fields = ('pk', 'name', 'ingredients')
+        fields = ('id', 'name', 'ingredients')
         
-        
-  
-    def get_ingredients(self, ingredient_instance):
-        query_datas = IngredientsWithMeasure.objects.filter(ingredient=ingredient_instance)
+    def get_ingredients(self, component_instance):
+        query_datas = IngredientsWithMeasure.objects.filter(component=component_instance)
         return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas] 
  
 
