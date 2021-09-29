@@ -39,40 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         return Response({'Token inexistente'},status=status.HTTP_404_NOT_FOUND)
 
-""" 
-@permission_classes([AllowAny])
-class IngredientViewSet(viewsets.ModelViewSet):
-    queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerializer
-    authentication_classes = (TokenAuthentication,)
 
-    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
-    def post(self, request):
-        serializer = IngredientSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        ingredient = serializer.save()
-        data = {
-            'ingredient': IngredientSerializer(ingredient).data,
-        }
-        return Response(data, status=status.HTTP_201_CREATED) """
-
-'''
-class ComponentViewSet(viewsets.ModelViewSet):
-    queryset = Component.objects.all()
-    serializer_class = ComponentSerializer
-    authentication_classes = (TokenAuthentication,)
-
-    
-    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
-    def post(self, request):
-        serializer = ComponentSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        component = serializer.save()
-        data = {
-            'component': ComponentSerializer(component).data,
-        }
-        return Response(data, status=status.HTTP_201_CREATED)
-    '''
 class Components(APIView):
     authentication_classes = (TokenAuthentication,)
     
