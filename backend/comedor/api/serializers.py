@@ -101,17 +101,18 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
             )
         return c
 
-
+####
 class ComponentDetailSerializer(serializers.ModelSerializer):
     
-    ingredients = IngredientsWithMeasureSerializer(many=True)
+    ingredients = IngredientComponentSerializer
     
     class Meta:
         model = Component
         fields = ('__all__')
-        depth = 2
+        # depth = 1
+        
 
-# 
+
 class MenuSerializer(serializers.ModelSerializer):
     
     starter = ComponentSerializer(many=True,read_only=True)
