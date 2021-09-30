@@ -38,7 +38,7 @@ const Listado_de_menus = () => {
   }
 
   const peticionDelete = () => {
-    axios.delete(url+"/"+nuevoMenu.pk).then(response=>{
+    axios.delete(url+nuevoMenu.pk).then(response=>{
       setModalEliminar(false);
       peticionGet();
     }).catch(error=>{

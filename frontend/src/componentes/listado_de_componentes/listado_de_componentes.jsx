@@ -9,8 +9,10 @@ import Header from '../header/header'
 const Listado_de_componentes = () => {
 
   const url = "http://localhost:8000/api/components/";
+  const url_ingrediente = "http://localhost:8000/api/ingredients/";
 
   const [data, setData] = React.useState([])
+  const [ingrediente, setIngrediente] = React.useState([])
   const [nuevoComponente, setNuevoComponente] = React.useState({
     id:"",
     name:"",
@@ -37,7 +39,7 @@ const Listado_de_componentes = () => {
   }
 
   const peticionDelete = () => {
-    axios.delete(url+"/"+nuevoComponente.id).then(response=>{
+    axios.delete(url+nuevoComponente.id).then(response=>{
       setModalEliminar(false);
       peticionGet();
     }).catch(error=>{
@@ -45,9 +47,9 @@ const Listado_de_componentes = () => {
     })
   }
 
-  const unidadDeIngrediente = (ingrediente) => {
+  const unidadDeIngrediente = (ingrediente,cantidad) => {
     if (ingrediente.measure === "UN") {
-      if (ingrediente.amount === 1) {
+      if (cantidad === 1) {
         return "Unidad"
       }
       else {
@@ -55,6 +57,19 @@ const Listado_de_componentes = () => {
       }
     }
     return ingrediente.measure
+  }
+
+  const peticionGetIngrediente = (id) => {
+    axios.get(url_ingrediente+id).then(response => {
+      setIngrediente(response.data);
+    }).catch(error=>{
+      console.log(error.message);
+    })
+  }
+
+  const informacion_de_un_ingrediente = (ing) => {
+    peticionGetIngrediente(ing.ingredient_id);
+    return <h6>{ingrediente.name} {ing.amount} {unidadDeIngrediente(ingrediente,ing.amount)}</h6>
   }
 
   return (
@@ -81,7 +96,7 @@ const Listado_de_componentes = () => {
                   <td>{componente.name}</td>
                   <td>{componente.ingredients.map(ingrediente => {
                     return (
-                      <h6>{ingrediente.name} {ingrediente.amount} {unidadDeIngrediente(ingrediente)}</h6>
+                      <h6>{informacion_de_un_ingrediente(ingrediente)}</h6>
                     )
                   })}</td>
                   <td>
