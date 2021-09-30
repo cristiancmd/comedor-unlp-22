@@ -31,9 +31,14 @@ Borrar el archivo `bd.sqlite3`
 ### localhost:8000/api/users/login/ 
 ### localhost:8000/api/users/logout/ 
 
-### localhost:8000/api/ingredients/ 
+### localhost:8000/api/ingredients/
+### localhost:8000/api/ingredients/{id}
 ### localhost:8000/api/components/ 
-### localhost:8000/api/ingredientswithmeasure/ 
+
+### localhost:8000/api/menus/ 
+### localhost:8000/api/menus/{id}
+
+
 
 
 
