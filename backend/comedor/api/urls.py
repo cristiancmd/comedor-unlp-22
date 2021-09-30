@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/measure/', measure_list),
     path('api/components/', Components.as_view()),
     path('api/ingredients/', Ingredients.as_view()),
-    path('api/components/<int:pk>', Components.as_view())
+    path('api/components/<int:pk>/', ComponentDetailView.as_view())
 
 
 ]

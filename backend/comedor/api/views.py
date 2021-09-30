@@ -1,5 +1,5 @@
 
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from .models import Ingredient, Component, IngredientsWithMeasure, Menu
 from django.shortcuts import render
@@ -40,9 +40,17 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'Token inexistente'},status=status.HTTP_404_NOT_FOUND)
 
 
+class ComponentDetailView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ComponentDetailSerializer
+    queryset = Component.objects.all()
+    
+
+
+
 class Components(APIView):
     authentication_classes = (TokenAuthentication,)
     
+
     def get(self, request):
         components = Component.objects.all()
         serializer = ComponentSerializer(components, many=True)
@@ -56,11 +64,6 @@ class Components(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
-    def get_object(self, pk):
-        try:
-            return Component.objects.get(pk=pk)
-        except Component.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
     
 
 

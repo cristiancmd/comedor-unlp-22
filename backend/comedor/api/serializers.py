@@ -102,6 +102,15 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
         return c
 
 
+class ComponentDetailSerializer(serializers.ModelSerializer):
+    
+    ingredients = IngredientsWithMeasureSerializer(many=True)
+    
+    class Meta:
+        model = Component
+        fields = ('__all__')
+        depth = 2
+
 # 
 class MenuSerializer(serializers.ModelSerializer):
     
@@ -120,12 +129,13 @@ class MenuSerializer(serializers.ModelSerializer):
     drink_id = serializers.PrimaryKeyRelatedField(many=True, 
         read_only=False, queryset=Component.objects.all(), source='drink') 
     
-    
+
+
     class Meta:
         model = Menu
         fields = ('pk','name','price','starter','principal','dessert','drink', 'enabled', 
         'campus','enabled_dates','servings','starter_id','principal_id','dessert_id','drink_id')
-        write_only_fields = ('starter')
+       
 
     
     
