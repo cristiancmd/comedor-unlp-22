@@ -83,16 +83,8 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
-
-    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
-    def post(self, request):
-        serializer = MenuSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        ingredient = serializer.save()
-        data = {
-            'ingredient': MenuSerializer(ingredient).data,
-        }
-        return Response(data, status=status.HTTP_201_CREATED)
+    
+    
 
 
 @api_view(["GET"])

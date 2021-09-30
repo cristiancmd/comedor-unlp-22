@@ -42,7 +42,7 @@ class UserLoginSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('__all__')
+        fields = ('pk','name','measure')
 
 
 
@@ -59,14 +59,14 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
 
 
 class IngredientComponentSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = IngredientsWithMeasure
         fields = ('ingredient_id', 'amount')        
         depth = 1
 
 
-
+#SOLO lectura
 class ComponentSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
 
@@ -80,7 +80,7 @@ class ComponentSerializer(serializers.ModelSerializer):
  
 
 
-
+#Solo creacion
 class ComponentCreateSerializer(serializers.ModelSerializer):
     ingredients = IngredientsWithMeasureSerializer(many=True)
     
@@ -102,16 +102,32 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
         return c
 
 
-
+# 
 class MenuSerializer(serializers.ModelSerializer):
-    # starter = ComponentSerializer(many=True)
-    # principal = ComponentSerializer(many=True)
-    # dessert = ComponentSerializer(many=True)
-    # drink = ComponentSerializer(many=True)
-
+    
+    starter = ComponentSerializer(many=True,read_only=True)
+    principal = ComponentSerializer(many=True,read_only=True)
+    dessert = ComponentSerializer(many=True , read_only=True)
+    drink = ComponentSerializer(many=True, read_only=True)
+    
+    
+    starter_id = serializers.PrimaryKeyRelatedField(many=True, 
+        read_only=False, queryset=Component.objects.all(), source='starter')
+    principal_id = serializers.PrimaryKeyRelatedField(many=True, 
+        read_only=False, queryset=Component.objects.all(), source='principal')  
+    dessert_id = serializers.PrimaryKeyRelatedField(many=True, 
+        read_only=False, queryset=Component.objects.all(), source='dessert')  
+    drink_id = serializers.PrimaryKeyRelatedField(many=True, 
+        read_only=False, queryset=Component.objects.all(), source='drink') 
+    
+    
     class Meta:
         model = Menu
-        fields = ('price','starter','principal','dessert','drink', 'enabled', 
-        'campus','enabled_dates','servings')
-        depth = 1
+        fields = ('pk','name','price','starter','principal','dessert','drink', 'enabled', 
+        'campus','enabled_dates','servings','starter_id','principal_id','dessert_id','drink_id')
+        write_only_fields = ('starter')
 
+    
+    
+
+        
