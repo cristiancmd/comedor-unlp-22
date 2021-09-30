@@ -12,7 +12,7 @@ const Listado_de_componentes = () => {
 
   const [data, setData] = React.useState([])
   const [nuevoComponente, setNuevoComponente] = React.useState({
-    pk:"",
+    id:"",
     name:"",
   })
   const [modalEliminar, setModalEliminar] = React.useState(false)
@@ -31,13 +31,13 @@ const Listado_de_componentes = () => {
 
   const seleccionarComponente = (componente) => {
     setNuevoComponente({
-      pk:componente.pk,
+      id:componente.id,
       name:componente.name,
     });
   }
 
   const peticionDelete = () => {
-    axios.delete(url+"/"+nuevoComponente.pk).then(response=>{
+    axios.delete(url+"/"+nuevoComponente.id).then(response=>{
       setModalEliminar(false);
       peticionGet();
     }).catch(error=>{
@@ -46,7 +46,7 @@ const Listado_de_componentes = () => {
   }
 
   const unidadDeIngrediente = (ingrediente) => {
-    if (ingrediente.ingredient.measure === "UN") {
+    if (ingrediente.measure === "UN") {
       if (ingrediente.amount === 1) {
         return "Unidad"
       }
@@ -54,7 +54,7 @@ const Listado_de_componentes = () => {
         return "Unidades"
       }
     }
-    return ingrediente.ingredient.measure
+    return ingrediente.measure
   }
 
   return (
@@ -81,11 +81,11 @@ const Listado_de_componentes = () => {
                   <td>{componente.name}</td>
                   <td>{componente.ingredients.map(ingrediente => {
                     return (
-                      <h6>{ingrediente.ingredient.name} {ingrediente.amount} {unidadDeIngrediente(ingrediente)}</h6>
+                      <h6>{ingrediente.name} {ingrediente.amount} {unidadDeIngrediente(ingrediente)}</h6>
                     )
                   })}</td>
                   <td>
-                    <Link to={"/detalle_componente/"+componente.pk}><button className="btn btn-primary">Detalle</button></Link>
+                    <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
                     {"   "}
                     <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
                   </td>
