@@ -150,5 +150,5 @@ class MenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ('id', 'name', 'price', 'starter', 'principal', 'dessert', 'drink', 'enabled',
-                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id')
+        fields = ('id', 'name', 'price', 'starter','celiac','vegetarian', 'principal', 'dessert', 'drink', 'enabled',
+                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
