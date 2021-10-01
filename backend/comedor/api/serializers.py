@@ -57,13 +57,14 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
         model = IngredientsWithMeasure
         fields = ('amount', 'ingredient', 'ingredient_id')
 
-
+##
 class IngredientComponentSerializer(serializers.ModelSerializer):
-
+    ingredient = IngredientSerializer
+    
     class Meta:
         model = IngredientsWithMeasure
-        fields = ('ingredient_id', 'amount')
-        depth = 1
+        fields = ('amount', 'ingredient')
+        depth = 1 
 
 
 # SOLO lectura
