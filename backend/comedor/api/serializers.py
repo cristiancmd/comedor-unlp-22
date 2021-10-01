@@ -45,7 +45,7 @@ class UserLoginSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('pk', 'name', 'measure')
+        fields = ('id', 'name', 'measure')
 
 
 class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
@@ -150,5 +150,5 @@ class MenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ('pk', 'name', 'price', 'starter', 'principal', 'dessert', 'drink', 'enabled',
-                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id')
+        fields = ('id', 'name', 'price', 'starter','celiac','vegetarian', 'principal', 'dessert', 'drink', 'enabled',
+                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
