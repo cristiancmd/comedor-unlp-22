@@ -4,14 +4,14 @@ from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIVie
 from rest_framework.views import APIView
 from .models import Ingredient, Component, IngredientsWithMeasure, Menu
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import exceptions, viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 from .serializers import *
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
-from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, DjangoModelPermissions
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -44,7 +44,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
@@ -62,10 +62,29 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         user = request.user
         if user:
             user.auth_token.delete()
-            return Response({'Token eliminado con exito'}, status=status.HTTP_200_OK)
-        return Response({'Token inexistente'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'Log out satisfactorio.'}, status=status.HTTP_200_OK)
+        return Response({'Token inexistente.'}, status=status.HTTP_404_NOT_FOUND)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        if request.user.is_staff == False:
+             raise exceptions.PermissionDenied()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            if instance != self.request.user.customuser and not request.user.is_staff and not request.user.is_admin:
+                raise exceptions.PermissionDenied()
+        except: raise exceptions.PermissionDenied()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+        
 #############
 class ComponentDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ComponentDetailSerializer
