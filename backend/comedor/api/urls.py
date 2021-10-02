@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register('users', UserViewSet)
 router.register('ingredients', IngredientViewSet)
 router.register('menus', MenuViewSet)
+router.register('usuarios', CustomUserViewSet)
 
 
 urlpatterns = [

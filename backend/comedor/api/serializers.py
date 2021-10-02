@@ -1,15 +1,16 @@
 from rest_framework.utils import model_meta
-from .models import Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
+from .models import CustomUser, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import make_password
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password']
+        fields = '__all__'
 
         extra_kwargs = {'password': {
             'write_only': True,
@@ -17,9 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
         }}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create_user(**validated_data) 
         Token.objects.create(user=user)
         return user
+
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -40,6 +42,14 @@ class UserLoginSerializer(serializers.Serializer):
         token, created = Token.objects.get_or_create(user=self.context['user'])
 
         return self.context['user'], token.key
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    class Meta(UserSerializer.Meta):
+        model = CustomUser
+        fields = UserSerializer.Meta.fields
+
 
 
 class IngredientSerializer(serializers.ModelSerializer):

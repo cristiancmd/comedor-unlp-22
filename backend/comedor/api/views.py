@@ -40,6 +40,31 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response({'Token inexistente'}, status=status.HTTP_404_NOT_FOUND)
 
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
+    def login(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserSerializer(user).data,
+            'access_token': token
+        }
+        return Response(data, status=status.HTTP_201_CREATED)
+    
+    @action(detail=False, methods=['post'], permission_classes=[IsAuthenticated])
+    def logout(self, request):
+        user = request.user
+        if user:
+            user.auth_token.delete()
+            return Response({'Token eliminado con exito'}, status=status.HTTP_200_OK)
+        return Response({'Token inexistente'}, status=status.HTTP_404_NOT_FOUND)
+
 
 #############
 class ComponentDetailView(RetrieveUpdateDestroyAPIView):
@@ -108,6 +133,9 @@ class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
+
+
+
 
 
 @api_view(["GET"])
