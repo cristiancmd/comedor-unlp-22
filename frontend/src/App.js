@@ -10,6 +10,7 @@ import habilitar_menu from './componentes/habilitar_menu/habilitar_menu';
 import menus_habilitados from './componentes/menus_habilitados/menus_habilitados';
 import ingredients from './componentes/listado_de_ingredientes/listado_de_ingredientes';
 import newIngredient from './componentes/cargar_ingrediente/cargar_ingrediente';
+import listado_de_componentes from './componentes/listado_de_componentes/listado_de_componentes';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route exact path='/login' component={login}/> 
       <Route exact path='/home' component={menus_habilitados}/> 
       <Route exact path='/listado_de_menus' component={listado_de_menus}/> 
+      <Route exact path='/listado_de_componentes' component={listado_de_componentes}/> 
       <Route exact path='/ingredientes' component={ingredients}/>
       <Route exact path='/ingredientes/nuevo' component={newIngredient}/>
       <Route exact path='/detalle/:id'/>

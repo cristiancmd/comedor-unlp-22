@@ -1,0 +1,13 @@
+#contenedor_listado_de_componentes {
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    margin-bottom: 2%;
+}
+
+.titulo_de_columna_de_componentes {
+    width: 33.3%;
+}
+
+#lista_de_titulos_de_columnas_de_componentes {
+    background: lightgray;
+}
