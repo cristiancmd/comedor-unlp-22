@@ -1,16 +1,14 @@
 
-from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
-from .models import Ingredient, Component, IngredientsWithMeasure, Menu
-from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
-from django.contrib.auth.models import User
 from .serializers import *
-from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
+from django.db.models.functions import Lower
+from django.http import Http404
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -49,7 +47,6 @@ class ComponentDetailView(RetrieveUpdateDestroyAPIView):
 
 class Components(APIView):
     authentication_classes = (TokenAuthentication,)
-    
 
     def get(self, request):
         components = Component.objects.all()
@@ -64,13 +61,21 @@ class Components(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
-    
-
 
 class Ingredients(APIView):
-    def get(self, request, format=None):
-        ingredients = Ingredient.objects.all()
-        serializer = IngredientSerializer(ingredients, many=True)
+    def get_object(self, pk):
+        try:
+            return Ingredient.objects.get(pk=pk)
+        except Ingredient.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk=None):
+        if pk:
+            ingredient = self.get_object(pk)
+            serializer = IngredientSerializer(ingredient)
+        else:
+            ingredients = Ingredient.objects.all().order_by(Lower("name"))
+            serializer = IngredientSerializer(ingredients, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -80,6 +85,18 @@ class Ingredients(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request, pk):
+        ingredient = self.get_object(pk)
+        serializer = IngredientSerializer(ingredient, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        ingredient = self.get_object(pk)
+        ingredient.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MenuViewSet(viewsets.ModelViewSet):

@@ -4,9 +4,6 @@ from .views import *
 
 router = DefaultRouter()
 router.register('users', UserViewSet)
-#router.register('ingredients', IngredientViewSet)
-# router.register('components', Component, basename="components" )
-#router.register('ingredientswithmeasure', IngredientsWithMeasureViewSet)
 router.register('menus', MenuViewSet)
 
 
@@ -15,6 +12,7 @@ urlpatterns = [
     path('api/measure/', measure_list),
     path('api/components/', Components.as_view()),
     path('api/ingredients/', Ingredients.as_view()),
+    path('api/ingredients/<int:pk>', Ingredients.as_view()),
     path('api/components/<int:pk>/', ComponentDetailView.as_view())
 
 

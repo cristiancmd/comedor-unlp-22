@@ -42,8 +42,7 @@ class UserLoginSerializer(serializers.Serializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ('pk','name','measure')
-
+        fields = ('pk', 'name', 'measure')
 
 
 class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
@@ -53,92 +52,77 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientsWithMeasure
-        fields = ('amount', 'ingredient','ingredient_id')        
-
-
+        fields = ('amount', 'ingredient', 'ingredient_id')
 
 
 class IngredientComponentSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = IngredientsWithMeasure
-        fields = ('ingredient_id', 'amount')        
+        fields = ('ingredient_id', 'amount')
         depth = 1
 
 
-#SOLO lectura
+# SOLO lectura
 class ComponentSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
 
     class Meta:
         model = Component
         fields = ('id', 'name', 'ingredients')
-        
+
     def get_ingredients(self, component_instance):
         query_datas = IngredientsWithMeasure.objects.filter(component=component_instance)
-        return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas] 
- 
+        return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas]
+
+    # Solo creacion
 
 
-#Solo creacion
 class ComponentCreateSerializer(serializers.ModelSerializer):
     ingredients = IngredientsWithMeasureSerializer(many=True)
-    
+
     class Meta:
         model = Component
         fields = ('id', 'name', 'ingredients')
-        
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
         c = Component.objects.create(**validated_data)
         for data in ingredients_data:
-            
             IngredientsWithMeasure.objects.create(
-                component = c,
-                ingredient = data.get('ingredient'),
-                amount = data.get('amount')
+                component=c,
+                ingredient=data.get('ingredient'),
+                amount=data.get('amount')
             )
         return c
 
+
 ####
 class ComponentDetailSerializer(serializers.ModelSerializer):
-    
     ingredients = IngredientComponentSerializer
-    
+
     class Meta:
         model = Component
         fields = ('__all__')
         # depth = 1
-        
 
 
 class MenuSerializer(serializers.ModelSerializer):
-    
-    starter = ComponentSerializer(many=True,read_only=True)
-    principal = ComponentSerializer(many=True,read_only=True)
-    dessert = ComponentSerializer(many=True , read_only=True)
+    starter = ComponentSerializer(many=True, read_only=True)
+    principal = ComponentSerializer(many=True, read_only=True)
+    dessert = ComponentSerializer(many=True, read_only=True)
     drink = ComponentSerializer(many=True, read_only=True)
-    
-    
-    starter_id = serializers.PrimaryKeyRelatedField(many=True, 
-        read_only=False, queryset=Component.objects.all(), source='starter')
-    principal_id = serializers.PrimaryKeyRelatedField(many=True, 
-        read_only=False, queryset=Component.objects.all(), source='principal')  
-    dessert_id = serializers.PrimaryKeyRelatedField(many=True, 
-        read_only=False, queryset=Component.objects.all(), source='dessert')  
-    drink_id = serializers.PrimaryKeyRelatedField(many=True, 
-        read_only=False, queryset=Component.objects.all(), source='drink') 
-    
 
+    starter_id = serializers.PrimaryKeyRelatedField(many=True,
+                                                    read_only=False, queryset=Component.objects.all(), source='starter')
+    principal_id = serializers.PrimaryKeyRelatedField(many=True,
+                                                      read_only=False, queryset=Component.objects.all(),
+                                                      source='principal')
+    dessert_id = serializers.PrimaryKeyRelatedField(many=True,
+                                                    read_only=False, queryset=Component.objects.all(), source='dessert')
+    drink_id = serializers.PrimaryKeyRelatedField(many=True,
+                                                  read_only=False, queryset=Component.objects.all(), source='drink')
 
     class Meta:
         model = Menu
-        fields = ('pk','name','price','starter','principal','dessert','drink', 'enabled', 
-        'campus','enabled_dates','servings','starter_id','principal_id','dessert_id','drink_id')
-       
-
-    
-    
-
-        
+        fields = ('pk', 'name', 'price', 'starter', 'principal', 'dessert', 'drink', 'enabled',
+                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id')
