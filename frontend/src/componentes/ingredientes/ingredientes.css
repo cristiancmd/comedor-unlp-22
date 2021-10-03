@@ -1,0 +1,12 @@
+#ingredients-container thead tr {
+    background: lightgray;
+}
+
+#new-ingredient .form-group{
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.actions .btn {
+    margin-right: 1rem;
+}

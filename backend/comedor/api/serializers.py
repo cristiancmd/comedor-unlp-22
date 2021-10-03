@@ -1,15 +1,16 @@
 from rest_framework.utils import model_meta
-from .models import Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
+from .models import CustomUser, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import make_password
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password']
+        fields = '__all__'
 
         extra_kwargs = {'password': {
             'write_only': True,
@@ -17,9 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
         }}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        user = User.objects.create_user(**validated_data) 
         Token.objects.create(user=user)
         return user
+
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -42,6 +44,14 @@ class UserLoginSerializer(serializers.Serializer):
         return self.context['user'], token.key
 
 
+class CustomUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    class Meta(UserSerializer.Meta):
+        model = CustomUser
+        fields = UserSerializer.Meta.fields
+
+
+
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
@@ -57,17 +67,19 @@ class IngredientsWithMeasureSerializer(serializers.ModelSerializer):
         model = IngredientsWithMeasure
         fields = ('amount', 'ingredient', 'ingredient_id')
 
+
 ##
 class IngredientComponentSerializer(serializers.ModelSerializer):
     ingredient = IngredientSerializer
-    
+
     class Meta:
         model = IngredientsWithMeasure
         fields = ('amount', 'ingredient')
-        depth = 1 
+        depth = 1
 
 
-# SOLO lectura
+
+    # SOLO lectura
 class ComponentSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
 
@@ -93,7 +105,6 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
         ingredients_data = validated_data.pop('ingredients')
         c = Component.objects.create(**validated_data)
         for data in ingredients_data:
-
             IngredientsWithMeasure.objects.create(
                 component=c,
                 ingredient=data.get('ingredient'),

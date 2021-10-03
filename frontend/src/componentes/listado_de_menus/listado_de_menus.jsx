@@ -12,7 +12,7 @@ const Listado_de_menus = () => {
 
   const [data, setData] = React.useState([])
   const [nuevoMenu, setNuevoMenu] = React.useState({
-    pk:"",
+    id:"",
     name:"",
   })
   const [modalEliminar, setModalEliminar] = React.useState(false)
@@ -32,13 +32,13 @@ const Listado_de_menus = () => {
 
   const seleccionarMenu = (menu) => {
     setNuevoMenu({
-      pk:menu.pk,
+      id:menu.id,
       name:menu.name,
     });
   }
 
   const peticionDelete = () => {
-    axios.delete(url+nuevoMenu.pk).then(response=>{
+    axios.delete(url+nuevoMenu.id).then(response=>{
       setModalEliminar(false);
       peticionGet();
     }).catch(error=>{
@@ -80,7 +80,7 @@ const Listado_de_menus = () => {
                     <td><span className="tilde_celiaco">&#x2715;</span></td>
                   }
                   <td>
-                    <Link to={"/detalle/"+menu.pk}><button className="btn btn-primary">Detalle</button></Link>
+                    <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
                     {"   "}
                     {
                       menu.enabled?
