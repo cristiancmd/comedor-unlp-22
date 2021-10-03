@@ -12,6 +12,7 @@ import ingredients from './componentes/ingredientes/listado_de_ingredientes';
 import CargarIngrediente from './componentes/ingredientes/cargar_ingrediente';
 import EditarIngrediente from "./componentes/ingredientes/editar_ingrediente";
 import listado_de_componentes from './componentes/listado_de_componentes/listado_de_componentes';
+import cargar_componente from './componentes/cargar_componente/cargar_componente';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route exact path='/home' component={menus_habilitados}/> 
       <Route exact path='/menus' component={listado_de_menus}/> 
       <Route exact path='/platos' component={listado_de_componentes}/> 
+      <Route exact path='/platos/nuevo' component={cargar_componente}/> 
       <Route exact path='/ingredientes' component={ingredients}/>
       <Route exact path='/ingredientes/nuevo' component={CargarIngrediente}/>
       <Route exact path='/ingredientes/editar/:id' component={EditarIngrediente}/>

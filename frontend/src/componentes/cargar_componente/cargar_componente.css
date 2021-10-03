@@ -1,0 +1,45 @@
+#titulo_cargar_componente {
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+#input_nombre_cargar_componente {
+    width: 20%;
+    margin-bottom: 2%;
+}
+
+#contenedor_ingredientes_cargar_componente {
+    float: left;
+    width: 20%;
+    margin-right: 0.5%;
+}
+
+#contenedor_cantidad_cargar_componente {
+    float: left;
+    width: 5%;
+    margin-left: 0.5%;
+}
+
+#ingredientes_elegidos_en_cargar_componente {
+    float: left;
+    width: 100%;
+}
+
+#boton_de_un_ingrediente_de_cargar_componente{
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-top: 1%;
+}
+
+#agregar_cargar_componente {
+    margin-top: 2%;
+    margin-bottom: 5%;
+}
+
+#guardar_cargar_componente {
+    margin-right: 0.5%;
+}
+
+#cancelar_cargar_componente {
+    margin-left: 0.5%;
+}

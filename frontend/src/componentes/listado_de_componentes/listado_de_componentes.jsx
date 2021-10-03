@@ -77,7 +77,7 @@ const Listado_de_componentes = () => {
       {Header()}
       <div id="contenedor_listado_de_componentes" className="App">
         <br/><br/>
-        <Link to={"/cargar_componente"}><button className="btn btn-primary">Cargar plato</button></Link>
+        <Link to={"/platos/nuevo"}><button className="btn btn-primary">Cargar plato</button></Link>
         <br/><br/>
         <h2>Platos</h2>
         <br/>
