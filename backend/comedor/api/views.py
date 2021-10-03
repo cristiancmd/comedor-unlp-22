@@ -156,7 +156,6 @@ class MenuViewSet(viewsets.ModelViewSet):
 
 
 
-
 @api_view(["GET"])
 def measure_list(request):
     data = []

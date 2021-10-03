@@ -68,7 +68,7 @@ const Listado_de_componentes = () => {
   }
 
   const informacion_de_un_ingrediente = (ing) => {
-    peticionGetIngrediente(ing.ingredient_id);
+    peticionGetIngrediente(ing.id);
     return <h6>{ingrediente.name} {ing.amount} {unidadDeIngrediente(ingrediente,ing.amount)}</h6>
   }
 
@@ -96,7 +96,8 @@ const Listado_de_componentes = () => {
                   <td>{componente.name}</td>
                   <td>{componente.ingredients.map(ingrediente => {
                     return (
-                      <h6>{informacion_de_un_ingrediente(ingrediente)}</h6>
+                      
+                      <h7>{ingrediente.ingredient.name } {",  " }</h7>
                     )
                   })}</td>
                   <td>

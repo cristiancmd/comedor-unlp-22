@@ -19,8 +19,8 @@ function App() {
       <Route exact path='/header_login' component={header_login}/> 
       <Route exact path='/login' component={login}/> 
       <Route exact path='/home' component={menus_habilitados}/> 
-      <Route exact path='/listado_de_menus' component={listado_de_menus}/> 
-      <Route exact path='/listado_de_componentes' component={listado_de_componentes}/> 
+      <Route exact path='/menus' component={listado_de_menus}/> 
+      <Route exact path='/platos' component={listado_de_componentes}/> 
       <Route exact path='/ingredientes' component={ingredients}/>
       <Route exact path='/ingredientes/nuevo' component={newIngredient}/>
       <Route exact path='/detalle/:id'/>
