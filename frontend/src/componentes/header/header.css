@@ -1,12 +1,31 @@
-#contenedor_de_icono_facultad_header {
+#unlp_banner {
     width: 100%;
 }
 
-#contenedor_de_barra_de_navegacion_header {
-    height: 70px;
+/* #nav-header {
+    height: 70%;
     width: 100%;
-    background: red;
+    background: rgb(138, 7, 7);
+
+} */
+
+
+.nav-link{
+    color: rgba(255,255,255,.75) !important;
+    
+  }
+
+.nav-link:hover {
+    color: rgba(255,255,255,.99) !important;
 }
+
+.nav-link:active {
+    color: rgba(255,255,255,1) !important;
+}
+
+
+
+ 
 
 #icono_home {
     float: left;
@@ -17,20 +36,25 @@
     padding-right: 2%;
 }
 
-.boton {
+/* .boton {
     float: left;
     padding-top: 1.2%;
     padding-left: 2%;
     padding-right: 2%;
     color: white;
-}
+} */
 
-#contenedor_cerrar_sesion {
+/* #contenedor_cerrar_sesion {
     float: right;
-}
+} */
 
-#cerrar_sesion {
+/* #cerrar_sesion {
     position: absolute;
     top: 10.5%;
     right: 3%;
+} */
+
+#header{
+    width: 100%;
+    
 }
