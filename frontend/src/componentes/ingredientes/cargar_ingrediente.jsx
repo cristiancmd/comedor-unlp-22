@@ -7,7 +7,7 @@ import axios from "axios";
 
 const Cargar_ingrediente = () => {
   const [ingredient, setIngredient] = React.useState({
-    pk: "",
+    id: "",
     name: "",
     measure: "",
   });

@@ -1,5 +1,5 @@
-
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from django.http.response import Http404
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
 from django.db.models.functions import Lower
-from django.http import Http404
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -33,16 +32,35 @@ class UserViewSet(viewsets.ModelViewSet):
         user = request.user
         if user:
             user.auth_token.delete()
-            return Response({'Token eliminado con exito'},status=status.HTTP_200_OK)
-        
-        return Response({'Token inexistente'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'Token eliminado con exito'}, status=status.HTTP_200_OK)
+
+        return Response({'Token inexistente'}, status=status.HTTP_404_NOT_FOUND)
 
 
+#############
 class ComponentDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ComponentDetailSerializer
     queryset = Component.objects.all()
-    
 
+    def get_object(self, pk):
+        try:
+            return Component.objects.get(pk=pk)
+        except Component.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        component = self.get_object(pk)
+        serializer = ComponentDetailSerializer(component)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        component = self.get_object(pk)
+        serializer = ComponentCreateSerializer(component, data=request.data)
+        if serializer.is_valid():
+            saved_obj = serializer.save()
+            response_data = ComponentDetailSerializer(saved_obj).data
+            return Response(response_data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Components(APIView):
@@ -59,7 +77,7 @@ class Components(APIView):
             saved_obj = serializer.save()
             response_data = ComponentSerializer(saved_obj).data
             return Response(response_data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Ingredients(APIView):
@@ -98,13 +116,16 @@ class Ingredients(APIView):
         ingredient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class IngredientViewSet(viewsets.ModelViewSet):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+    authentication_classes = (TokenAuthentication,)
+
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
-    
-    
 
 
 @api_view(["GET"])

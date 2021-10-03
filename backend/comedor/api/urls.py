@@ -14,6 +14,4 @@ urlpatterns = [
     path('api/ingredients/', Ingredients.as_view()),
     path('api/ingredients/<int:pk>', Ingredients.as_view()),
     path('api/components/<int:pk>/', ComponentDetailView.as_view())
-
-
 ]

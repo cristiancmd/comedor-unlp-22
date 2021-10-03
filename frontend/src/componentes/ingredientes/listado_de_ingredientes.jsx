@@ -29,7 +29,7 @@ const Listado_de_ingredientes = () => {
   };
 
   const deleteElement = (row) => {
-    axios.delete(`${api_url}/ingredients/${row.pk}`).then(response=>{
+    axios.delete(`${api_url}/ingredients/${row.id}`).then(response=>{
       setModalDelete(false);
       getElements();
     }).catch(error=>{
@@ -64,13 +64,13 @@ const Listado_de_ingredientes = () => {
               <tbody>
                 {data.map(item => {
                   return (
-                    <tr key={item.pk}>
+                    <tr key={item.id}>
                       <td>{item.name}</td>
                       <td>{item.measure}</td>
                       <td className="actions">
                         <Link className="btn btn-success" to={
                           {
-                              pathname: "/ingredientes/editar/" + item.pk,
+                              pathname: "/ingredientes/editar/" + item.id,
                               ingredient: item
                           }
                         }>

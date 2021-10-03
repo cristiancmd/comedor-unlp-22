@@ -8,7 +8,7 @@ import {useParams} from "react-router-dom";
 
 const EditarIngrediente = (props) => {
   const [ingredient, setIngredient] = React.useState({
-    pk: "",
+    id: "",
     name: "",
     measure: ""
   });
@@ -34,7 +34,7 @@ const EditarIngrediente = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`${api_url}/ingredients/${ingredient.pk}`, ingredient).then(response=>{
+    await axios.put(`${api_url}/ingredients/${ingredient.id}`, ingredient).then(response=>{
       window.location.href = "http://localhost:3000/ingredientes";
     }).catch(error=>{
       console.log(error.message);
