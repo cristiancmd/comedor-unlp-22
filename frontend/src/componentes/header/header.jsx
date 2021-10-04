@@ -66,7 +66,7 @@ const Header = () => {
             </Link>
           </div>
           <div className="container-fluid float-end">
-            <Link className="btn btn-outline-light float-end ">
+            <Link to={"/login"} className="btn btn-outline-light float-end ">
               Cerrar sesión
             </Link>
           </div>

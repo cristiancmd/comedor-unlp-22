@@ -1,6 +1,7 @@
 #titulo_login {
     padding-top: 2%;
     padding-left: 5%;
+    
 }
 
 #contenedor {
@@ -8,7 +9,7 @@
     height: auto;
     margin-left: 36.5%;
     margin-right: 36.5%;
-    margin-top: 1%;
+    margin-top: 3%;
     padding-top: 3%;
     padding-left: 5% !important;
     padding-right: 5% !important;
@@ -41,12 +42,17 @@
 
 #boton_inicio_de_sesion  {
     width: 100%;
-    background-color: #3682d8;
+    background-color: #3669d8;
     color: white;
     border-radius: 6px;
     padding: 3%;
     margin-top: 8%;
     margin-bottom: 10%;
+}
+#boton_inicio_de_sesion:hover  {
+  
+    background-color: #3669d8b2;
+
 }
 
 #mensaje_de_error_login {
