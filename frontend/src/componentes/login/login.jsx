@@ -9,12 +9,30 @@ import { useHistory } from "react-router-dom";
 const Login = () => {
   let history = useHistory();
 
+  // const setToken = (token) => {
+    
+  //    localStorage.setItem("token",token);
+       //localStorage.setItem("user",user.user.username);
+
+  //    axios.interceptors.request.use(
+  //     (config) => {
+  //       config.headers.authorization = `Token ${token}`;
+  //       return config;
+  //     },
+  //     (error) => {
+  //       return Promise.reject(error);
+  //     }
+  //   );
+
+  // }
+ 
+
   const [datos, set_datos] = React.useState({
     username: "",
     password: "",
   });
 
-  const token = "b72fc9eeca99a5b29c55433406fa1a28c5b000b0";
+  //const token = "b72fc9eeca99a5b29c55433406fa1a28c5b000b0";
   const [state, setState] = React.useState(false);
   const [user, setUser] = React.useState([]);
 
@@ -35,14 +53,12 @@ const Login = () => {
         let res = response;
         setUser(res.data);
         if (res.status === 201) {
-          setState(false);
-          console.log(user);
-          localStorage.setItem("token",user.access_token);
-          //localStorage.setItem("user",user.user.username);
+          console.log(response.data);
+          //setToken(user.access_token);
           history.push("/home");
         } else {
           setState(true);
-          console.log(res);
+          console.log("error",res);
         }
       })
       .catch((error) => {
@@ -56,15 +72,7 @@ const Login = () => {
       });
   };
 
-  axios.interceptors.request.use(
-    (config) => {
-      config.headers.authorization = `Token ${localStorage.getItem("token")}`;
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+ 
 
   return (
     <>
