@@ -5,74 +5,82 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header_login from "../header_login/header_login";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Login = () => {
   let history = useHistory();
 
-  // const setToken = (token) => {
-    
-  //    localStorage.setItem("token",token);
-       //localStorage.setItem("user",user.user.username);
+  let token = null;
+  const setToken = (t) => {
+    token = `Token ${t}`;
+    console.log(token);
+  };
 
-  //    axios.interceptors.request.use(
-  //     (config) => {
-  //       config.headers.authorization = `Token ${token}`;
-  //       return config;
-  //     },
-  //     (error) => {
-  //       return Promise.reject(error);
-  //     }
-  //   );
+  const setAxios =  () => {
+     axios.interceptors.request.use(
+      (config) => {
+        config.headers.authorization = token;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  };
 
-  // }
- 
+  useEffect(() => {}, [token]);
 
-  const [datos, set_datos] = React.useState({
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem("user");
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser);
+      setUser(user);
+      setToken(user.access_token);
+      
+    }
+  }, []);
+
+  const [datos, set_datos] = useState({
     username: "",
     password: "",
   });
 
-  //const token = "b72fc9eeca99a5b29c55433406fa1a28c5b000b0";
-  const [state, setState] = React.useState(false);
+  const [error, setError] = React.useState(false);
   const [user, setUser] = React.useState([]);
-
-  
+  const api_url = "http://localhost:8000/api";
 
   const capturar_datos = async (d) => {
     d.persist();
     await set_datos({ ...datos, [d.target.name]: d.target.value });
   };
 
-  const api_url = "http://localhost:8000/api";
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    axios
-      .post(`${api_url}/users/login/`, datos)
-      .then((response) => {
-        let res = response;
-        setUser(res.data);
-        if (res.status === 201) {
-          console.log(response.data);
-          //setToken(user.access_token);
-          history.push("/home");
-        } else {
-          setState(true);
-          console.log("error",res);
-        }
-      })
-      .catch((error) => {
-        try {
-          console.log(error.response.data);
-        } catch (e) {
-          console.log("Error", e);
-        }
-
-        setState(true);
-      });
+  const login = async (credentials) => {
+    const { data } = await axios.post(`${api_url}/users/login/`, credentials);
+    console.log("la data es: ", data);
+    
+    return data;
   };
 
- 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setError(false);
+    try {
+      const user = await login(datos);
+      setUser(user);
+      window.localStorage.setItem("user", JSON.stringify(user));
+      setToken(user.access_token);
+      setAxios();
+      history.push("/menus");
+    } catch (err) {
+      if (error.response) {
+        console.log("Error: ", err.response.data);
+      } else {
+        console.log("Sin conexion con API: ", err);
+      }
+      token = null;
+      setError(true);
+    }
+  };
 
   return (
     <>
@@ -126,7 +134,7 @@ const Login = () => {
           </button>
         </form>
 
-        {state === true && (
+        {error === true && (
           <div
             id="mensaje_de_error_login"
             className="alert alert-danger"
