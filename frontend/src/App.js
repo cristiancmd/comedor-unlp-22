@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import axios from "axios";
 
 // Componentes
 import header from './componentes/header/header';
@@ -13,10 +14,14 @@ import CargarIngrediente from './componentes/ingredientes/cargar_ingrediente';
 import EditarIngrediente from "./componentes/ingredientes/editar_ingrediente";
 import listado_de_componentes from './componentes/listado_de_componentes/listado_de_componentes';
 import cargar_componente from './componentes/cargar_componente/cargar_componente';
-
 function App() {
   return (
+    
+    
+   
+    
     <Router>
+      
       <Route exact path='/header' component={header}/> 
       <Route exact path='/header_login' component={header_login}/> 
       <Route exact path='/login' component={login}/> 
@@ -30,7 +35,13 @@ function App() {
       <Route exact path='/detalle/:id'/>
       <Route exact path='/habilitar/:id' component={habilitar_menu}/> 
       <Route exact path='/listados'/> 
+      <Route exact path='/' component={listado_de_menus}/> 
+
+     
     </Router>
+
+       
+    
   );
 }
 
