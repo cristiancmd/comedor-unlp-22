@@ -18,6 +18,14 @@ USER_TYPE = [
     ("ES", "Estudiante")
 ]
 
+COMPONENT_TYPE = [
+    (0, "OTRO"),
+    (1, "ENTRADA"),
+    (2, "PRINCIPAL"),
+    (3, "BEBIDA"),
+    (4, "POSTRE"),
+
+]
 
 INSTITUTIONS = [
     ("FAU", "Facultad de Arquitectura y Urbanismo"),
@@ -75,6 +83,8 @@ class Component(models.Model):
     ingredients = models.ManyToManyField(Ingredient, verbose_name="Ingredientes",
                                           through="IngredientsWithMeasure")
     
+    type = models.IntegerField(choices=COMPONENT_TYPE, default=0)
+
     class Meta:
         verbose_name = _("Componente/Plato")
         verbose_name_plural = _("Componentes/Platos")

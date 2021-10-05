@@ -55,31 +55,31 @@ const Listado_de_menus = () => {
         <br/><br/>
         <h2>Menús</h2>
         <br/>
-        <table className="table">
+        <table className="table align-middle">
           <thead>
-            <tr id="lista_de_titulos_de_columnas">
-              <th className="titulo_de_columna">Nombre</th>
-              <th className="titulo_de_columna">Vegetariano</th>
-              <th className="titulo_de_columna">Celíaco</th>
-              <th className="titulo_de_columna">Acciones</th>
+            <tr  >
+              <th className="col-3">Nombre</th>
+              <th className="col-1">Vegetariano</th>
+              <th className="col-1">Celíaco</th>
+              <th className="col-4">Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {data.map(menu => {
               return (
-                <tr>
-                  <td>{menu.name}</td>
+                <tr >
+                  <td className="col-3">{menu.name}</td>
                   {
                     menu.vegetarian?
-                    <td><span className="tilde_vegetariano">&#10003;</span></td>:
-                    <td><span className="tilde_vegetariano">&#x2715;</span></td>
+                    <th className="col-1" ><span className="tilde_vegetariano">&#10003;</span></th>:
+                    <th className="col-1"><span className="tilde_vegetariano">&#x2715;</span></th>
                   }
                   {
                     menu.celiac?
-                    <td><span className="tilde_celiaco">&#10003;</span></td>:
-                    <td><span className="tilde_celiaco">&#x2715;</span></td>
+                    <th className="col-1"><span className="tilde_celiaco">&#10003;</span></th>:
+                    <th className="col-1"><span className="tilde_celiaco">&#x2715;</span></th>
                   }
-                  <td>
+                  <td className="col-4">
                     <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
                     {"   "}
                     {

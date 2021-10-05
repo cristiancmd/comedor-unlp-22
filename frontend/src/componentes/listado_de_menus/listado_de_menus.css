@@ -1,21 +1,29 @@
-#contenedor_listado_de_menus {
+ #contenedor_listado_de_menus {
     margin-left: 7.5%;
     margin-right: 7.5%;
     margin-bottom: 2%;
 }
 
-.titulo_de_columna {
+/* .titulo_de_columna {
     width: 25%;
 }
 
 #lista_de_titulos_de_columnas {
     background: lightgray;
-}
+} */
 
-.tilde_vegetariano {
+/* .tilde_vegetariano {
     margin-left: 9.75%;
 }
 
 .tilde_celiaco {
     margin-left: 5.5%;
-}
+}  */
+
+.table td {
+    text-align: center;   
+ }
+
+ .table tr {
+    text-align: center;   
+ }

@@ -2,7 +2,7 @@ from django.http.response import Http404
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
-from .models import Ingredient, Component, IngredientsWithMeasure, Menu
+from .models import COMPONENT_TYPE, Ingredient, Component, IngredientsWithMeasure, Menu
 from django.shortcuts import render
 from rest_framework import exceptions, viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -187,3 +187,14 @@ def measure_list(request):
                      })
 
     return Response(data)
+
+
+@api_view(["GET"])
+def component_type_list(request):
+    data = []
+    for value, label in COMPONENT_TYPE:
+        data.append({'value': value,
+                     'label': label
+                     })
+
+    return Response(data)    
