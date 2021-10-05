@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
+import "bootstrap/dist/css/bootstrap.min.css";
 // Componentes
 import header from './componentes/header/header';
 import header_login from './componentes/header_login/header_login';

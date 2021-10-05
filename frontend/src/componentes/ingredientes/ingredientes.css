@@ -2,6 +2,28 @@
     background: lightgray;
 }
 
+#ingredients-container td, #ingredients-container th{
+    width: 33.3333%;
+}
+
+#ingredients-container .input-group{
+    border: 1px solid #ced4da;
+    padding: 0 .75em;
+    border-radius: .25rem;
+}
+
+#ingredients-container .input-group-append{
+    padding: .375em .2em;
+}
+
+#ingredients-container .input-group .form-control{
+    border: none;
+}
+
+#ingredients-container .input-group .form-control:focus{
+    box-shadow: none;
+}
+
 #new-ingredient .form-group{
     margin-top: 1rem;
     margin-bottom: 2rem;
@@ -10,3 +32,8 @@
 .actions .btn {
     margin-right: 1rem;
 }
+
+.mr-05{
+    margin-right: .5rem !important;
+}
+

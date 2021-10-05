@@ -7,8 +7,8 @@ import axios from "axios";
 const IngredientForm = (props) => {
 
   const api_url = "http://localhost:8000/api";
-
   const [data, setData] = React.useState([]);
+
   React.useEffect(() => {
     get()
   }, [])
@@ -26,24 +26,34 @@ const IngredientForm = (props) => {
     await props.setIngredient({...props.ingredient, "name":d.target.value});
   }
 
-  const selectChange = e => {
-    props.setIngredient({...props.ingredient, "measure": e.value});
+  const selectChange = async e => {
+    await props.setIngredient({...props.ingredient, "measure": e.value});
   }
 
   const cancel = (e) => {
     e.preventDefault();
+    window.location.href = "/ingredientes";
   }
 
   return ( data.length !== 0 ? (
     <Form onSubmit={props.handleSubmit}>
       <div className="form-group">
-        <label htmlFor="name">Nombre</label>
-        <input required type="text" className="form-control" id="name" placeholder="Ingrese un nombre..."
-             onChange={nameChange} value={props.ingredient.name} />
+        <label htmlFor="name">Nombre *</label>
+        <input type="text" required
+               className="form-control"
+               id="name"
+               placeholder="Ingrese un nombre..."
+               onChange={nameChange}
+               value={props.ingredient.name}/>
       </div>
       <div className="form-group">
-        <label htmlFor="measure">Unidad de medida</label>
-        <Select required placeholder="Seleccionar una opción..." options={data} onChange={selectChange} defaultInputValue={props.ingredient.measure}/>
+        <label htmlFor="measure">Unidad de medida *</label>
+        <Select placeholder="Seleccionar una opción..."
+                options={data}
+                onChange={selectChange}
+                defaultInputValue={props.ingredient.measure}
+                showSearch="true"
+        />
       </div>
       <div className="row justify-content-center mt-5">
         <div className="col-3">

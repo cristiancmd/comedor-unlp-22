@@ -35,7 +35,7 @@ const EditarIngrediente = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.put(`${api_url}/ingredients/${ingredient.id}`, ingredient).then(response=>{
-      window.location.href = "http://localhost:3000/ingredientes";
+      window.location.href = "/ingredientes";
     }).catch(error=>{
       console.log(error.message);
     })

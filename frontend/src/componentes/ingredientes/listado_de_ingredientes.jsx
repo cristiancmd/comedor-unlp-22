@@ -1,18 +1,20 @@
-import './ingredientes.css'
-import React from 'react'
-import axios from "axios"
-import "bootstrap/dist/css/bootstrap.min.css"
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { Link } from 'react-router-dom'
-import Header from '../header/header'
+import './ingredientes.css';
+import React, {useState} from 'react';
+import axios from "axios";
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import Header from '../header/header';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSearch, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 
 const Listado_de_ingredientes = () => {
 
   const api_url = "http://localhost:8000/api";
   const react_url = "http://localhost:3000";
 
-  const [data, setData] = React.useState([]);
-  const [row, setRow] = React.useState([]);
+  const [data, setData] = useState([]);
+  const [row, setRow] =  useState([]);
+  const [filterText, setFilterText] = useState("");
 
   const [modalDelete, setModalDelete] = React.useState(false)
 
@@ -37,13 +39,64 @@ const Listado_de_ingredientes = () => {
     })
   }
 
+  const updateFilter = event => {
+    setFilterText(event.target.value);
+  };
+
+  const filterResult = data.filter(item => item.name.toLowerCase().includes(filterText.toLowerCase().trim()));
+
+  const DataList = () => {
+    return(
+      <tbody>
+        {filterResult.map(item => {
+          return (
+            <tr key={item.id}>
+              <td>{item.name}</td>
+              <td>{item.measure}</td>
+              <td className="actions">
+                <Link className="btn btn-success" to={
+                  {
+                      pathname: "/ingredientes/editar/" + item.id,
+                      ingredient: item
+                  }
+                }>
+                  Editar
+                </Link>
+                <button className="btn btn-danger" onClick={()=>{ setRow(item); setModalDelete(true); }}>Eliminar</button>
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
+    );
+  };
+
   return (
     <>
       {Header()}
       <div id="ingredients-container" className="App">
         <div className="row mt-5">
           <div className="col-10 offset-1">
-            <a href={`${react_url}/ingredientes/nuevo`} className="btn btn-primary">Cargar ingrediente</a>
+              <div className="row justify-content-between">
+                <div className="col-4">
+                  <div className="input-group">
+                    <input type="text" className="form-control"
+                           placeholder="Buscar ingrediente..."
+                           aria-label="Buscar ingrediente..."
+                           aria-describedby="basic-addon2"
+                           value={filterText}
+                           name="text"
+                           onChange={updateFilter}/>
+                      <div className="input-group-append">
+                        <span id="basic-addon2"><FontAwesomeIcon icon={faSearch}/></span>
+                      </div>
+                  </div>
+                </div>
+                <div className="col-6 text-right d-flex justify-content-end">
+                  <a href={`${react_url}/ingredientes/nuevo`} className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
+                      Cargar ingrediente</a>
+                </div>
+              </div>
           </div>
         </div>
         <div className="row mt-3 justify-content-center">
@@ -51,8 +104,8 @@ const Listado_de_ingredientes = () => {
             <h2>Ingredientes</h2>
           </div>
         </div>
-        <div className="row col-10 offset-1 mt-3">
-          <div className="col">
+        <div className="row mt-3">
+          <div className="col-10 offset-1">
             <table className="table">
               <thead>
                 <tr>
@@ -61,27 +114,7 @@ const Listado_de_ingredientes = () => {
                   <th>Acciones</th>
                 </tr>
               </thead>
-              <tbody>
-                {data.map(item => {
-                  return (
-                    <tr key={item.id}>
-                      <td>{item.name}</td>
-                      <td>{item.measure}</td>
-                      <td className="actions">
-                        <Link className="btn btn-success" to={
-                          {
-                              pathname: "/ingredientes/editar/" + item.id,
-                              ingredient: item
-                          }
-                        }>
-                          Editar
-                        </Link>
-                        <button className="btn btn-danger" onClick={()=>{ setRow(item); setModalDelete(true); }}>Eliminar</button>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
+              <DataList></DataList>
             </table>
           </div>
         </div>
