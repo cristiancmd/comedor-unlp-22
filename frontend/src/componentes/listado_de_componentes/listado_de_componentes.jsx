@@ -97,7 +97,9 @@ const Listado_de_componentes = () => {
                   <td>{componente.ingredients.map(ingrediente => {
                     return (
                       
-                      <h7>{ingrediente.ingredient.name } {",  " }</h7>
+                      <label >
+                        {ingrediente.ingredient.name } {" , " }
+                      </label>
                     )
                   })}</td>
                   <td>

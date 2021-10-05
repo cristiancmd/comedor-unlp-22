@@ -1,3 +1,4 @@
+from rest_framework.fields import IntegerField
 from rest_framework.utils import model_meta
 from .models import CustomUser, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
@@ -85,7 +86,7 @@ class ComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Component
-        fields = ('id', 'name', 'ingredients')
+        fields = ('id', 'name','type', 'ingredients')
 
     def get_ingredients(self, component_instance):
         query_datas = IngredientsWithMeasure.objects.filter(
@@ -96,10 +97,11 @@ class ComponentSerializer(serializers.ModelSerializer):
 # Solo create/update
 class ComponentCreateSerializer(serializers.ModelSerializer):
     ingredients = IngredientsWithMeasureSerializer(many=True)
+    type = IntegerField(required=True)
 
     class Meta:
         model = Component
-        fields = ('id', 'name', 'ingredients')
+        fields = ('id', 'name','type' ,'ingredients')
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingredients')
@@ -115,6 +117,8 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('ingredients')
         instance.name = validated_data.get('name', instance.name)
+        instance.type = validated_data.get('type', instance.type)
+
         instance.save()
 
         IngredientsWithMeasure.objects.filter(component=instance).delete()
@@ -134,7 +138,7 @@ class ComponentDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Component
-        fields = ('id', 'name', 'ingredients')
+        fields = ('id', 'name','type', 'ingredients')
         depth = 1
 
     def get_ingredients(self, component_instance):

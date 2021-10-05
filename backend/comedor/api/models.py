@@ -18,6 +18,14 @@ USER_TYPE = [
     ("ES", "Estudiante")
 ]
 
+COMPONENT_TYPE = [
+    (0, "OTRO"),
+    (1, "ENTRADA"),
+    (2, "PRINCIPAL"),
+    (3, "BEBIDA"),
+    (4, "POSTRE"),
+
+]
 
 INSTITUTIONS = [
     ("FAU", "Facultad de Arquitectura y Urbanismo"),
@@ -75,6 +83,8 @@ class Component(models.Model):
     ingredients = models.ManyToManyField(Ingredient, verbose_name="Ingredientes",
                                           through="IngredientsWithMeasure")
     
+    type = models.IntegerField(choices=COMPONENT_TYPE, default=0)
+
     class Meta:
         verbose_name = _("Componente/Plato")
         verbose_name_plural = _("Componentes/Platos")
@@ -118,10 +128,10 @@ class Menu(models.Model):
     vegetarian = models.BooleanField(_("Menú vegetariano"), default=False, null=True, blank=True)
     image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='image_menus')
     enabled = models.BooleanField(_("Habilitado"), default=True)
-    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus")
-    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus")
-    servings = models.IntegerField(_("Porciones"))
-    price = models.FloatField(_("Precio"))
+    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus", blank=True)
+    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus", blank=True)
+    servings = models.IntegerField(_("Porciones"), null=True, blank=True)
+    price = models.FloatField(_("Precio"), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Menu")

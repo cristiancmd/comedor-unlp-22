@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 // Componentes
 import header from './componentes/header/header';
 import header_login from './componentes/header_login/header_login';
@@ -30,6 +31,7 @@ function App() {
       <Route exact path='/detalle/:id'/>
       <Route exact path='/habilitar/:id' component={habilitar_menu}/> 
       <Route exact path='/listados'/> 
+      <Route exact path='/' component={listado_de_menus}/>
     </Router>
   );
 }
