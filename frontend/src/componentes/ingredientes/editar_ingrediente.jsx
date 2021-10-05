@@ -4,7 +4,7 @@ import Header from '../header/header';
 import IngredientForm from "./form";
 import axios from "axios";
 import {useParams} from "react-router-dom";
-
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const EditarIngrediente = (props) => {
   const [ingredient, setIngredient] = React.useState({
@@ -43,6 +43,13 @@ const EditarIngrediente = (props) => {
   return ( <>
       {Header()}
       <main id="new-ingredient">
+        <div>
+          <Breadcrumb tag="nav" listTag="div">
+            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/ingredientes">Ingredientes</BreadcrumbItem>
+            <BreadcrumbItem active tag="span">Editar ingrediente</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
         <div className="row justify-content-center mt-3">
           <div className="col">
             <h2 className="text-center">Editar ingrediente</h2>

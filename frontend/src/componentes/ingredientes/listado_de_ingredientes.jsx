@@ -6,12 +6,10 @@ import { Link } from 'react-router-dom';
 import Header from '../header/header';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const Listado_de_ingredientes = () => {
-
   const api_url = "http://localhost:8000/api";
-  const react_url = "http://localhost:3000";
-
   const [data, setData] = useState([]);
   const [row, setRow] =  useState([]);
   const [filterText, setFilterText] = useState("");
@@ -74,7 +72,13 @@ const Listado_de_ingredientes = () => {
   return (
     <>
       {Header()}
-      <div id="ingredients-container" className="App">
+      <main id="ingredients-container">
+        <div>
+          <Breadcrumb tag="nav" listTag="div">
+            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem active tag="span">Ingredientes</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
         <div className="row mt-5">
           <div className="col-10 offset-1">
               <div className="row justify-content-between">
@@ -93,7 +97,7 @@ const Listado_de_ingredientes = () => {
                   </div>
                 </div>
                 <div className="col-6 text-right d-flex justify-content-end">
-                  <a href={`${react_url}/ingredientes/nuevo`} className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
+                  <a href="/ingredientes/nuevo" className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
                       Cargar ingrediente</a>
                 </div>
               </div>
@@ -128,7 +132,7 @@ const Listado_de_ingredientes = () => {
           </ModalFooter>
         </Modal>
 
-      </div>
+      </main>
     </>
   )
 
