@@ -170,6 +170,12 @@ class IngredientViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
 
 
+class EnabledDateViewSet(viewsets.ModelViewSet):
+    queryset = EnabledDate.objects.all()
+    serializer_class = EnabledDateSerializer
+    authentication_classes = (TokenAuthentication,)
+
+
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer

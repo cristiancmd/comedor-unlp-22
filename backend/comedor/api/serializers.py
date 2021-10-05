@@ -1,6 +1,7 @@
+from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
 from rest_framework.utils import model_meta
-from .models import CustomUser, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
+from .models import CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
@@ -147,12 +148,22 @@ class ComponentDetailSerializer(serializers.ModelSerializer):
         return [IngredientComponentSerializer(ingredient).data for ingredient in query_datas]
 
 
+class EnabledDateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = EnabledDate
+        fields = '__all__'
+
+
 class MenuSerializer(serializers.ModelSerializer):
 
     starter = ComponentSerializer(many=True, read_only=True)
     principal = ComponentSerializer(many=True, read_only=True)
     dessert = ComponentSerializer(many=True, read_only=True)
-    drink = ComponentSerializer(many=True, read_only=True)
+    drink = ComponentSerializer(many=True, read_only=True) 
+    enabled_dates = serializers.PrimaryKeyRelatedField(many=True,required=False,
+                                                    read_only=False, queryset=EnabledDate.objects.all())
+     
 
     starter_id = serializers.PrimaryKeyRelatedField(many=True,
                                                     read_only=False, queryset=Component.objects.all(), source='starter')
