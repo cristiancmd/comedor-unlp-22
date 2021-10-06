@@ -4,6 +4,8 @@ import Header from '../header/header';
 import IngredientForm from "./form";
 import axios from "axios";
 import ModalSuccess from "../Modals/ModalSuccess";
+import ServerError from "../Modals/ServerError";
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const Cargar_ingrediente = () => {
   const [ingredient, setIngredient] = useState({
@@ -12,40 +14,50 @@ const Cargar_ingrediente = () => {
     measure: "",
   });
 
-  const [success, setSuccess] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Ha ocurrido un error en la carga de los datos");
+  const [saving, setSaving] = useState(false);
 
   const api_url = "http://localhost:8000/api";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    e.target.reset();
-    await axios.post(`${api_url}/ingredients/`, ingredient).then(response=>{
-      // setSuccess(true);
-      window.location.href = "/ingredientes";
+  const handleSubmit = async (data, e) => {
+    await axios.post(`${api_url}/ingredients/`, data).then(response=>{
+      setSaved(true);
+      setError(false);
+      setSaving(false);
     }).catch(error=>{
       console.log(error.message);
+      setError(true);
     })
   }
 
-  const another = () => {
-
-  }
+  const handleError = () => {
+    setError(false);
+  } 
 
   return ( <>
       {Header()}
       <main id="new-ingredient">
+        <div>
+          <Breadcrumb tag="nav" listTag="div">
+            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/ingredientes">Ingredientes</BreadcrumbItem>
+            <BreadcrumbItem active tag="span">Cargar ingrediente</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
         <div className="row justify-content-center mt-3">
           <div className="col">
             <h2 className="text-center">Cargar ingrediente</h2>
             <div className="row justify-content-center mt-3">
               <div className="col-6">
-                <IngredientForm ingredient={ingredient} setIngredient={setIngredient} handleSubmit={handleSubmit}/>
+                <IngredientForm setError={setError} setSaving={setSaving} ingredient={ingredient} setIngredient={setIngredient} handleSubmit={handleSubmit}/>
               </div>
             </div>
           </div>
         </div>
-        {success && <ModalSuccess another={another} showModal="true" url="/ingredientes" message="¡Su consulta fue enviada con éxito!" />}
-        {/*{error && <ServerError showError="true" handleError={handleError}/>}*/}
+        {saved && <ModalSuccess setSaved={setSaved} showModal={saved} url="/ingredientes" message="¡Su ingrediente fue creado con éxito!" continue="Cargar otro"/>}
+        {error && <ServerError setError={setError} showError="true" message={errorMessage} handleError={handleError}/>}
       </main>
     </>
   )
