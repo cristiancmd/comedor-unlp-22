@@ -47,10 +47,10 @@ const Header = () => {
       </div>
 
       <nav
-        class="navbar navbar-expand-lg navbar-dark  "
+        className="navbar navbar-expand-lg navbar-dark  "
         style={{ backgroundColor: "rgb(138, 7, 7)" }}
       >
-        <div class="container-fluid">
+        <div className="container-fluid">
           <Link to={"/home"}>
             <img src={icono_home} width="50px" alt="home" />
           </Link>

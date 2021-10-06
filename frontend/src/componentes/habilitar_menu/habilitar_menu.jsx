@@ -46,7 +46,7 @@ const Habilitar_menu = () => {
                         <input className="form-control" type="date" name="dias" id="dias" onChange={capturar_el_ingreso_de_fecha}/>
                         {fechas.map(fecha => {
                             return (
-                                <button type="button" class="btn btn-secondary" id="boton_con_una_fecha" onClick={()=>{borrar_fecha(fecha)}}>{fecha} <span aria-hidden="true">&times;</span></button>
+                                <button type="button" className="btn btn-secondary" id="boton_con_una_fecha" onClick={()=>{borrar_fecha(fecha)}}>{fecha} <span aria-hidden="true">&times;</span></button>
                             )
                         })}
                         <h4>Precio</h4>
