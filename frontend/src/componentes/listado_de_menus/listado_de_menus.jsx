@@ -51,7 +51,7 @@ const Listado_de_menus = () => {
       {Header()}
       <div id="contenedor_listado_de_menus" className="App">
         <br/><br/>
-        <Link to={"/cargar_menu"}><button className="btn btn-primary">Cargar menú</button></Link>
+        <Link to={"/menus/nuevo"}><button className="btn btn-primary">Cargar menú</button></Link>
         <br/><br/>
         <h2>Menús</h2>
         <br/>

@@ -5,7 +5,18 @@
 
 #input_nombre_cargar_componente {
     width: 20%;
-    margin-bottom: 2%;
+}
+
+#error_nombre_cargar_componente {
+    color: red;
+}
+
+#tipo_cargar_componente {
+    margin-top: 2%;
+}
+
+#contenedor_tipo_cargar_componente {
+    width: 20%;
 }
 
 #contenedor_ingredientes_cargar_componente {
