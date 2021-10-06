@@ -17,6 +17,10 @@ code {
     monospace;
 }
 
+main{
+  margin-bottom: 2%;
+}
+
 .error {
   color: var(--error-color);
   font-size: 0.8rem;
@@ -46,4 +50,12 @@ a.breadcrumb-item:hover{
 
 .modal-open{
   padding-right: 0 !important;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table tr {
+  text-align: center;
 }

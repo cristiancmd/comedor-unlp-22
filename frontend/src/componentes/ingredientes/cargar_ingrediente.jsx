@@ -41,7 +41,7 @@ const Cargar_ingrediente = () => {
       <main id="new-ingredient">
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
             <BreadcrumbItem tag="a" href="/ingredientes">Ingredientes</BreadcrumbItem>
             <BreadcrumbItem active tag="span">Cargar ingrediente</BreadcrumbItem>
           </Breadcrumb>

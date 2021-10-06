@@ -75,7 +75,7 @@ const Listado_de_ingredientes = () => {
       <main id="ingredients-container">
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
             <BreadcrumbItem active tag="span">Ingredientes</BreadcrumbItem>
           </Breadcrumb>
         </div>
@@ -103,8 +103,8 @@ const Listado_de_ingredientes = () => {
               </div>
           </div>
         </div>
-        <div className="row mt-3 justify-content-center">
-          <div className="text-center">
+        <div className="row mt-5">
+          <div className="col-10 offset-1">
             <h2>Ingredientes</h2>
           </div>
         </div>

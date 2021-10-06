@@ -33,7 +33,7 @@ const Habilitar_menu = () => {
             <main>
                 <div>
                   <Breadcrumb tag="nav" listTag="div">
-                    <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
                     <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
                     <BreadcrumbItem active tag="span">Habilitar menú</BreadcrumbItem>
                   </Breadcrumb>
