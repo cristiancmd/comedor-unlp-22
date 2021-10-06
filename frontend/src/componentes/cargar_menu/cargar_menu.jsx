@@ -4,6 +4,7 @@ import React from 'react'
 import axios from "axios"
 import Select from 'react-select'
 import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const Cargar_menu = () => {
 
@@ -119,7 +120,15 @@ const Cargar_menu = () => {
     return (
         <>
             {Header()}
-            <div>
+            <main>
+                <div>
+                  <Breadcrumb tag="nav" listTag="div">
+                    <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
+                    <BreadcrumbItem active tag="span">Cargar menú</BreadcrumbItem>
+                  </Breadcrumb>
+                </div>
+                <h1 className="d-flex justify-content-center" id="titulo_cargar_componente">Cargar menú</h1>
                 <div className="d-flex justify-content-center">
                     <div id="contenedor_cargar_menu">
                         <br/>
@@ -142,7 +151,7 @@ const Cargar_menu = () => {
                         <Link to={"/menus"}><button className="btn btn-danger">Cancelar</button></Link>
                     </div>
                 </div>
-            </div>
+            </main>
         </>
     )
 }

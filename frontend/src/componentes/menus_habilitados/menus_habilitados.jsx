@@ -2,6 +2,7 @@ import './menus_habilitados.css'
 import React from 'react'
 import axios from "axios"
 import Header from '../header/header'
+import {Breadcrumb, BreadcrumbItem} from "reactstrap";
 
 const Menus_habilitados = () => {
 
@@ -81,6 +82,12 @@ const Menus_habilitados = () => {
     return (
         <>
             {Header()}
+            <main>
+                <div>
+                  <Breadcrumb tag="nav" listTag="div">
+                    <BreadcrumbItem active tag="span">Home</BreadcrumbItem>
+                  </Breadcrumb>
+                </div>
             <h1 id="titulo_menus_habilitados">Menús habilitados</h1>
             <h3 id="elegir_fecha_menus_habilitados">Elegir fecha</h3>
             <input className="form-control" type="date" name="fecha" id="fecha_menus_habilitados" defaultValue={fecha_actual()} onChange={capturar_el_ingreso_de_fecha}/>
@@ -116,6 +123,7 @@ const Menus_habilitados = () => {
                     </tbody>
                 </table>
             </div>
+        </main>
         </>
     )
 }

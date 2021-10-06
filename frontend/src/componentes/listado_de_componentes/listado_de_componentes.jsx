@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Header from '../header/header'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 const Listado_de_componentes = () => {
 
@@ -75,54 +76,61 @@ const Listado_de_componentes = () => {
   return (
     <>
       {Header()}
-      <div id="contenedor_listado_de_componentes" className="App">
-        <br/><br/>
-        <Link to={"/platos/nuevo"}><button className="btn btn-primary">Cargar plato</button></Link>
-        <br/><br/>
-        <h2>Platos</h2>
-        <br/>
-        <table className="table align-middle table-striped">
-          <thead>
-            <tr id="lista_de_titulos_de_columnas_de_componentes">
-              <th className="titulo_de_columna_de_componentes">Nombre</th>
-              <th className="titulo_de_columna_de_componentes">Ingredientes</th>
-              <th className="titulo_de_columna_de_componentes">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(componente => {
-              return (
-                <tr>
-                  <td>{componente.name}</td>
-                  <td>{componente.ingredients.map(ingrediente => {
-                    return (
-                      
-                      <label >
-                        {ingrediente.ingredient.name } {" , " }
-                      </label>
-                    )
-                  })}</td>
-                  <td>
-                    <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
-                    {"   "}
-                    <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      <main>
+        <div className="mb-5">
+          <Breadcrumb tag="nav" listTag="div">
+            <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+            <BreadcrumbItem active tag="span">Platos</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
+        <div id="contenedor_listado_de_componentes" className="App">
+          <Link to={"/platos/nuevo"}><button className="btn btn-primary">Cargar plato</button></Link>
+          <br/><br/>
+          <h2>Platos</h2>
+          <br/>
+          <table className="table align-middle table-striped">
+            <thead>
+              <tr id="lista_de_titulos_de_columnas_de_componentes">
+                <th className="titulo_de_columna_de_componentes">Nombre</th>
+                <th className="titulo_de_columna_de_componentes">Ingredientes</th>
+                <th className="titulo_de_columna_de_componentes">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map(componente => {
+                return (
+                  <tr>
+                    <td>{componente.name}</td>
+                    <td>{componente.ingredients.map(ingrediente => {
+                      return (
 
-        <Modal isOpen={modalEliminar}>
-          <ModalBody>
-            ¿Estás seguro que querés eliminar el plato: {nuevoComponente && nuevoComponente.name}?
-          </ModalBody>
-          <ModalFooter>
-            <button className="btn btn-success" onClick={()=>peticionDelete()}>Sí</button>
-            <button className="btn btn-danger" onClick={()=>setModalEliminar(false)}>No</button>
-          </ModalFooter>
-        </Modal>
-      </div>
+                        <label >
+                          {ingrediente.ingredient.name } {" , " }
+                        </label>
+                      )
+                    })}</td>
+                    <td>
+                      <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
+                      {"   "}
+                      <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+
+          <Modal isOpen={modalEliminar}>
+            <ModalBody>
+              ¿Estás seguro que querés eliminar el plato: {nuevoComponente && nuevoComponente.name}?
+            </ModalBody>
+            <ModalFooter>
+              <button className="btn btn-success" onClick={()=>peticionDelete()}>Sí</button>
+              <button className="btn btn-danger" onClick={()=>setModalEliminar(false)}>No</button>
+            </ModalFooter>
+          </Modal>
+        </div>
+      </main>
     </>
   )
 

@@ -1,15 +1,11 @@
 import './habilitar_menu.css'
 import React from 'react'
 import Header from '../header/header'
-
-
-
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 // ESTO ES SOLO PARA TENER UNA IMAGEN PARA PROBAR, DESPUÉS HAY 
 // QUE SACARLO Y USAR LA IMAGEN DEL MENÚ CORRESPONDIENTE.
 import imagen_del_menu from '../../imagenes/imagen_menu_de_prueba.png'
-
-
 
 
 const Habilitar_menu = () => {
@@ -34,7 +30,14 @@ const Habilitar_menu = () => {
     return (
         <>
             {Header()}
-            <div>
+            <main>
+                <div>
+                  <Breadcrumb tag="nav" listTag="div">
+                    <BreadcrumbItem tag="a" href="/home">Home</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
+                    <BreadcrumbItem active tag="span">Habilitar menú</BreadcrumbItem>
+                  </Breadcrumb>
+                </div>
                 <h1 id="titulo_habilitar_menu">Habilitar menú</h1>
                 <div>
                     <div id="contenedor_del_menu">
@@ -67,7 +70,7 @@ const Habilitar_menu = () => {
                         </select>
                     </aside>
                 </div>
-            </div>
+            </main>
         </>
     )
 
