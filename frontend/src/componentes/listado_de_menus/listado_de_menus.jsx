@@ -55,7 +55,7 @@ const Listado_de_menus = () => {
         <br/><br/>
         <h2>Menús</h2>
         <br/>
-        <table className="table align-middle">
+        <table className="table align-middle table-striped">
           <thead>
             <tr  >
               <th className="col-3">Nombre</th>

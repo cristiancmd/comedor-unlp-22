@@ -81,7 +81,7 @@ const Listado_de_componentes = () => {
         <br/><br/>
         <h2>Platos</h2>
         <br/>
-        <table className="table">
+        <table className="table align-middle table-striped">
           <thead>
             <tr id="lista_de_titulos_de_columnas_de_componentes">
               <th className="titulo_de_columna_de_componentes">Nombre</th>
