@@ -68,6 +68,7 @@ const IngredientForm = (props) => {
                name="name"
                placeholder="Ingrese un nombre..."
                className="form-control"
+               {...register("name", { required: true, maxLength: 30, pattern: /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1'\s-]+$/i })}
                onChange={nameChange}
                value={data.name}
           />
