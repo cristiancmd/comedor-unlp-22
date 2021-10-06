@@ -40,6 +40,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response({'Token inexistente'}, status=status.HTTP_404_NOT_FOUND)
 
+
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
@@ -84,7 +85,8 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         except: raise exceptions.PermissionDenied()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-        
+
+
 #############
 class ComponentDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ComponentDetailSerializer
@@ -163,6 +165,7 @@ class Ingredients(APIView):
         ingredient = self.get_object(pk)
         ingredient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()

@@ -43,3 +43,7 @@ a.breadcrumb-item{
 a.breadcrumb-item:hover{
   color: black;
 }
+
+.modal-open{
+  padding-right: 0 !important;
+}

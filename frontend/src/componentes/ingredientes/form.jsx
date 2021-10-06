@@ -9,18 +9,25 @@ const IngredientForm = (props) => {
   const [measures, setMeasures] = useState([]);
 
   const [data, setData] = useState({
-    id: '',
-    name: '',
-    measure: '',
+    id: props.ingredient.id,
+    name: props.ingredient.name,
+    measure: props.ingredient.measure,
   })
 
   const {register, formState: { errors },  handleSubmit} = useForm();
 
   useEffect(() => {
     get();
-    setData(props.ingredient);
   }, []);
 
+  useEffect(() => {
+    setData({...data,
+      id: props.ingredient.id,
+      name: props.ingredient.name,
+      measure: props.ingredient.measure
+    })
+  }, [props]);
+  
   const get = () => {
     axios.get(`${api_url}/measure`).then(response => {
       setMeasures(response.data);
@@ -30,10 +37,12 @@ const IngredientForm = (props) => {
   };
 
   const nameChange = async event => {
+    event.persist();
     await setData({...data, "name": event.target.value});
   }
 
   const selectChange = async event => {
+    event.persist();
     await setData({...data, "measure": event.target.value});
 
   }
@@ -58,13 +67,9 @@ const IngredientForm = (props) => {
                id="name"
                name="name"
                placeholder="Ingrese un nombre..."
-               onChange={(e) => nameChange(e)}
-               onKeyPress={nameChange}
-               defaultValue={props.ingredient.name}
-               className={`form-control ${
-                            errors?.name?.message ? "errorInput" : ""
-                          }`}
-                          {...register("name", { required: true, maxLength: 30, pattern: /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1'\s-]+$/i })}
+               className="form-control"
+               onChange={nameChange}
+               value={data.name}
           />
         <div className="error">
           {errors.name?.type === 'required' && "Este campo es requerido"}
@@ -76,14 +81,15 @@ const IngredientForm = (props) => {
         <label htmlFor="measure">Unidad de medida *</label>
         <select className="form-control"
                 name="measure"
-                onClick={selectChange}
-                defaultValue={props.ingredient.measure}
                 {...register( "measure", {required:  true})}
+                onChange={selectChange}
+                onLoad={selectChange}
+                value={data.measure}
         >
           <option value="">Seleccionar una opción...</option>
           {measures.map((item) => (
             <option key={item.value} value={item.value}>
-              { " " }{item.label}{ " " }
+              {item.label}
             </option>
           ))}
         </select>

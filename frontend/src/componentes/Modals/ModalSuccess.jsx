@@ -9,8 +9,8 @@ const ModalSuccess = (props) => {
   const {url, message} = props;
 
   const handleClose = () => {
-    props.another();
     setShow(false);
+    props.setSaved(false);
   }
 
   const handleBack = (e) => {
@@ -26,35 +26,33 @@ const ModalSuccess = (props) => {
   }, []);
 
   return (
-    <>
-      <Modal
-        isOpen={show}
-        onExit={handleClose}
-        fade={false}
-        autoFocus={true}
-      >
-        <ModalBody>
-          <div className="mt-4 row justify-content-center">
-            <div className="col text-center">
-              <FontAwesomeIcon icon={faCheckCircle} color={"#6BC04B"} size="lg"/>
-            </div>
+    <Modal
+      isOpen={show}
+      onExit={handleClose}
+      fade={false}
+      autoFocus={true}
+    >
+      <ModalBody>
+        <div className="mt-4 row justify-content-center">
+          <div className="col text-center">
+            <FontAwesomeIcon icon={faCheckCircle} color={"#6BC04B"} size="lg"/>
           </div>
-          <div className="row justify-content-center">
-            <div className="col text-center">
-              <p className="mt-4">{message}</p>
-            </div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="col text-center">
+            <p className="mt-4">{message}</p>
           </div>
-          <div className="mt-4 row justify-content-around">
-            <div className="col text-center">
-              <Button className="btn btn-secondary" onClick={handleBack}>Volver</Button>
-            </div>
-            <div className="col text-center">
-              <Button className="btn btn-primary" onClick={handleClose}>Cargar otro</Button>
-            </div>
+        </div>
+        <div className="mt-4 row justify-content-around">
+          <div className="col text-center">
+            <Button className="btn btn-secondary" onClick={handleBack}>Volver al listado</Button>
           </div>
-        </ModalBody>
-      </Modal>
-    </>
+          <div className="col text-center">
+            <Button className="btn btn-primary" onClick={handleClose}>{props.continue}</Button>
+          </div>
+        </div>
+      </ModalBody>
+    </Modal>
   );
 }
 
