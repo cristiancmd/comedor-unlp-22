@@ -15,24 +15,37 @@ const Listado_de_componentes = () => {
   const url_ingrediente = "http://localhost:8000/api/ingredients/";
 
   const [data, setData] = React.useState([])
+  const [types, setTypes] = React.useState([])
   const [ingrediente, setIngrediente] = React.useState([])
   const [nuevoComponente, setNuevoComponente] = React.useState({
     id:"",
     name:"",
   })
   const [modalEliminar, setModalEliminar] = React.useState(false)
-  const [filterText, setFilterText] = React.useState("");
+   const [filters, setFilters] = useState({
+    text: '',
+    type: ''
+  });
 
-  const updateFilter = event => {
-    setFilterText(event.target.value);
+  const updateFilter = e => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value
+    });
   };
+
   React.useEffect(() => {
     peticionGet()
   }, [])
 
   const peticionGet = () => {
-    axios.get(url).then(response => {
-      setData(response.data);
+    axios.get("http://localhost:8000/api/component_type/").then(response => {
+      setTypes(response.data);
+      axios.get(url).then(response => {
+        setData(response.data);
+        }).catch(error=>{
+          console.log(error.message);
+        })
     }).catch(error=>{
       console.log(error.message);
     })
@@ -79,6 +92,28 @@ const Listado_de_componentes = () => {
     return <h6>{ingrediente.name} {ing.amount} {unidadDeIngrediente(ingrediente,ing.amount)}</h6>
   }
 
+  const DataList = () => {
+    return (
+      <tbody>
+        {data
+          .filter(item => types[filters.type] ? item.type === types[filters.type].value : item)
+          .filter(item => item.name.toLowerCase().includes(filters.text.toLowerCase().trim()))
+          .map(componente => {
+          return (
+            <tr key={componente.id}>
+              <td>{componente.name}</td>
+              <td className="text-capitalize">{types[componente.type].label}</td>
+              <td>
+                <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
+                {"   "}
+                <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
+    )
+  }
   return (
     <>
       {Header()}
@@ -98,7 +133,7 @@ const Listado_de_componentes = () => {
                          placeholder="Buscar plato..."
                          aria-label="Buscar plato..."
                          aria-describedby="basic-addon2"
-                         value={filterText}
+                         value={filters.text}
                          name="text"
                          onChange={updateFilter}/>
                     <div className="input-group-append">
@@ -106,7 +141,24 @@ const Listado_de_componentes = () => {
                     </div>
                 </div>
               </div>
-              <div className="col-6 text-right d-flex justify-content-end">
+              <div className="col-4">
+                <div className="form-group d-flex justify-content-around align-items-center">
+                  <label htmlFor="type">Filtrar: </label>
+                  <select className="form-control w-75"
+                          name="type"
+                          value={filters.type}
+                          onChange={updateFilter}
+                  >
+                    <option value="">Seleccionar tipo...</option>
+                    {types.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="col-3 text-right d-flex justify-content-end">
                 <a href="/platos/nuevo" className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
                     Cargar plato</a>
               </div>
@@ -124,32 +176,12 @@ const Listado_de_componentes = () => {
             <thead>
               <tr id="lista_de_titulos_de_columnas_de_componentes">
                 <th className="titulo_de_columna_de_componentes">Nombre</th>
-                <th className="titulo_de_columna_de_componentes">Ingredientes</th>
+                <th className="titulo_de_columna_de_componentes">Tipo</th>
                 <th className="titulo_de_columna_de_componentes">Acciones</th>
               </tr>
             </thead>
-            <tbody>
-              {data.map(componente => {
-                return (
-                  <tr>
-                    <td>{componente.name}</td>
-                    <td>{componente.ingredients.map(ingrediente => {
-                      return (
+            <DataList></DataList>
 
-                        <label >
-                          {ingrediente.ingredient.name } {" , " }
-                        </label>
-                      )
-                    })}</td>
-                    <td>
-                      <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
-                      {"   "}
-                      <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
           </table>
           </div>
         </div>

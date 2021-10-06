@@ -53,6 +53,41 @@ const Listado_de_menus = () => {
     })
   }
 
+  const DataList = () => {
+    return (<tbody >
+      {data.
+      filter(menu => menu.name.toLowerCase().includes(filterText.toLowerCase().trim()))
+        .map(menu => {
+        return (
+          <tr key={menu.id}>
+            <td className="col-3">{menu.name}</td>
+            {
+              menu.vegetarian?
+              <th className="col-1" ><span className="tilde_vegetariano">&#10003;</span></th>:
+              <th className="col-1"><span className="tilde_vegetariano">&#x2715;</span></th>
+            }
+            {
+              menu.celiac?
+              <th className="col-1"><span className="tilde_celiaco">&#10003;</span></th>:
+              <th className="col-1"><span className="tilde_celiaco">&#x2715;</span></th>
+            }
+            <td className="col-4">
+              <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
+              {"   "}
+              {
+                menu.enabled?
+                <button className="btn btn-secondary" onClick={()=>{seleccionarMenu(menu); setModalDeshabilitar(true)}}>Desabilitar</button>:
+                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success">Habilitar</button></Link>
+              }
+              {"   "}
+              <button className="btn btn-danger" onClick={()=>{seleccionarMenu(menu); setModalEliminar(true)}}>Eliminar</button>
+            </td>
+          </tr>
+        )
+      })}
+    </tbody>
+    )
+  }
   return (
     <>
       {Header()}
@@ -103,36 +138,7 @@ const Listado_de_menus = () => {
                 <th className="col-4">Acciones</th>
               </tr>
             </thead>
-            <tbody >
-              {data.map(menu => {
-                return (
-                  <tr >
-                    <td className="col-3">{menu.name}</td>
-                    {
-                      menu.vegetarian?
-                      <th className="col-1" ><span className="tilde_vegetariano">&#10003;</span></th>:
-                      <th className="col-1"><span className="tilde_vegetariano">&#x2715;</span></th>
-                    }
-                    {
-                      menu.celiac?
-                      <th className="col-1"><span className="tilde_celiaco">&#10003;</span></th>:
-                      <th className="col-1"><span className="tilde_celiaco">&#x2715;</span></th>
-                    }
-                    <td className="col-4">
-                      <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
-                      {"   "}
-                      {
-                        menu.enabled?
-                        <button className="btn btn-secondary" onClick={()=>{seleccionarMenu(menu); setModalDeshabilitar(true)}}>Desabilitar</button>:
-                        <Link to={"/habilitar/"+menu.id}><button className="btn btn-success">Habilitar</button></Link>
-                      }
-                      {"   "}
-                      <button className="btn btn-danger" onClick={()=>{seleccionarMenu(menu); setModalEliminar(true)}}>Eliminar</button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
+            <DataList></DataList>
           </table>
           </div>
         </div>

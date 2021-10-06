@@ -80,14 +80,13 @@ class IngredientComponentSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-
     # SOLO lectura
 class ComponentSerializer(serializers.ModelSerializer):
     ingredients = serializers.SerializerMethodField()
 
     class Meta:
         model = Component
-        fields = ('id', 'name','type', 'ingredients')
+        fields = ('id', 'name', 'type', 'ingredients')
 
     def get_ingredients(self, component_instance):
         query_datas = IngredientsWithMeasure.objects.filter(
