@@ -148,40 +148,38 @@ const Cargar_menu = () => {
                 <div className="d-flex justify-content-center">
                     <div id="contenedor_cargar_menu">
                         
-                        <h4 className="d-flex justify-content-center mt-3">Nombre</h4>
-                        <div className="d-flex justify-content-center">
-                            <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un nombre" onChange={capturar_nombre}/>
-                        </div>
+                        <h4 className="mt-3">Nombre</h4>
+                        <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un nombre" onChange={capturar_nombre}/>
                         
 
                         <h4>Entrada</h4>
                         <Select className="select_cargar_menu" options={las_opciones_de_entrada} onChange={capturar_entrada}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nueva entrada
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
                         </button>
 
                         <div className="clearfix"></div>
 
                         <h4>Plato principal</h4>
                         <Select className="select_cargar_menu" options={las_opciones_de_plato_principal} onChange={capturar_plato_principal}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nuevo plato principal
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
                         </button>
 
                         <div className="clearfix"></div>
 
                         <h4>Postre</h4>
                         <Select className="select_cargar_menu" options={las_opciones_de_postre} onChange={capturar_postre}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nuevo postre
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
                         </button>
 
                         <div className="clearfix"></div>
 
                         <h4>Bebida</h4>
                         <Select className="select_cargar_menu" options={las_opciones_de_bebida} onChange={capturar_bebida}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nueva bebida
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
                         </button>
 
                         <div className="clearfix"></div>

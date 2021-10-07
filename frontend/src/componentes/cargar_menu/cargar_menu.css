@@ -3,7 +3,8 @@
 }
 
 #nombre_cargar_menu {
-    width: 60%;
+    width: 80%;
+    margin-bottom: 1%;
 }
 
 #modal_cargar_componente {
@@ -12,12 +13,12 @@
 
 .select_cargar_menu {
     float: left;
-    width: 60%;
+    width: 80%;
 }
 
 #nuevo_componente_cargar_menu {
     float: left;
-    width: 35%;
+    width: 15%;
     margin-left: 5%;
     margin-bottom: 1%;
 }
