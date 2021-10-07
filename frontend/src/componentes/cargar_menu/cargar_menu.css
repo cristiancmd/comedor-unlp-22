@@ -1,3 +1,23 @@
 #contenedor_cargar_menu {
     width: 40%;
 }
+
+#nombre_cargar_menu {
+    width: 60%;
+}
+
+#modal_cargar_componente {
+    max-width: 70%;
+}
+
+.select_cargar_menu {
+    float: left;
+    width: 60%;
+}
+
+#nuevo_componente_cargar_menu {
+    float: left;
+    width: 35%;
+    margin-left: 5%;
+    margin-bottom: 1%;
+}
