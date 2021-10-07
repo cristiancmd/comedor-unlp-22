@@ -25,7 +25,7 @@ const Menus_habilitados = () => {
     
     
     const peticionGet = () => {
-        axios.get(url).then(response => {
+        axios.get(url, { params: {date:fecha} }).then(response => {
             setData(response.data);
         }).catch(error=>{
             console.log(error.message);
@@ -56,7 +56,7 @@ const Menus_habilitados = () => {
                 </div>
             <h1 id="titulo_menus_habilitados">Menús habilitados</h1>    
             <h3 id="elegir_fecha_menus_habilitados">Elegir fecha</h3>
-            <div className="container" ><input type="date" name="fecha" 
+            <div className="d-flex justify-content-center " ><input type="date" name="fecha" 
             defaultValue={fecha_actual()} onChange={capturar_el_ingreso_de_fecha}/>
             </div>
             <div id="contenedor_menus_habilitados">
@@ -72,7 +72,9 @@ const Menus_habilitados = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(data => {
+                        
+                    {data.length===0 && <h6 >Ningun resultado para la fecha.</h6>   }
+                        {data.map(data => { 
                             return (
                                 <tr >
                                     <td >{data.menu.name}</td>
