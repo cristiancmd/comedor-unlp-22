@@ -15,6 +15,8 @@ import EditarIngrediente from "./componentes/ingredientes/editar_ingrediente";
 import listado_de_componentes from './componentes/listado_de_componentes/listado_de_componentes';
 import cargar_componente from './componentes/cargar_componente/cargar_componente';
 import cargar_menu from './componentes/cargar_menu/cargar_menu';
+import detalle_menu from './componentes/detalle_menu/detalle_menu';
+import detalle_componente from './componentes/detalle_componente/detalle_componente';
 
 function App() {
   return (
@@ -25,12 +27,13 @@ function App() {
       <Route exact path='/home' component={menus_habilitados}/> 
       <Route exact path='/menus' component={listado_de_menus}/> 
       <Route exact path='/menus/nuevo' component={cargar_menu}/> 
+      <Route exact path='/menus/detalle/:id' component={detalle_menu}/>
       <Route exact path='/platos' component={listado_de_componentes}/> 
       <Route exact path='/platos/nuevo' component={cargar_componente}/> 
+      <Route exact path='/platos/detalle/:id' component={detalle_componente}/>
       <Route exact path='/ingredientes' component={ingredients}/>
       <Route exact path='/ingredientes/nuevo' component={CargarIngrediente}/>
       <Route exact path='/ingredientes/editar/:id' component={EditarIngrediente}/>
-      <Route exact path='/detalle/:id'/>
       <Route exact path='/habilitar/:id' component={habilitar_menu}/> 
       <Route exact path='/listados'/> 
       <Route exact path='/' component={listado_de_menus}/>

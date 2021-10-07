@@ -72,7 +72,7 @@ const Listado_de_menus = () => {
               <th className="col-1"><span className="tilde_celiaco">&#x2715;</span></th>
             }
             <td className="col-4">
-              <Link to={"/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
+              <Link to={"/menus/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
               {"   "}
               {
                 menu.enabled?

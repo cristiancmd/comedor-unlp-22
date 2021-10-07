@@ -104,7 +104,7 @@ const Listado_de_componentes = () => {
               <td>{componente.name}</td>
               <td className="text-capitalize">{types[componente.type].label}</td>
               <td>
-                <Link to={"/detalle_componente/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
+                <Link to={"/platos/detalle/"+componente.id}><button className="btn btn-primary">Detalle</button></Link>
                 {"   "}
                 <button className="btn btn-danger" onClick={()=>{seleccionarComponente(componente); setModalEliminar(true)}}>Eliminar</button>
               </td>
