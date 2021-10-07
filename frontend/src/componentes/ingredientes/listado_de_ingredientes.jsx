@@ -108,7 +108,7 @@ const Listado_de_ingredientes = () => {
             <h2>Ingredientes</h2>
           </div>
         </div>
-        <div className="row mt-3">
+        <div className="row mt-5">
           <div className="col-10 offset-1">
             <table className="table align-middle table-striped">
               <thead>

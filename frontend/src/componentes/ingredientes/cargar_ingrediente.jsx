@@ -26,6 +26,7 @@ const Cargar_ingrediente = () => {
       setSaved(true);
       setError(false);
       setSaving(false);
+
     }).catch(error=>{
       console.log(error.message);
       setError(true);

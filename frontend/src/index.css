@@ -59,3 +59,8 @@ a.breadcrumb-item:hover{
 .table tr {
   text-align: center;
 }
+
+.form-group label{
+  font-weight: bold;
+  font-size: 1.1rem;
+}
