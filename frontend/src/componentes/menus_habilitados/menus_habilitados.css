@@ -10,6 +10,7 @@
     text-align: center;
     padding-left: 0px;
     padding-right: 0px;
+    margin-bottom: 2%;
 }
 
 #fecha_menus_habilitados {
@@ -23,6 +24,7 @@
     margin-left: 7.5%;
     margin-right: 7.5%;
     padding-bottom: 2%;
+    margin-top: 2%;
 }
 
 #lista_de_titulos_de_columnas_menus_habilitados {
