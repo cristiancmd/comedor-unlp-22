@@ -2,7 +2,7 @@ from django.http.response import Http404
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
-from .models import COMPONENT_TYPE, Ingredient, Component, IngredientsWithMeasure, Menu
+from .models import *
 from django.shortcuts import render
 from rest_framework import exceptions, viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -177,11 +177,30 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     authentication_classes = (TokenAuthentication,)
 
-
+#deprecado
 class EnabledDateViewSet(viewsets.ModelViewSet):
     queryset = EnabledDate.objects.all()
     serializer_class = EnabledDateSerializer
     authentication_classes = (TokenAuthentication,)
+
+    
+
+class MenuWithDateViewSet(viewsets.ModelViewSet):
+    queryset = MenuWithDate.objects.all()
+    serializer_class = MenuWithDateSerializer
+    authentication_classes = (TokenAuthentication,) 
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return MenuWithDateSerializer
+        return MenuWithDateDisplaySerializer   
+
+    def get_queryset(self):
+        queryset = MenuWithDate.objects.all()
+        date = self.request.query_params.get('date')
+        if date is not None:
+            queryset = queryset.filter(date=date)
+        return queryset   
 
 
 class MenuViewSet(viewsets.ModelViewSet):

@@ -126,18 +126,33 @@ class Menu(models.Model):
     celiac = models.BooleanField(_("Menú celíaco"), default=False, null=True, blank=True)
     vegetarian = models.BooleanField(_("Menú vegetariano"), default=False, null=True, blank=True)
     image = models.ImageField(_("Foto del menú"), blank=True, null=True, upload_to='image_menus')
-    enabled = models.BooleanField(_("Habilitado"), default=True)
-    campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus", blank=True)
-    enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus", blank=True)
-    servings = models.IntegerField(_("Porciones"), null=True, blank=True)
+    # enabled = models.BooleanField(_("Habilitado"), default=True)
+    # campus = models.ManyToManyField(Campus, verbose_name="Sede", related_name="campus_menus", blank=True)
+    # enabled_dates = models.ManyToManyField(EnabledDate, verbose_name="Fechas habilitadas", related_name="dates_menus", blank=True)
+    # servings = models.IntegerField(_("Porciones"), null=True, blank=True)
     price = models.FloatField(_("Precio"), null=True, blank=True)
-
+    # sorynotsorybitch-
+    
     class Meta:
         verbose_name = _("Menu")
         verbose_name_plural = _("Menus")
 
     def __str__(self):
         return self.name
+
+class MenuWithDate(models.Model):
+    date = models.DateField(_("Fecha"),null=True, blank=True)
+    menu = models.ForeignKey(Menu, related_name="menu_date_campus", on_delete=models.CASCADE,null=True, blank=True)
+    campus = models.ForeignKey(Campus, related_name="campus_date_menus", on_delete=models.CASCADE,null=True, blank=True)
+    servings = models.IntegerField(_("Porciones"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Menu con fecha habilitada")
+        verbose_name_plural = _("Menus con fechas habilitadas")
+        unique_together = ("date", "menu", "campus")
+
+    def __str__(self):
+        return f'{self.pk} - {self.date} - {self.campus}'
 
 
 class CustomUser(User):
