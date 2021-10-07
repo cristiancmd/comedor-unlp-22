@@ -28,11 +28,7 @@ const Cargar_componente = () => {
     type:"",
     ingredients:[],
   })
-  const [ingredient, setIngredient] = useState({
-    id: "",
-    name: "",
-    measure: "",
-  });
+  const [ingredient, setIngredient] = useState([]);
   const [ingredientes_a_mostrar, set_ingrediente_a_mostrar] = React.useState([])
   const [mostrar_ingrediente, set_mostrar_ingrediente] = React.useState(false)
   const [error_nombre, set_error_nombre] = React.useState(false)
@@ -96,6 +92,10 @@ const Cargar_componente = () => {
     await set_mostrar_ingrediente(false)
 
     await set_ingrediente_elegido([])
+
+    await setNewIngredient(false)
+
+    await setIngredient([])
   }
 
   const guardar_componente = async c => {
@@ -178,7 +178,7 @@ const Cargar_componente = () => {
   React.useEffect(() => {
     peticionGetTipos()
     opciones()
-  }, [newIngredient])
+  }, [ingrediente_elegido, ingredient, newIngredient])
 
   const opciones = () => {
     let devolver = []
@@ -211,21 +211,28 @@ const Cargar_componente = () => {
       setError(false);
       setSaving(false);
       setNewIngredient(false);
-      set_mostrar_ingrediente(true);
+      setIngredient({...ingredient, "label": response.data.name,
+        "id": response.data.id,
+        "measure": response.data.measure
+      });
       capturar_ingrediente({"value":response.data.id, "label":response.data.name})
-
+      opciones();
     }).catch(error=>{
       console.log(error.message);
     })
   }
 
   React.useEffect(() => {
-    let ingrediente = data.filter(item => item.id === ingrediente_elegido.id)
-    console.log('ingredeinte', ingrediente)
+    let ingrediente;
+    if (ingredient.id){
+      ingrediente = data.filter(item => item.id === ingredient.id)
+    }else{
+      ingrediente = data.filter(item => item.id === ingrediente_elegido.id)
+    }
     if (ingrediente.length > 0){
       setMeasure(ingrediente[0].measure)
     }
-  }, [ingrediente_elegido])
+  }, [ingrediente_elegido, ingredient, newIngredient])
 
   const formClose = () => {
     setNewIngredient(false);
@@ -269,7 +276,7 @@ const Cargar_componente = () => {
                     <div className="col-4">
                       <div className="form-group">
                         <label htmlFor="ingredientes">Ingredientes *</label>
-                        <Select name="ingredientes" options={opciones()} value={mostrar_ingrediente?ingrediente_elegido.label :""} onChange={capturar_ingrediente}/>
+                        <Select label={ ingrediente_elegido.label } name="ingredientes" options={opciones()} onChange={capturar_ingrediente}/>
                       </div>
                     </div>
                     <div className="col-3">
@@ -280,7 +287,7 @@ const Cargar_componente = () => {
                     </div>
                     <div className="col-2">
                        <div className="form-group">
-                        <input name="measure" disabled className="form-control text-center" type="text" value={(ingrediente_elegido) ? measure : ""}/>
+                        <input name="measure" disabled className="form-control text-center" type="text" value={measure}/>
                       </div>
                     </div>
                     <div className="col-3">
