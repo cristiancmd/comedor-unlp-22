@@ -1,7 +1,9 @@
+
+from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
 from rest_framework.utils import model_meta
-from .models import CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE
+from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
@@ -152,7 +154,22 @@ class EnabledDateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = EnabledDate
-        fields = '__all__'
+        fields = ('__all__')
+
+
+class MenuWithDateSerializer(serializers.ModelSerializer):
+    date = serializers.DateField(required=True)
+    menu = serializers.PrimaryKeyRelatedField(many=False,required=True,
+                                                     read_only=False, queryset=Menu.objects.all())
+    campus = serializers.PrimaryKeyRelatedField(many=False,required=True,
+                                                     read_only=False, queryset=Campus.objects.all())
+    servings = serializers.IntegerField(required=True)                                                                                                
+
+    class Meta:
+        model = MenuWithDate
+        fields = ('id','date','menu','campus','servings')       
+        
+   
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -161,8 +178,8 @@ class MenuSerializer(serializers.ModelSerializer):
     principal = ComponentSerializer(many=True, read_only=True)
     dessert = ComponentSerializer(many=True, read_only=True)
     drink = ComponentSerializer(many=True, read_only=True) 
-    enabled_dates = serializers.PrimaryKeyRelatedField(many=True,required=False,
-                                                    read_only=False, queryset=EnabledDate.objects.all())
+    # enabled_dates = serializers.PrimaryKeyRelatedField(many=True,required=False,
+    #                                                 read_only=False, queryset=EnabledDate.objects.all())
      
 
     starter_id = serializers.PrimaryKeyRelatedField(many=True,
@@ -176,5 +193,5 @@ class MenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ('id', 'name', 'price', 'starter','celiac','vegetarian', 'principal', 'dessert', 'drink', 'enabled',
-                  'campus', 'enabled_dates', 'servings', 'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
+        fields = ('id', 'name', 'price','celiac','vegetarian', 'starter', 'principal', 'dessert', 'drink', 
+                   'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
