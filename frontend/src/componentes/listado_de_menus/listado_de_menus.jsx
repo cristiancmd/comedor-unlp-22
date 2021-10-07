@@ -131,7 +131,7 @@ const Listado_de_menus = () => {
           <div className="col-10 offset-1">
           <table className="table align-middle table-striped">
             <thead>
-              <tr  >
+              <tr id="lista_de_titulos_de_columnas_de_componentes">
                 <th className="col-3">Nombre</th>
                 <th className="col-1">Vegetariano</th>
                 <th className="col-1">Celíaco</th>
