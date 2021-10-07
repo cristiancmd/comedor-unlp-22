@@ -10,7 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import IngredientForm from "../ingredientes/form";
 
-const Formulario = () => {
+const Formulario = ({ set_modal_componente }) => {
 
   const url = "http://localhost:8000/api/ingredients/";
   const url_componentes = "http://localhost:8000/api/components/";
@@ -156,6 +156,7 @@ const Formulario = () => {
                             console.log(error.message);
                           })
 
+                          set_modal_componente(false)
                         }
                       }
                     }
@@ -230,6 +231,11 @@ const Formulario = () => {
     setNewIngredient(false);
   }
 
+  const cerrar_modal = async c => {
+    c.preventDefault()
+    set_modal_componente(false)
+  }
+
   return (
     <>
             <div className="row">
@@ -255,13 +261,13 @@ const Formulario = () => {
                   <div className="row justify-content-between align-items-end">
                     <div className="col-4">
                       <div className="form-group">
-                        <label htmlFor="ingredientes">Ingredientes *</label>
+                        <label htmlFor="ingredientes">Ingredientes</label>
                         <Select name="ingredientes" options={opciones()} value={mostrar_ingrediente?ingrediente_elegido.label :""} onChange={capturar_ingrediente}/>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="form-group">
-                        <label htmlFor="amount">Cantidad *</label>
+                        <label htmlFor="amount">Cantidad</label>
                         <input name="amount" className="form-control" type="number" defaultValue="1" onChange={capturar_cantidad}/>
                       </div>
                     </div>
@@ -293,7 +299,7 @@ const Formulario = () => {
                   </div>
                   <div className="row justify-content-center mt-5">
                     <div className="col-3">
-                      <Link to={"/platos"}><button className="btn btn-secondary" id="cancelar_cargar_componente">Cancelar</button></Link>
+                      <button className="btn btn-secondary" id="cancelar_cargar_componente" onClick={cerrar_modal}>Cancelar</button>
                     </div>
                     <div className="col-3 d-flex justify-content-end">
                       <button type="submit" className="btn btn-primary" id="guardar_cargar_componente" onClick={guardar_componente}>Guardar</button>
