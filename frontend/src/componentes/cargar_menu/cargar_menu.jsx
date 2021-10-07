@@ -4,7 +4,10 @@ import React from 'react'
 import axios from "axios"
 import Select from 'react-select'
 import { Link } from 'react-router-dom'
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import Formulario from '../cargar_componente/formulario'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 
 const Cargar_menu = () => {
 
@@ -19,14 +22,27 @@ const Cargar_menu = () => {
     const [bebida_elegida, set_bebida_elegida] = React.useState([])
     const [checkbox_vegetariano, set_checkbox_vegetariano] = React.useState(false)
     const [checkbox_celiaco, set_checkbox_celiaco] = React.useState(false)
+    const [modal_componente, set_modal_componente] = React.useState(false)
+    const [las_opciones_de_entrada, set_las_opciones_de_entrada] = React.useState([])
+    const [las_opciones_de_plato_principal, set_las_opciones_de_plato_principal] = React.useState([])
+    const [las_opciones_de_postre, set_las_opciones_de_postre] = React.useState([])
+    const [las_opciones_de_bebida, set_las_opciones_de_bebida] = React.useState([])
 
     React.useEffect(() => {
         peticionGet()
     }, [])
 
+    React.useEffect(() => {
+        peticionGet()
+    }, [modal_componente])
+
     const peticionGet = () => {
         axios.get(url).then(response => {
             setData(response.data);
+            opciones_entrada(response.data)
+            opciones_plato_principal(response.data)
+            opciones_postre(response.data)
+            opciones_bebida(response.data)
         }).catch(error=>{
             console.log(error.message);
         })
@@ -37,40 +53,40 @@ const Cargar_menu = () => {
         set_nombre_elegido(n.target.value);
     }
 
-    const opciones_entrada = () => {
+    const opciones_entrada = (datos) => {
         let devolver = []
-        let entradas = data.filter(componente => componente.type === 1)
+        let entradas = datos.filter(componente => componente.type === 1)
         entradas.map(componente => {
             devolver.push({label:componente.name,value:componente.id})
         })
-        return devolver
+        set_las_opciones_de_entrada(devolver)
     }
 
-    const opciones_plato_principal = () => {
+    const opciones_plato_principal = (datos) => {
         let devolver = []
-        let platos_principales = data.filter(componente => componente.type === 2)
+        let platos_principales = datos.filter(componente => componente.type === 2)
         platos_principales.map(componente => {
             devolver.push({label:componente.name,value:componente.id})
         })
-        return devolver
+        set_las_opciones_de_plato_principal(devolver)
     }
 
-    const opciones_bebida = () => {
+    const opciones_bebida = (datos) => {
         let devolver = []
-        let bebidas = data.filter(componente => componente.type === 3)
+        let bebidas = datos.filter(componente => componente.type === 3)
         bebidas.map(componente => {
             devolver.push({label:componente.name,value:componente.id})
         })
-        return devolver
+        set_las_opciones_de_bebida(devolver)
     }
 
-    const opciones_postre = () => {
+    const opciones_postre = (datos) => {
         let devolver = []
-        let postres = data.filter(componente => componente.type === 4)
+        let postres = datos.filter(componente => componente.type === 4)
         postres.map(componente => {
             devolver.push({label:componente.name,value:componente.id})
         })
-        return devolver
+        set_las_opciones_de_postre(devolver)
     }
 
     const capturar_entrada = e => {
@@ -128,30 +144,79 @@ const Cargar_menu = () => {
                     <BreadcrumbItem active tag="span">Cargar menú</BreadcrumbItem>
                   </Breadcrumb>
                 </div>
-                <h1 className="d-flex justify-content-center" id="titulo_cargar_componente">Cargar menú</h1>
+                <h1 className="d-flex justify-content-center">Cargar menú</h1>
                 <div className="d-flex justify-content-center">
                     <div id="contenedor_cargar_menu">
-                        <br/>
-                        <h4>Nombre</h4>
-                        <input className="form-control" type="text" placeholder="Ingrese un nombre" onChange={capturar_nombre}/>
+                        
+                        <h4 className="d-flex justify-content-center mt-3">Nombre</h4>
+                        <div className="d-flex justify-content-center">
+                            <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un nombre" onChange={capturar_nombre}/>
+                        </div>
+                        
+
                         <h4>Entrada</h4>
-                        <Select options={opciones_entrada()} onChange={capturar_entrada}/>
-                        <h4>Plato principal</h4>
-                        <Select options={opciones_plato_principal()} onChange={capturar_plato_principal}/>
-                        <h4>Postre</h4>
-                        <Select options={opciones_postre()} onChange={capturar_postre}/>
-                        <h4>Bebida</h4>
-                        <Select options={opciones_bebida()} onChange={capturar_bebida}/>
-                        <h4>Apto para vegetarianos</h4>
-                        <input type="checkbox" checked={checkbox_vegetariano} onChange={capturar_vegetariano}/>
-                        <h4>Apto para celíacos</h4>
-                        <input type="checkbox" checked={checkbox_celiaco} onChange={capturar_celiaco}/>
+                        <Select className="select_cargar_menu" options={las_opciones_de_entrada} onChange={capturar_entrada}/>
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nueva entrada
+                        </button>
+
                         <div className="clearfix"></div>
-                        <button className="btn btn-success" onClick={guardar_menu}>Guardar</button>
-                        <Link to={"/menus"}><button className="btn btn-danger">Cancelar</button></Link>
+
+                        <h4>Plato principal</h4>
+                        <Select className="select_cargar_menu" options={las_opciones_de_plato_principal} onChange={capturar_plato_principal}/>
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nuevo plato principal
+                        </button>
+
+                        <div className="clearfix"></div>
+
+                        <h4>Postre</h4>
+                        <Select className="select_cargar_menu" options={las_opciones_de_postre} onChange={capturar_postre}/>
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nuevo postre
+                        </button>
+
+                        <div className="clearfix"></div>
+
+                        <h4>Bebida</h4>
+                        <Select className="select_cargar_menu" options={las_opciones_de_bebida} onChange={capturar_bebida}/>
+                        <button id="nuevo_componente_cargar_menu" className="btn btn-primary" onClick={()=>set_modal_componente(true)}>
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear nueva bebida
+                        </button>
+
+                        <div className="clearfix"></div>
+
+                        <div className="d-flex justify-content-around mt-3">
+                            <h4>Apto para vegetarianos</h4>
+                            <h4>Apto para celíacos</h4>
+                        </div>
+
+                        <div className="d-flex justify-content-around">
+                            <input type="checkbox" checked={checkbox_vegetariano} onChange={capturar_vegetariano}/>
+                            <input type="checkbox" checked={checkbox_celiaco} onChange={capturar_celiaco}/>
+                        </div>
+
+                        <div className="clearfix"></div>
+
+                        <div className="row justify-content-center mt-5">
+                            <div className="col-3">
+                                <Link to={"/menus"}><button className="btn btn-secondary">Cancelar</button></Link>
+                            </div>
+                            <div className="col-3 d-flex justify-content-end">
+                                <button className="btn btn-primary" onClick={guardar_menu}>Guardar</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
+
+            <Modal isOpen={modal_componente} id="modal_cargar_componente">
+                <ModalHeader className="d-flex justify-content-center">
+                    Crear un nuevo plato
+                </ModalHeader>
+                <Formulario set_modal_componente={set_modal_componente}/>
+                <ModalFooter></ModalFooter> {/* SIN EL FOOTER SE VE FEO */}
+            </Modal>
         </>
     )
 }

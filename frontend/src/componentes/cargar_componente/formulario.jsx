@@ -10,7 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import IngredientForm from "../ingredientes/form";
 
-const Cargar_componente = () => {
+const Formulario = ({ set_modal_componente }) => {
 
   const url = "http://localhost:8000/api/ingredients/";
   const url_componentes = "http://localhost:8000/api/components/";
@@ -28,7 +28,11 @@ const Cargar_componente = () => {
     type:"",
     ingredients:[],
   })
-  const [ingredient, setIngredient] = useState([]);
+  const [ingredient, setIngredient] = useState({
+    id: "",
+    name: "",
+    measure: "",
+  });
   const [ingredientes_a_mostrar, set_ingrediente_a_mostrar] = React.useState([])
   const [mostrar_ingrediente, set_mostrar_ingrediente] = React.useState(false)
   const [error_nombre, set_error_nombre] = React.useState(false)
@@ -92,10 +96,6 @@ const Cargar_componente = () => {
     await set_mostrar_ingrediente(false)
 
     await set_ingrediente_elegido([])
-
-    await setNewIngredient(false)
-
-    await setIngredient([])
   }
 
   const guardar_componente = async c => {
@@ -156,7 +156,7 @@ const Cargar_componente = () => {
                             console.log(error.message);
                           })
 
-                          window.location.href = "http://localhost:3000/platos";
+                          set_modal_componente(false)
                         }
                       }
                     }
@@ -178,7 +178,7 @@ const Cargar_componente = () => {
   React.useEffect(() => {
     peticionGetTipos()
     opciones()
-  }, [ingrediente_elegido, ingredient, newIngredient])
+  }, [newIngredient])
 
   const opciones = () => {
     let devolver = []
@@ -211,47 +211,33 @@ const Cargar_componente = () => {
       setError(false);
       setSaving(false);
       setNewIngredient(false);
-      setIngredient({...ingredient, "label": response.data.name,
-        "id": response.data.id,
-        "measure": response.data.measure
-      });
+      set_mostrar_ingrediente(true);
       capturar_ingrediente({"value":response.data.id, "label":response.data.name})
-      opciones();
+
     }).catch(error=>{
       console.log(error.message);
     })
   }
 
   React.useEffect(() => {
-    let ingrediente;
-    if (ingredient.id){
-      ingrediente = data.filter(item => item.id === ingredient.id)
-    }else{
-      ingrediente = data.filter(item => item.id === ingrediente_elegido.id)
-    }
+    let ingrediente = data.filter(item => item.id === ingrediente_elegido.id)
+    console.log('ingredeinte', ingrediente)
     if (ingrediente.length > 0){
       setMeasure(ingrediente[0].measure)
     }
-  }, [ingrediente_elegido, ingredient, newIngredient])
+  }, [ingrediente_elegido])
 
   const formClose = () => {
     setNewIngredient(false);
   }
 
+  const cerrar_modal = async c => {
+    c.preventDefault()
+    set_modal_componente(false)
+  }
+
   return (
     <>
-      {Header()}
-      <main>
-        <div>
-          <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
-            <BreadcrumbItem tag="a" href="/platos">Platos</BreadcrumbItem>
-            <BreadcrumbItem active tag="span">Cargar plato</BreadcrumbItem>
-          </Breadcrumb>
-        </div>
-        <div className="row my-5">
-          <div className="col-10 offset-1">
-            <h2 className="text-center mb-5">Cargar plato</h2>
             <div className="row">
               <div className="col-8 offset-2">
                 <Form className="text-left">
@@ -275,19 +261,19 @@ const Cargar_componente = () => {
                   <div className="row justify-content-between align-items-end">
                     <div className="col-4">
                       <div className="form-group">
-                        <label htmlFor="ingredientes">Ingredientes *</label>
-                        <Select label={ ingrediente_elegido.label } name="ingredientes" options={opciones()} onChange={capturar_ingrediente}/>
+                        <label htmlFor="ingredientes">Ingredientes</label>
+                        <Select name="ingredientes" options={opciones()} value={mostrar_ingrediente?ingrediente_elegido.label :""} onChange={capturar_ingrediente}/>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="form-group">
-                        <label htmlFor="amount">Cantidad *</label>
+                        <label htmlFor="amount">Cantidad</label>
                         <input name="amount" className="form-control" type="number" defaultValue="1" onChange={capturar_cantidad}/>
                       </div>
                     </div>
                     <div className="col-2">
                        <div className="form-group">
-                        <input name="measure" disabled className="form-control text-center" type="text" value={measure}/>
+                        <input name="measure" disabled className="form-control text-center" type="text" value={(ingrediente_elegido) ? measure : ""}/>
                       </div>
                     </div>
                     <div className="col-3">
@@ -313,7 +299,7 @@ const Cargar_componente = () => {
                   </div>
                   <div className="row justify-content-center mt-5">
                     <div className="col-3">
-                      <Link to={"/platos"}><button className="btn btn-secondary" id="cancelar_cargar_componente">Cancelar</button></Link>
+                      <button className="btn btn-secondary" id="cancelar_cargar_componente" onClick={cerrar_modal}>Cancelar</button>
                     </div>
                     <div className="col-3 d-flex justify-content-end">
                       <button type="submit" className="btn btn-primary" id="guardar_cargar_componente" onClick={guardar_componente}>Guardar</button>
@@ -322,9 +308,7 @@ const Cargar_componente = () => {
                 </Form>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
+
       <Modal isOpen={newIngredient}>
         <ModalHeader>
           Agregar un nuevo ingrediente
@@ -337,4 +321,4 @@ const Cargar_componente = () => {
   )
 }
 
-export default Cargar_componente
+export default Formulario
