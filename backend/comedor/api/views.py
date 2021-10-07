@@ -177,16 +177,23 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     authentication_classes = (TokenAuthentication,)
 
-#
+#deprecado
 class EnabledDateViewSet(viewsets.ModelViewSet):
     queryset = EnabledDate.objects.all()
     serializer_class = EnabledDateSerializer
     authentication_classes = (TokenAuthentication,)
 
+    
+
 class MenuWithDateViewSet(viewsets.ModelViewSet):
     queryset = MenuWithDate.objects.all()
     serializer_class = MenuWithDateSerializer
-    authentication_classes = (TokenAuthentication,)    
+    authentication_classes = (TokenAuthentication,) 
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return MenuWithDateSerializer
+        return MenuWithDateDisplaySerializer   
 
 
 class MenuViewSet(viewsets.ModelViewSet):

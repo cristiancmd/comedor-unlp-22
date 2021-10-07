@@ -155,9 +155,10 @@ class EnabledDateSerializer(serializers.ModelSerializer):
         model = EnabledDate
         fields = ('__all__')
 
-
-class MenuWithDateSerializer(serializers.ModelSerializer):
-    date = serializers.DateField(required=True)
+      
+        
+class MenuWithDateSerializer(serializers.Serializer):
+    date = serializers.ListField(write_only=True, child=serializers.DateField())
     menu = serializers.PrimaryKeyRelatedField(many=False,required=True,
                                                      read_only=False, queryset=Menu.objects.all())
     campus = serializers.PrimaryKeyRelatedField(many=False,required=True,
@@ -165,11 +166,23 @@ class MenuWithDateSerializer(serializers.ModelSerializer):
     servings = serializers.IntegerField(required=True)                                                                                                
 
     class Meta:
-        model = MenuWithDate
-        fields = ('id','date','menu','campus','servings')       
         
-   
+        fields = ('id','date','menu','campus','servings')   
 
+    def create(self, validated_data):
+        datas = validated_data.pop('date')
+
+        for data in datas:
+            validated_data['date'] = data
+            menudate = MenuWithDate.objects.create(**validated_data)
+            
+        return menudate      
+
+class MenuWithDateDisplaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuWithDate
+        fields = ('__all__')  
+        # depth = 1
 
 class MenuSerializer(serializers.ModelSerializer):
 
