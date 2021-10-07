@@ -19,12 +19,11 @@ USER_TYPE = [
 ]
 
 COMPONENT_TYPE = [
-    (0, "OTRO"),
-    (1, "ENTRADA"),
-    (2, "PRINCIPAL"),
-    (3, "BEBIDA"),
-    (4, "POSTRE"),
-
+    (0, "Otro"),
+    (1, "Entrada"),
+    (2, "Principal"),
+    (3, "Bebida"),
+    (4, "Postre"),
 ]
 
 INSTITUTIONS = [

@@ -1,11 +1,3 @@
-#titulo_cargar_componente {
-    margin-top: 3%;
-    margin-bottom: 3%;
-}
-
-#input_nombre_cargar_componente {
-    width: 20%;
-}
 
 #error_nombre_cargar_componente {
     color: red;
@@ -19,17 +11,6 @@
     width: 20%;
 }
 
-#contenedor_ingredientes_cargar_componente {
-    float: left;
-    width: 20%;
-    margin-right: 0.5%;
-}
-
-#contenedor_cantidad_cargar_componente {
-    float: left;
-    width: 5%;
-    margin-left: 0.5%;
-}
 
 #ingredientes_elegidos_en_cargar_componente {
     float: left;
@@ -54,3 +35,4 @@
 #cancelar_cargar_componente {
     margin-left: 0.5%;
 }
+

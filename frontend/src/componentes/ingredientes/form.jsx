@@ -56,7 +56,11 @@ const IngredientForm = (props) => {
 
   const cancel = (e) => {
     e.preventDefault();
-    window.location.href = "/ingredientes";
+    if (!props.formClose){
+      window.location.href = "/ingredientes";
+    }else{
+      props.formClose();
+    }
   }
 
   return ( measures.length !== 0 ? (
@@ -78,13 +82,12 @@ const IngredientForm = (props) => {
           {errors.name?.type === 'pattern' && "Este campo solo acepta caracteres alfanúmericos"}
         </div>
       </div>
-      <div className="form-group">
+      <div className="form-group mt-3">
         <label htmlFor="measure">Unidad de medida *</label>
         <select className="form-control"
                 name="measure"
                 {...register( "measure", {required:  true})}
                 onChange={selectChange}
-                onLoad={selectChange}
                 value={data.measure}
         >
           <option value="">Seleccionar una opción...</option>
@@ -103,7 +106,7 @@ const IngredientForm = (props) => {
           <input className="btn btn-secondary" type="button"
                  onClick={cancel}  value="Cancelar"/>
         </div>
-        <div className="col-3">
+        <div className="col-3 d-flex justify-content-end">
           <input className="btn btn-primary" type="submit" value="Guardar"/>
         </div>
       </div>

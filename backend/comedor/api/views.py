@@ -122,7 +122,7 @@ class Components(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def get(self, request):
-        components = Component.objects.all()
+        components = Component.objects.all().order_by(Lower("name"))
         serializer = ComponentSerializer(components, many=True)
         return Response(serializer.data)
 
@@ -190,11 +190,9 @@ class MenuWithDateViewSet(viewsets.ModelViewSet):
 
 
 class MenuViewSet(viewsets.ModelViewSet):
-    queryset = Menu.objects.all()
+    queryset = Menu.objects.all().order_by(Lower("name"))
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
-
-
 
 
 @api_view(["GET"])
