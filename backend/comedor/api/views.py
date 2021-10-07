@@ -208,6 +208,10 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
 
+class CampusViewSet(viewsets.ModelViewSet):
+    queryset = Campus.objects.all().order_by(Lower("name"))
+    serializer_class = CampusSerializer
+    authentication_classes = (TokenAuthentication,)
 
 @api_view(["GET"])
 def measure_list(request):

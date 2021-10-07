@@ -11,6 +11,12 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 
 
+class CampusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campus
+        fields = '__all__'
+        
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

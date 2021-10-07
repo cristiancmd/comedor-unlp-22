@@ -13,11 +13,10 @@
 }
 
 #fecha_menus_habilitados {
-    width: 10%;
-    margin-left: 45%;
-    margin-right: 45%;
-    margin-bottom: 1%;
-    text-align: center;
+    width: 30%;
+    
+    
+    
 }
 
 #contenedor_menus_habilitados {
@@ -30,9 +29,9 @@
     background: lightgray;
 }
 
-.titulo_de_columna_menus_habilitados {
+/* .titulo_de_columna_menus_habilitados {
     width: 25%;
-}
+} */
 
 .tilde_vegetariano_menus_habilitados {
     margin-left: 9.75%;
