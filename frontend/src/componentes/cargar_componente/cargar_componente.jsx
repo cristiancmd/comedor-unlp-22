@@ -288,8 +288,8 @@ const Cargar_componente = () => {
                     </div>
                   </div>
 
-                  <div className="d-flex justify-content-center">
-                    <div className="d-flex justify-content-center" id="ingredientes_elegidos_en_cargar_componente">
+                  <div className="text-center">
+                    <div id="ingredientes_elegidos_en_cargar_componente">
                       {ingredientes_a_mostrar.map(ingrediente => {
                         return (
                           <button type="button" className="btn btn-secondary" id="boton_de_un_ingrediente_de_cargar_componente" onClick={()=>{borrar_ingrediente(ingrediente)}}>
@@ -299,8 +299,10 @@ const Cargar_componente = () => {
                       })}
                     </div>
                   </div>
-                  <div className="d-flex">
-                    <button type="button" className="btn btn-primary" id="agregar_cargar_componente" onClick={ agregar_ingrediente }><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Agregar al plato</button>
+                  <div className="row w-100">
+                    <div className="col-12">
+                      <button type="button" className="btn btn-primary" id="agregar_cargar_componente" onClick={ agregar_ingrediente }><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Agregar al plato</button>
+                    </div>
                   </div>
                   <div className="row justify-content-center mt-5">
                     <div className="col-3">
