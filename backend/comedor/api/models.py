@@ -149,6 +149,7 @@ class MenuWithDate(models.Model):
     class Meta:
         verbose_name = _("Menu con fecha habilitada")
         verbose_name_plural = _("Menus con fechas habilitadas")
+        unique_together = ("date", "menu", "campus")
 
     def __str__(self):
         return f'{self.pk} - {self.date} - {self.campus}'

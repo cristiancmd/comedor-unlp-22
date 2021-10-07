@@ -195,6 +195,13 @@ class MenuWithDateViewSet(viewsets.ModelViewSet):
             return MenuWithDateSerializer
         return MenuWithDateDisplaySerializer   
 
+    def get_queryset(self):
+        queryset = MenuWithDate.objects.all()
+        date = self.request.query_params.get('date')
+        if date is not None:
+            queryset = queryset.filter(date=date)
+        return queryset   
+
 
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all().order_by(Lower("name"))

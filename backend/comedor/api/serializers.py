@@ -168,14 +168,14 @@ class MenuWithDateSerializer(serializers.Serializer):
     class Meta:
         
         fields = ('id','date','menu','campus','servings')   
-
+    
     def create(self, validated_data):
         datas = validated_data.pop('date')
-
         for data in datas:
             validated_data['date'] = data
-            menudate = MenuWithDate.objects.create(**validated_data)
-            
+            try:
+                menudate = MenuWithDate.objects.create(**validated_data)
+            except: raise serializers.ValidationError('Error: Fecha para menu y sede ya existente')
         return menudate      
 
 class MenuWithDateDisplaySerializer(serializers.ModelSerializer):
