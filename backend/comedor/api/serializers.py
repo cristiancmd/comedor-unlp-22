@@ -182,7 +182,7 @@ class MenuWithDateDisplaySerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuWithDate
         fields = ('__all__')  
-        # depth = 1
+        depth = 1
 
 class MenuSerializer(serializers.ModelSerializer):
 
