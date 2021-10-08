@@ -19,7 +19,7 @@ Borrar el archivo `bd.sqlite3`
  `python manage.py createsuperuser`
  
 **Cargar datos de prueba:**
-`python manage.py loaddata api/fixtures/init_data.json`
+`python manage.py loaddata api/fixtures/init_data.json` <--no funciona , agregar datos manualmente
 
 **Iniciar el servidor:**
  `python manage.py runserver`
