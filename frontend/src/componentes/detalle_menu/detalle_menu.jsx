@@ -14,6 +14,7 @@ const Detalle_menu = (props) => {
     const [plato_principal, set_plato_principal] = React.useState([])
     const [postre, set_postre] = React.useState([])
     const [bebida, set_bebida] = React.useState([])
+    const [precio, set_precio] = React.useState([])
     const [vegetariano, set_vegetariano] = React.useState([])
     const [celiaco, set_celiaco] = React.useState([])
 
@@ -28,6 +29,7 @@ const Detalle_menu = (props) => {
             set_plato_principal(response.data.principal[0].name)
             set_postre(response.data.dessert[0].name)
             set_bebida(response.data.drink[0].name)
+            set_precio(response.data.price)
             set_vegetariano(response.data.vegetarian)
             set_celiaco(response.data.celiac)
         }).catch(error=>{
@@ -70,6 +72,11 @@ const Detalle_menu = (props) => {
 
                         <h4>Bebida</h4>
                         <h4 className="form-control">{bebida}</h4>
+
+                        <div className="clearfix"></div>
+
+                        <h4 className="mt-3">Precio</h4>
+                        <h4 className="form-control">{precio}</h4>
 
                         <div className="clearfix"></div>
 

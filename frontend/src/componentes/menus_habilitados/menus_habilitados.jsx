@@ -32,8 +32,6 @@ const Menus_habilitados = () => {
         })
     }
 
-
-
     const capturar_el_ingreso_de_fecha = async f => {
         f.persist();
         await setFecha(f.target.value);
@@ -56,8 +54,9 @@ const Menus_habilitados = () => {
                 </div>
             <h1 id="titulo_menus_habilitados">Menús habilitados</h1>    
             <h3 id="elegir_fecha_menus_habilitados">Elegir fecha</h3>
-            <div className="d-flex justify-content-center " ><input type="date" name="fecha" 
-            defaultValue={fecha_actual()} onChange={capturar_el_ingreso_de_fecha}/>
+            <div className="d-flex justify-content-center">
+                <input type="date" name="fecha" className="form-control" id="elegir_fecha_calendario_menus_habilitados" 
+                defaultValue={fecha_actual()} onChange={capturar_el_ingreso_de_fecha}/>
             </div>
             <div id="contenedor_menus_habilitados">
                 <table className="table">
@@ -80,13 +79,13 @@ const Menus_habilitados = () => {
                                     <td >{data.menu.name}</td>
                                     {
                                         data.menu.vegetarian?
-                                        <td><span className="tilde_vegetariano_menus_habilitados">&#10003;</span></td>:
-                                        <td><span className="tilde_vegetariano_menus_habilitados">&#x2715;</span></td>
+                                        <td><span>&#10003;</span></td>:
+                                        <td><span>&#x2715;</span></td>
                                     }
                                     {
                                         data.menu.celiac?
-                                        <td><span className="tilde_celiaco_menus_habilitados">&#10003;</span></td>:
-                                        <td><span className="tilde_celiaco_menus_habilitados">&#x2715;</span></td>
+                                        <td><span>&#10003;</span></td>:
+                                        <td><span>&#x2715;</span></td>
                                     }
                                     <td >{data.servings }</td>
                                     <td >{data.campus.name +' - '+ data.campus.address}</td>

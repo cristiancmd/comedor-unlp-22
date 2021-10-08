@@ -9,18 +9,33 @@ import axios from "axios"
 
 const Habilitar_menu = (props) => {
 
-    const INSTITUTIONS = [
-        {value:0, label:"Facultad de Arquitectura y Urbanismo"},
-        {value:1, label:"Facultad de Artes"},
-        {value:2, label:"Facultad de Ciencias Agrarias y Forestales"},
-        {value:3, label:"Facultad de Ciencias Astronómicas y Geofísicas"}
-    ]
-
     const url = "http://localhost:8000/api/enabledmenus/"
+    const url_sedes = "http://localhost:8000/api/campuses/"
 
     const [fechas, setFecha] = React.useState([])
     const [porciones, set_porciones] = React.useState([])
     const [sede, set_sede] = React.useState([])
+    const [sedes_cargadas, set_sedes_cargadas] = React.useState([])
+
+    React.useEffect(() => {
+        peticionGet()
+    }, [])
+    
+    const peticionGet = () => {
+        axios.get(url_sedes).then(response => {
+            set_sedes_cargadas(response.data);
+        }).catch(error=>{
+            console.log(error.message);
+        })
+    }
+
+    const opciones_sedes = () => {
+        let devolver = []
+        sedes_cargadas.map(una_sede => {
+            devolver.push({label:una_sede.name,value:una_sede.id})
+        })
+        return devolver
+    }
 
     const capturar_el_ingreso_de_fecha = async f => {
         f.persist();
@@ -79,22 +94,26 @@ const Habilitar_menu = (props) => {
                     <div id="contenedor_de_los_input">
                         <h4>Días</h4>
                         <input className="form-control" type="date" name="dias" onChange={capturar_el_ingreso_de_fecha}/>
-                        {fechas.map(fecha => {
-                            return (
-                                <button type="button" className="btn btn-secondary" id="boton_con_una_fecha" onClick={()=>{borrar_fecha(fecha)}}>{fecha} <span aria-hidden="true">&times;</span></button>
-                            )
-                        })}
+
+                        <div>
+                            {fechas.map(fecha => {
+                                return (
+                                    <button type="button" className="btn btn-secondary" id="boton_fecha_habilitar_menu" onClick={()=>{borrar_fecha(fecha)}}>{fecha} <span aria-hidden="true">&times;</span></button>
+                                )
+                            })}
+                        </div>
+                        
                         <h4>Porciones</h4>
                         <input className="form-control" type="text" name="porciones" onChange={capturar_porciones}/>
                         <h4>Sede</h4>
-                        <Select options={INSTITUTIONS} onChange={capturar_sede}/>
+                        <Select options={opciones_sedes()} onChange={capturar_sede}/>
                     </div>
                 </div>
 
                 <div className="row justify-content-center mt-5">
                     <div className="d-flex justify-content-center">
-                        <Link to={"/menus"}><button className="btn btn-secondary">Cancelar</button></Link>
-                        <button className="btn btn-primary" onClick={guardar_menu}>Guardar</button>
+                        <Link to={"/menus"}><button className="btn btn-secondary" id="cancelar_habilitar_menu">Cancelar</button></Link>
+                        <button className="btn btn-primary" id="guardar_habilitar_menu" onClick={guardar_menu}>Guardar</button>
                     </div>
                 </div>
             </main>

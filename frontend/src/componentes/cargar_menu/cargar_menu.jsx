@@ -20,6 +20,7 @@ const Cargar_menu = () => {
     const [plato_principal_elegido, set_plato_principal_elegido] = React.useState([])
     const [postre_elegido, set_postre_elegido] = React.useState([])
     const [bebida_elegida, set_bebida_elegida] = React.useState([])
+    const [precio_elegido, set_precio_elegido] = React.useState([])
     const [checkbox_vegetariano, set_checkbox_vegetariano] = React.useState(false)
     const [checkbox_celiaco, set_checkbox_celiaco] = React.useState(false)
     const [modal_componente, set_modal_componente] = React.useState(false)
@@ -105,6 +106,11 @@ const Cargar_menu = () => {
         set_bebida_elegida(b.value);
     }
 
+    const capturar_precio = async p => {
+        p.persist();
+        set_precio_elegido(p.target.value);
+    }
+
     const capturar_vegetariano = v => {
         set_checkbox_vegetariano(v.target.checked);
     }
@@ -117,6 +123,7 @@ const Cargar_menu = () => {
         m.preventDefault();
         let menu = {
             "name": nombre_elegido,
+            "price": precio_elegido,
             "celiac": checkbox_celiaco,
             "vegetarian": checkbox_vegetariano,
             "starter_id": [entrada_elegida],
@@ -181,6 +188,11 @@ const Cargar_menu = () => {
                         <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
                             <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
                         </button>
+
+                        <div className="clearfix"></div>
+
+                        <h4>Precio</h4>
+                        <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un precio" onChange={capturar_precio}/>
 
                         <div className="clearfix"></div>
 

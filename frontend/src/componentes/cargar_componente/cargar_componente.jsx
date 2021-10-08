@@ -276,7 +276,7 @@ const Cargar_componente = () => {
                     <div className="col-4">
                       <div className="form-group">
                         <label htmlFor="ingredientes">Ingredientes *</label>
-                        <Select label={ ingrediente_elegido.label } name="ingredientes" options={opciones()} onChange={capturar_ingrediente}/>
+                        <Select value={mostrar_ingrediente?ingrediente_elegido.label:""} name="ingredientes" options={opciones()} onChange={capturar_ingrediente}/>
                       </div>
                     </div>
                     <div className="col-3">
