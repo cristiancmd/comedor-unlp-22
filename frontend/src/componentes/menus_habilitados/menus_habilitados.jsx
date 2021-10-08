@@ -16,6 +16,9 @@ const Menus_habilitados = () => {
             mes = '0' + mes
         }
         let dia = hoy.getDate()
+        if (dia.toString().length === 1) {
+            dia = '0' + dia
+        }
         hoy = año + "-" + mes + "-" + dia
         return hoy
     }

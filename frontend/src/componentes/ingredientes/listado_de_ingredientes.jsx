@@ -127,8 +127,8 @@ const Listado_de_ingredientes = () => {
             ¿Estás seguro que querés eliminar el ingrediente: {row && row.name}?
           </ModalBody>
           <ModalFooter>
-            <button className="btn btn-success" onClick={() => deleteElement(row)}>Sí</button>
-            <button className="btn btn-danger" onClick={()=>setModalDelete(false)}>No</button>
+            <button className="btn btn-secondary" onClick={()=>setModalDelete(false)}>No</button>
+            <button className="btn btn-primary" onClick={() => deleteElement(row)}>Sí</button>
           </ModalFooter>
         </Modal>
 

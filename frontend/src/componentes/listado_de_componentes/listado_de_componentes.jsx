@@ -190,8 +190,8 @@ const Listado_de_componentes = () => {
               ¿Estás seguro que querés eliminar el plato: {nuevoComponente && nuevoComponente.name}?
             </ModalBody>
             <ModalFooter>
-              <button className="btn btn-success" onClick={()=>peticionDelete()}>Sí</button>
-              <button className="btn btn-danger" onClick={()=>setModalEliminar(false)}>No</button>
+              <button className="btn btn-secondary" onClick={()=>setModalEliminar(false)}>No</button>
+              <button className="btn btn-primary" onClick={()=>peticionDelete()}>Sí</button>
             </ModalFooter>
           </Modal>
       </main>
