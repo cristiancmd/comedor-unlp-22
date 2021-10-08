@@ -261,13 +261,13 @@ const Formulario = ({ set_modal_componente }) => {
                   <div className="row justify-content-between align-items-end">
                     <div className="col-4">
                       <div className="form-group">
-                        <label htmlFor="ingredientes">Ingredientes</label>
+                        <label htmlFor="ingredientes">Ingredientes *</label>
                         <Select name="ingredientes" options={opciones()} value={mostrar_ingrediente?ingrediente_elegido.label :""} onChange={capturar_ingrediente}/>
                       </div>
                     </div>
                     <div className="col-3">
                       <div className="form-group">
-                        <label htmlFor="amount">Cantidad</label>
+                        <label htmlFor="amount">Cantidad *</label>
                         <input name="amount" className="form-control" type="number" defaultValue="1" onChange={capturar_cantidad}/>
                       </div>
                     </div>

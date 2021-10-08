@@ -6,17 +6,21 @@
     padding-right: 0px;
 }
 
-#imagen_del_menu {
-    width: 100%;
-}
-
 #contenedor_de_los_input {
     width: 25%;
 }
 
-#boton_con_una_fecha {
-    margin-left: 2.2%;
-    margin-right: 2.2%;
-    margin-top: 1%;
-    margin-bottom: 1%;
+#boton_fecha_habilitar_menu {
+    margin-left: 3.8%;
+    margin-right: 3.8%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#cancelar_habilitar_menu {
+    margin-right: 1%;
+}
+
+#guardar_habilitar_menu {
+    margin-left: 1%;
 }
