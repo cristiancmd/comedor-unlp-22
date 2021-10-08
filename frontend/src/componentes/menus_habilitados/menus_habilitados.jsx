@@ -21,7 +21,8 @@ const Menus_habilitados = () => {
     }
     const [data, setData] = React.useState([])
     const [fecha, setFecha] = React.useState(fecha_actual());
-
+    
+ 
     
     
     const peticionGet = () => {
@@ -48,22 +49,26 @@ const Menus_habilitados = () => {
     return (
         <>
             {Header()}
-            <main>
-                <div>
+            <div>
                   <Breadcrumb tag="nav" listTag="div">
-                    <BreadcrumbItem active tag="span">Home</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
+                    <BreadcrumbItem active tag="span">Menus habilitados</BreadcrumbItem>
                   </Breadcrumb>
                 </div>
+            <main>
+               
             <h1 id="titulo_menus_habilitados">Menús habilitados</h1>    
             <h3 id="elegir_fecha_menus_habilitados">Elegir fecha</h3>
             <div className="d-flex justify-content-center " ><input type="date" name="fecha" 
-            defaultValue={fecha_actual()} onChange={capturar_el_ingreso_de_fecha}/>
+            defaultValue={fecha} onChange={capturar_el_ingreso_de_fecha}/>
             </div>
             <div id="contenedor_menus_habilitados">
                 <table className="table">
                     <thead>
                         <tr id="lista_de_titulos_de_columnas_menus_habilitados">
                             <th className="titulo_de_columna_menus_habilitados">Nombre</th>
+                            <th className="titulo_de_columna_menus_habilitados">Precio</th>
                             <th className="titulo_de_columna_menus_habilitados">Vegetariano</th>
                             <th className="titulo_de_columna_menus_habilitados">Celíaco</th>
                             
@@ -73,11 +78,12 @@ const Menus_habilitados = () => {
                     </thead>
                     <tbody>
                         
-                    {data.length===0 && <h6 >Ningun resultado para la fecha.</h6>   }
+                    {data.length===0 && <h6 >Ningun resultado para la fecha seleccionada.</h6>   }
                         {data.map(data => { 
                             return (
                                 <tr >
                                     <td >{data.menu.name}</td>
+                                    <td >{data.menu.price}</td>
                                     {
                                         data.menu.vegetarian?
                                         <td><span className="tilde_vegetariano_menus_habilitados">&#10003;</span></td>:
