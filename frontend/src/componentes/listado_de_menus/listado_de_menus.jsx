@@ -116,9 +116,9 @@ const Listado_de_menus = () => {
                 </div>
               </div>
 
-              <div className="col-6 text-right d-flex justify-content-end">
+              <div className="col-6 text-right d-flex justify-content-between">
                 <Link to="/home"><button className="btn btn-secondary">Menús habilitados</button></Link>
-                <a href="/menus/nuevo" id="cargar_menu_en_listados_de_menus" className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
+                <a href="/menus/nuevo"  className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
                     Cargar menú</a>
               </div>
 

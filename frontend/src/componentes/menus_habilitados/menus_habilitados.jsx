@@ -62,8 +62,7 @@ const Menus_habilitados = () => {
             <h1 id="titulo_menus_habilitados">Menús habilitados</h1>    
             <h3 id="elegir_fecha_menus_habilitados">Elegir fecha</h3>
             <div className="d-flex justify-content-center">
-                <input type="date" name="fecha" className="form-control" id="elegir_fecha_calendario_menus_habilitados" 
-                defaultValue={fecha} onChange={capturar_el_ingreso_de_fecha}/>
+                <input type="date" name="fecha" id="fecha_menus_habilitados" className="form-control" defaultValue={fecha} onChange={capturar_el_ingreso_de_fecha}/>
             </div>
             <div id="contenedor_menus_habilitados">
                 <table className="table">
