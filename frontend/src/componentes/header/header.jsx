@@ -3,34 +3,29 @@ import icono_facultad from "../../imagenes/icono_facultad.png";
 import icono_home from "../../imagenes/icono_home.png";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useEffect } from "react";
-
-
-
-
+import React, { useEffect, useContext } from "react";
+import { UserContext } from "../../UserContext";
 
 const Header = () => {
   
+
+
+  const { user, loginUser } = useContext(UserContext); // utilizar esta linea en los componentes necesarios
+
+  const getUserName = () => {
+    if(user){
+      return user.user.username
+    }
+    else return null
+  };
+
   
   useEffect(() => {
-    getUser()
+    console.log("header user:  ", user);
   }, []);
+
   
-  const getUser = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user)
-    if (user && user.access_token) {
-        setUser(user.user.username)
-        return { 'usuario': user.username };
-      } else {
-        return {};
-      
-      }
-  };
-  
-  const [user, setUser] = useState([]);
-  
-  
+
   return (
     <>
       <div id="unlp_banner">
@@ -57,12 +52,20 @@ const Header = () => {
             </Link>
           </div>
           <div className="container-fluid float-end">
-            <Link to={"/login"} className="btn btn-outline-light m-2 float-end ">
+            <Link
+              to={"/login"}
+              className="btn btn-outline-light m-2 float-end "
+              // onClick={() => logOut() }
+            >
               Cerrar sesión
             </Link>
-            
-            { user.length>0 && <label className="btn btn-outline-light m-2 float-end"> {user}</label> }
-            
+
+            {getUserName() && (
+              <label className="btn btn-outline-light m-2 float-end">
+                {" "}
+                {getUserName()}
+              </label>
+            )}
           </div>
         </div>
       </nav>

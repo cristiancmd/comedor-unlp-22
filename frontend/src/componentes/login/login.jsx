@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header_login from "../header_login/header_login";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../UserContext";
 
 const Login = () => {
   let history = useHistory();
@@ -13,32 +14,39 @@ const Login = () => {
   let token = null;
   const setToken = (t) => {
     token = `Token ${t}`;
-    console.log(token);
+    // console.log(token);
   };
+  
+  const { user, loginUser } = useContext(UserContext);
+
 
   const setAxios =  () => {
-     axios.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = token;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-  };
+    axios.interceptors.request.use(
+     (config) => {
+       config.headers.authorization = `Token ${user.access_token}` ;
+       return config;
+     },
+     (error) => {
+       return Promise.reject(error);
+     }
+   );
+ };
+
 
   useEffect(() => {}, [token]);
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("user");
-    if (loggedUser) {
-      const user = JSON.parse(loggedUser);
-      setUser(user);
-      setToken(user.access_token);
+    if (loggedUser!=null && Object.entries(loggedUser).length > 0 && loggedUser.constructor === Object) {
+      console.log(loggedUser)
+      const u = JSON.parse(loggedUser);
+      loginUser(u);
+      setAxios()
+      setToken(u.access_token);
+      console.log(u)
       
     }
-  }, []);
+  }, );
 
   const [datos, set_datos] = useState({
     username: "",
@@ -46,7 +54,7 @@ const Login = () => {
   });
 
   const [error, setError] = React.useState(false);
-  const [user, setUser] = React.useState([]);
+  // const [user, setUser] = React.useState([]);
   const api_url = "http://localhost:8000/api";
 
   const capturar_datos = async (d) => {
@@ -56,7 +64,6 @@ const Login = () => {
 
   const login = async (credentials) => {
     const { data } = await axios.post(`${api_url}/users/login/`, credentials);
-    console.log("la data es: ", data);
     
     return data;
   };
@@ -66,7 +73,7 @@ const Login = () => {
     setError(false);
     try {
       const user = await login(datos);
-      setUser(user);
+      loginUser(user);
       window.localStorage.setItem("user", JSON.stringify(user));
       setToken(user.access_token);
       setAxios();
@@ -88,7 +95,7 @@ const Login = () => {
       <h1 id="titulo_login">Acceso a comedor</h1>
       <div id="contenedor">
         <div id="contenedor_de_icono">
-          <img src={icono} id="icono" />
+          <img src={icono} id="icono" alt="icono" />
         </div>
 
         <form onSubmit={submitHandler}>
