@@ -1,0 +1,26 @@
+#lista_de_titulos_de_columnas_menus_habilitados {
+    background: lightgray;
+}
+
+#fecha_menus_habilitados {
+	max-width: 50%;
+	min-width: 50%;
+	text-align: left;
+}
+
+#comprar-tickets .form-control{
+	color: #454E56;
+}
+
+#comprar-tickets .input-group-append{
+	color: #6c757d;
+}
+
+#comprar-tickets .small{
+	font-size: 11px;
+}
+
+#comprar-tickets .btn-group-sm > .btn, .btn-sm {
+    padding: .25rem;
+    font-size: .8rem;
+}
