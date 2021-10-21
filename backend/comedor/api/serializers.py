@@ -3,12 +3,19 @@ from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
 from rest_framework.utils import model_meta
-from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate
+from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate, Ticket
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
 
 
 class CampusSerializer(serializers.ModelSerializer):

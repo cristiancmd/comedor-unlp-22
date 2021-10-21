@@ -213,6 +213,14 @@ class CampusViewSet(viewsets.ModelViewSet):
     serializer_class = CampusSerializer
     authentication_classes = (TokenAuthentication,)
 
+
+class TicketViewSet(viewsets.ModelViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+    authentication_classes = (TokenAuthentication,)    
+
+    
+
 @api_view(["GET"])
 def measure_list(request):
     data = []
