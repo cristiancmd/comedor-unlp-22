@@ -39,6 +39,8 @@ Borrar el archivo `bd.sqlite3`
 ### localhost:8000/api/menus/{id}
 
 ### localhost:8000/api/component_type/
+### localhost:8000/api/tickets/
+
 
 
 
