@@ -77,7 +77,7 @@ const Login = () => {
       window.localStorage.setItem("user", JSON.stringify(user));
       setToken(user.access_token);
       setAxios();
-      history.push("/menus");
+      history.push("/");
     } catch (err) {
       if (error.response) {
         console.log("Error: ", err.response.data);

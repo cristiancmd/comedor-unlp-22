@@ -7,24 +7,21 @@ import React, { useEffect, useContext } from "react";
 import { UserContext } from "../../UserContext";
 
 const Header = () => {
-  
-
-
   const { user, loginUser } = useContext(UserContext); // utilizar esta linea en los componentes necesarios
 
   const getUserName = () => {
-    if(user){
-      return user.user.username
-    }
-    else return null
+    if (user) {
+      return user.user.username;
+    } else return null;
   };
 
-  
   useEffect(() => {
     console.log("header user:  ", user);
   }, []);
 
-  
+  const logOut = () => {
+    localStorage.removeItem("user");
+  };
 
   return (
     <>
@@ -55,7 +52,7 @@ const Header = () => {
             <Link
               to={"/login"}
               className="btn btn-outline-light m-2 float-end "
-              // onClick={() => logOut() }
+              onClick={() => logOut()}
             >
               Cerrar sesión
             </Link>
