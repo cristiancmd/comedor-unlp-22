@@ -76,7 +76,7 @@ const Login = () => {
       loginUser(user);
       window.localStorage.setItem("user", JSON.stringify(user));
       setToken(user.access_token);
-      setAxios();
+      // setAxios();
       history.push("/");
     } catch (err) {
       if (error.response) {
