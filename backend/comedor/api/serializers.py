@@ -1,4 +1,5 @@
 
+from django.db.models import fields
 from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
@@ -11,10 +12,26 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 
 
-class TicketSerializer(serializers.ModelSerializer):
+class ItemTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'
+        
+class TicketSerializer(serializers.ListSerializer):
+    child = ItemTicketSerializer()
+ 
+    def create(self, validated_data):
+        datas = validated_data
+        for data in datas:
+            dia = data['date']
+            usuario = data['user']
+            try:
+                if(Ticket.objects.filter(date=dia).filter(user=usuario).exists()):
+                    raise serializers.ValidationError()
+                else:  
+                    Ticket.objects.get_or_create(**data)
+            except: raise serializers.ValidationError("Error: Ya existe un ticket en la fecha  para el mismo usuario")
+        return datas      
 
 
 
@@ -220,3 +237,12 @@ class MenuSerializer(serializers.ModelSerializer):
         model = Menu
         fields = ('id', 'name', 'price','celiac','vegetarian', 'starter', 'principal', 'dessert', 'drink', 
                    'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
+
+
+
+    
+
+
+      
+
+        
