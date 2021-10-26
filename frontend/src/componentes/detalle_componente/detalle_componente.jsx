@@ -9,21 +9,23 @@ import {Form} from "reactstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import IngredientForm from "../ingredientes/form";
+import {useParams} from "react-router-dom";
 
 const Detalle_componente = (props) => {
 
-  const url = "http://localhost:8000/api/components/";
+  const url = "http://localhost:8000/api";
   const url_tipos = "http://localhost:8000/api/component_type/";
 
   const [data, setData] = React.useState([])
   const [ingredientes, set_ingredientes] = React.useState([])
+  const { id } = useParams();
 
   React.useEffect(() => {
     peticionGet()
   }, [])
 
   const peticionGet = () => {
-    axios.get(url+props.match.params.id).then(response => {
+    axios.get(`${url}/components/${id}`).then(response => {
       setData(response.data);
       set_ingredientes(response.data.ingredients)
       console.log(response.data)

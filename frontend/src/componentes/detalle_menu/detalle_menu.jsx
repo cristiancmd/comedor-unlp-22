@@ -4,10 +4,11 @@ import React from 'react'
 import axios from "axios"
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import {useParams} from "react-router-dom";
 
-const Detalle_menu = (props) => {
+const Detalle_menu = () => {
 
-    const url = "http://localhost:8000/api/menus/";
+    const url = "http://localhost:8000/api";
 
     const [nombre, set_nombre] = React.useState([])
     const [entrada, set_entrada] = React.useState([])
@@ -17,13 +18,16 @@ const Detalle_menu = (props) => {
     const [precio, set_precio] = React.useState([])
     const [vegetariano, set_vegetariano] = React.useState([])
     const [celiaco, set_celiaco] = React.useState([])
+    const { id } = useParams();
+
 
     React.useEffect(() => {
         peticionGet()
     }, [])
 
     const peticionGet = () => {
-        axios.get(url+props.match.params.id).then(response => {
+        axios.get(`${url}/menus/${id}`).then(response => {
+            console.log(response)
             set_nombre(response.data.name)
             set_entrada(response.data.starter[0].name)
             set_plato_principal(response.data.principal[0].name)
