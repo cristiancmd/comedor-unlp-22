@@ -3,43 +3,26 @@ import icono_facultad from "../../imagenes/icono_facultad.png";
 import icono_home from "../../imagenes/icono_home.png";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-// const Header = () => {
-//   return (
-//     <>
-//       <div id="header">
-//         <div id="unlp_banner">
-//           <img src={icono_facultad} id="icono_facultad" />
-//         </div>
-//         <div id="nav-header">
-//           <Link to={"/home"}>
-//             <img src={icono_home} id="icono_home" alt="home" />
-//           </Link>
-//           <Link to={"/listado_de_menus"}>
-//             <h5 className="boton">Menús</h5>
-//           </Link>
-//           <Link to={"/listado_de_componentes"}>
-//             <h5 className="boton">Platos</h5>
-//           </Link>
-//           <Link to={"/listados"}>
-//             <h5 className="boton">Listados</h5>
-//           </Link>
-//           <div id="contenedor_cerrar_sesion">
-//             <button
-//               type="button"
-//               className="btn btn-outline-light"
-//               id="cerrar_sesion"
-//             >
-//               <h5>Cerrar sesión</h5>
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+import React, { useEffect, useContext } from "react";
+import { UserContext } from "../../UserContext";
 
 const Header = () => {
+  const { user, loginUser } = useContext(UserContext); // utilizar esta linea en los componentes necesarios
+
+  const getUserName = () => {
+    if (user) {
+      return user.user.username;
+    } else return null;
+  };
+
+  useEffect(() => {
+    console.log("header user:  ", user);
+  }, []);
+
+  const logOut = () => {
+    localStorage.removeItem("user");
+  };
+
   return (
     <>
       <div id="unlp_banner">
@@ -66,9 +49,20 @@ const Header = () => {
             </Link>
           </div>
           <div className="container-fluid float-end">
-            <Link to={"/login"} className="btn btn-outline-light float-end ">
+            <Link
+              to={"/login"}
+              className="btn btn-outline-light m-2 float-end "
+              onClick={() => logOut()}
+            >
               Cerrar sesión
             </Link>
+
+            {getUserName() && (
+              <label className="btn btn-outline-light m-2 float-end">
+                {" "}
+                {getUserName()}
+              </label>
+            )}
           </div>
         </div>
       </nav>

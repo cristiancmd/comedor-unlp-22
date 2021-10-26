@@ -5,9 +5,10 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import Select from 'react-select'
 import { Link } from 'react-router-dom'
 import axios from "axios"
+import DatePicker from 'react-date-picker'
+import { useParams } from "react-router-dom"
 
-
-const Habilitar_menu = (props) => {
+const Habilitar_menu = () => {
 
     const url = "http://localhost:8000/api/enabledmenus/"
     const url_sedes = "http://localhost:8000/api/campuses/"
@@ -16,6 +17,8 @@ const Habilitar_menu = (props) => {
     const [porciones, set_porciones] = React.useState([])
     const [sede, set_sede] = React.useState([])
     const [sedes_cargadas, set_sedes_cargadas] = React.useState([])
+
+    const {id} = useParams()
 
     React.useEffect(() => {
         peticionGet()
@@ -38,11 +41,26 @@ const Habilitar_menu = (props) => {
     }
 
     const capturar_el_ingreso_de_fecha = async f => {
-        f.persist();
-        let fechas_totales = [...fechas,f.target.value];
-        let fechas_totales_sin_duplicados = new Set(fechas_totales);
-        await setFecha([...fechas_totales_sin_duplicados]);
-        f.target.value = "";
+        if (f !== null) {
+            let fecha_ingresada = f
+            let año = fecha_ingresada.getFullYear()
+            let mes = fecha_ingresada.getMonth() + 1
+            if (mes.toString().length === 1) {
+                mes = '0' + mes
+            }
+            let dia = fecha_ingresada.getDate()
+            if (dia.toString().length === 1) {
+                dia = '0' + dia
+            }
+            fecha_ingresada = año + "-" + mes + "-" + dia
+            let fechas_totales = [...fechas,fecha_ingresada];
+            let fechas_totales_sin_duplicados = new Set(fechas_totales);
+            await setFecha([...fechas_totales_sin_duplicados]);
+        }
+    }
+
+    const eliminar_lo_que_se_escribe = function (d) {
+        d.target.value = "";
     }
 
     const borrar_fecha = (fecha) => {
@@ -63,7 +81,7 @@ const Habilitar_menu = (props) => {
 
         let menu = {
             "date":fechas,
-            "menu":props.match.params.id,
+            "menu":id,
             "campus":sede,
             "servings":porciones
         }
@@ -76,6 +94,12 @@ const Habilitar_menu = (props) => {
         })
 
         window.location.href = "http://localhost:3000/menus";
+    }
+
+    const fecha_formateada = (fecha) => {
+        let una_fecha = fecha.split("-")
+        una_fecha = una_fecha[2] + "-" + una_fecha[1] + "-" + una_fecha[0]
+        return una_fecha
     }
 
     return (
@@ -92,21 +116,26 @@ const Habilitar_menu = (props) => {
                 <h1 id="titulo_habilitar_menu">Habilitar menú</h1>
                 <div className="d-flex justify-content-center">
                     <div id="contenedor_de_los_input">
-                        <h4>Días</h4>
-                        <input className="form-control" type="date" name="dias" onChange={capturar_el_ingreso_de_fecha}/>
+                        <h4>Seleccione las fechas</h4>
+                        <DatePicker 
+                            className="datepicker border border-1 border-secondary rounded"
+                            clearIcon={null} 
+                            onChange={capturar_el_ingreso_de_fecha}
+                            onInput={(d) => eliminar_lo_que_se_escribe(d)}
+                        />
 
                         <div>
                             {fechas.map(fecha => {
                                 return (
-                                    <button type="button" className="btn btn-secondary" id="boton_fecha_habilitar_menu" onClick={()=>{borrar_fecha(fecha)}}>{fecha} <span aria-hidden="true">&times;</span></button>
+                                    <button type="button" className="btn btn-secondary" id="boton_fecha_habilitar_menu" onClick={()=>{borrar_fecha(fecha)}}>{fecha_formateada(fecha)} <span aria-hidden="true">&times;</span></button>
                                 )
                             })}
                         </div>
                         
-                        <h4>Porciones</h4>
-                        <input className="form-control" type="text" name="porciones" onChange={capturar_porciones}/>
-                        <h4>Sede</h4>
-                        <Select options={opciones_sedes()} onChange={capturar_sede}/>
+                        <h4 className="mt-2">Porciones</h4>
+                        <input className="form-control border-2 border-secondary rounded" type="text" name="porciones" placeholder="Ingrese una cantidad" onChange={capturar_porciones}/>
+                        <h4 className="mt-2">Sede</h4>
+                        <Select className="border border-2 border-secondary rounded" options={opciones_sedes()} onChange={capturar_sede}/>
                     </div>
                 </div>
 

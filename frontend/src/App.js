@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
+
 // Componentes
 import header from './componentes/header/header';
 import header_login from './componentes/header_login/header_login';
@@ -18,27 +18,44 @@ import cargar_menu from './componentes/cargar_menu/cargar_menu';
 import detalle_menu from './componentes/detalle_menu/detalle_menu';
 import detalle_componente from './componentes/detalle_componente/detalle_componente';
 import ComprarTickets from './componentes/comprar_tickets/comprar_tickets';
+import ProtectedRoute from './componentes/login/ProtectedRoute';
 
 function App() {
+
+  const NotFound = () => (
+    <div>
+      <br/>
+      <h1>404 - Pagina no encontrada!</h1> <p/>
+      <a name="Volver" id="back" class="btn btn-secondary" 
+      href="/home" role="button">Volver</a>
+    </div>
+  );
   return (
+
     <Router>
-      <Route exact path='/header' component={header}/> 
-      <Route exact path='/header_login' component={header_login}/> 
-      <Route exact path='/login' component={login}/> 
-      <Route exact path='/home' component={menus_habilitados}/> 
-      <Route exact path='/menus' component={listado_de_menus}/> 
-      <Route exact path='/menus/nuevo' component={cargar_menu}/> 
-      <Route exact path='/menus/detalle/:id' component={detalle_menu}/>
-      <Route exact path='/comprar-tickets' component={ComprarTickets}/>
-      <Route exact path='/platos' component={listado_de_componentes}/> 
-      <Route exact path='/platos/nuevo' component={cargar_componente}/> 
-      <Route exact path='/platos/detalle/:id' component={detalle_componente}/>
-      <Route exact path='/ingredientes' component={ingredients}/>
-      <Route exact path='/ingredientes/nuevo' component={CargarIngrediente}/>
-      <Route exact path='/ingredientes/editar/:id' component={EditarIngrediente}/>
-      <Route exact path='/habilitar/:id' component={habilitar_menu}/> 
-      <Route exact path='/listados'/> 
-      <Route exact path='/' component={listado_de_menus}/>
+      <Switch>
+        <Route exact path='/header_login' component={header_login} />
+        <Route exact path='/login' component={login} />
+        <ProtectedRoute path="/home" component={menus_habilitados} />
+        <ProtectedRoute exact path='/header' component={header} />
+        <ProtectedRoute exact path='/menus' component={listado_de_menus} />
+        <ProtectedRoute exact path='/menus/nuevo' component={cargar_menu} />
+        <ProtectedRoute exact path='/menus/detalle/:id' component={detalle_menu} />
+        <ProtectedRoute exact path='/comprar-tickets' component={ComprarTickets}/>
+        <ProtectedRoute exact path='/platos' component={listado_de_componentes} />
+        <ProtectedRoute exact path='/platos/nuevo' component={cargar_componente} />
+        <ProtectedRoute exact path='/platos/detalle/:id' component={detalle_componente} />
+        <ProtectedRoute exact path='/ingredientes' component={ingredients} />
+        <ProtectedRoute exact path='/ingredientes/nuevo' component={CargarIngrediente} />
+        <ProtectedRoute exact path='/ingredientes/editar/:id' component={EditarIngrediente} />
+        <ProtectedRoute exact path='/habilitar/:id' component={habilitar_menu} />
+        <ProtectedRoute exact path='/listados' />
+        <ProtectedRoute exact path='/' component={listado_de_menus} />
+
+        {/* dejar al final -> */}
+        <Route component={NotFound} /> 
+
+      </Switch>
     </Router>
   );
 }

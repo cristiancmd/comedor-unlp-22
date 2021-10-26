@@ -8,6 +8,8 @@ router.register('menus', MenuViewSet)
 router.register('usuarios', CustomUserViewSet)
 router.register('enabledmenus', MenuWithDateViewSet)
 router.register('campuses', CampusViewSet)
+router.register('tickets', TicketViewSet)
+
 
 urlpatterns = [
     path('api/', include(router.urls)),
