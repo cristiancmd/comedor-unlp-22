@@ -2,12 +2,6 @@
     background: lightgray;
 }
 
-#fecha_menus_habilitados {
-	max-width: 50%;
-	min-width: 50%;
-	text-align: left;
-}
-
 #comprar-tickets .form-control{
 	color: #454E56;
 }

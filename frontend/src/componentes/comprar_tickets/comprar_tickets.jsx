@@ -1,10 +1,11 @@
 import './comprar_tickets.css'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import axios from "axios"
 import Header from '../header/header'
 import {Breadcrumb, BreadcrumbItem} from "reactstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faShoppingCart, faCalendarAlt, faSortDown, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import {faShoppingCart, faCalendarAlt, faPlusCircle, faMinusCircle} from "@fortawesome/free-solid-svg-icons";
+import { UserContext } from '../../UserContext';
 
 const ComprarTickets = () => {
 
@@ -12,10 +13,15 @@ const ComprarTickets = () => {
 
   const [data, setData] = useState([]);
   const [campus, setCampus] = useState([]);
-  const [fecha_elegida, set_fecha_elegida] = useState([]);
-  const [sede_elegida, set_sede_elegida] = useState([]);
-  const [modalidad_elegida, set_modalidad_elegida] = useState([]);
+  const [fecha_elegida, set_fecha_elegida] = useState("1000-01-01");
+  const [sede_elegida, set_sede_elegida] = useState("");
   const [amount, setAmount] = useState(0);
+  const [menus_seleccionados, set_menus_seleccionados] = useState([]);
+  const [tickets_seleccionados, set_tickets_seleccionados] = useState([]);
+  const [error_fecha, set_error_fecha] = useState(false);
+  const [error_sede, set_error_sede] = useState(false);
+
+  const { user, loginUser } = useContext(UserContext)
 
   useEffect(() => {
     campusGet();
@@ -42,23 +48,59 @@ const ComprarTickets = () => {
   };
 
   const buscar_menus = () => {
-    axios.get(`${url}/enabledmenus`, {params: {date:fecha_elegida}}).then(response => {
-      setData(response.data.filter(menu => menu.campus.id == sede_elegida));
-    }).catch(error => {
-      console.log(error.message);
-    })
+    if (fecha_elegida === "1000-01-01" || fecha_elegida === "") {
+      set_error_fecha(true)
+    }
+    else {
+      set_error_fecha(false)
+    }
+    if (sede_elegida === "") {
+      set_error_sede(true)
+    }
+    else {
+      set_error_sede(false)
+    }
+    if (fecha_elegida !== "1000-01-01" && sede_elegida !== "") {
+      axios.get(`${url}/enabledmenus`, {params: {date:fecha_elegida}}).then(response => {
+        setData(response.data.filter(menu => menu.campus.id == sede_elegida));
+      }).catch(error => {
+        console.log(error.message);
+      })
+    }
   }
 
-  const agregar_al_carrito = (id,precio) => {
+  const agregar_al_carrito = (menu_habilitado_id,menu_id,precio) => {
     let ticket = {
       "price":precio,
       "date":fecha_elegida,
-      "take_away":document.getElementById("select_modalidad"+id).value,
-      "menu":id,
+      "take_away":document.getElementById("select_modalidad"+menu_id).value,
+      "menu":menu_id,
       "campus":sede_elegida,
-      "user":0
+      "user":user.user.id
     }
     setAmount(amount+1)
+    set_menus_seleccionados([...menus_seleccionados,menu_habilitado_id])
+    set_tickets_seleccionados([...tickets_seleccionados,ticket])
+  };
+
+  const quitar_del_carrito = (menu_habilitado_id,menu_id) => {
+    let menus = menus_seleccionados.filter(menu => menu !== menu_habilitado_id)
+    let tickets = tickets_seleccionados.filter(ticket => (ticket.menu !== menu_id || ticket.date !== fecha_elegida || ticket.campus !== sede_elegida))
+    setAmount(amount-1)
+    set_menus_seleccionados(menus)
+    set_tickets_seleccionados(tickets)
+  };
+
+  const ya_esta_elegido = (id) => {
+    let ya_esta_elegido = false
+    menus_seleccionados.map(
+      menu => {
+        if (menu === id) {
+          ya_esta_elegido = true
+        }
+      }
+    )
+    return ya_esta_elegido
   };
 
   return (
@@ -82,27 +124,27 @@ const ComprarTickets = () => {
               <div className="col-4">
                 <label className="fs-5">Fecha</label>
                 <div className="input-group justify-content-between">
-                  <input type="date" className="form-control"
-                         aria-describedby="basic-addon2"
-                         onChange={capturar_el_ingreso_de_fecha}
-                         id="fecha_menus_habilitados"
+                  <input type="date" className="form-control ps-0"
+                    aria-describedby="basic-addon2"
+                    onChange={capturar_el_ingreso_de_fecha}
                   />
                   <div className="input-group-append">
                     <span id="basic-addon2"><FontAwesomeIcon icon={faCalendarAlt}/></span>
                   </div>
                 </div>
+                {error_fecha?<h5 className="text-danger mb-0">Complete los tres campos de la fecha (día, mes y año)</h5>:""}
               </div>
               <div className="col-6 text-right d-flex justify-content-end align-items-end">
                 <a href="/carrito" className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon
-                  icon={faShoppingCart}/></span>
+                  icon={faShoppingCart} className="me-2"/>Pagar tickets</span>
                   {amount}</a>
               </div>
             </div>
             <div className="row mt-4 justify-content-between">
               <div className="col-4">
                 <label className="fs-5">Sede</label>
-                <div className="input-group justify-content-between">
-                  <select className="form-control"
+                <div className="justify-content-between">
+                  <select className="form-select"
                     value={sede_elegida}
                     onChange={capturar_el_ingreso_de_sede}
                   >
@@ -113,10 +155,8 @@ const ComprarTickets = () => {
                       </option>
                     ))}
                   </select>
-                  <div className="input-group-append">
-                    <span id="basic-addon2"><FontAwesomeIcon icon={faSortDown}/></span>
-                  </div>
                 </div>
+                {error_sede?<h5 className="text-danger mb-0">Seleccione una sede</h5>:""}
               </div>
             </div>
             <div>
@@ -140,7 +180,7 @@ const ComprarTickets = () => {
               </thead>
 
               <tbody>
-                {data.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha seleccionada.</h6></td></tr>}
+                {data.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
                 {data.map(data => {
                   return (
                     <tr key={data.id}>
@@ -167,7 +207,14 @@ const ComprarTickets = () => {
                         </select>
                       </td>
                       <td>
-                        <span onClick={()=>agregar_al_carrito(data.menu.id,data.menu.price)} className="btn btn-primary btn-sm"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Agregar al carrito</span>
+                        {ya_esta_elegido(data.id)?
+                          <span onClick={()=>quitar_del_carrito(data.id,data.menu.id)} className="btn btn-danger btn-sm">
+                            <span className="mr-05"><FontAwesomeIcon icon={faMinusCircle}/></span>Quitar del carrito
+                          </span>:
+                          <span onClick={()=>agregar_al_carrito(data.id,data.menu.id,data.menu.price)} className="btn btn-primary btn-sm">
+                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Agregar al carrito
+                          </span>
+                        }
                       </td>
                     </tr>
                   )
