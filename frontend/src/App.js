@@ -17,9 +17,8 @@ import cargar_componente from './componentes/cargar_componente/cargar_componente
 import cargar_menu from './componentes/cargar_menu/cargar_menu';
 import detalle_menu from './componentes/detalle_menu/detalle_menu';
 import detalle_componente from './componentes/detalle_componente/detalle_componente';
+import ComprarTickets from './componentes/comprar_tickets/comprar_tickets';
 import ProtectedRoute from './componentes/login/ProtectedRoute';
-
-
 
 function App() {
 
@@ -42,6 +41,7 @@ function App() {
         <ProtectedRoute exact path='/menus' component={listado_de_menus} />
         <ProtectedRoute exact path='/menus/nuevo' component={cargar_menu} />
         <ProtectedRoute exact path='/menus/detalle/:id' component={detalle_menu} />
+        <ProtectedRoute exact path='/comprar-tickets' component={ComprarTickets}/>
         <ProtectedRoute exact path='/platos' component={listado_de_componentes} />
         <ProtectedRoute exact path='/platos/nuevo' component={cargar_componente} />
         <ProtectedRoute exact path='/platos/detalle/:id' component={detalle_componente} />

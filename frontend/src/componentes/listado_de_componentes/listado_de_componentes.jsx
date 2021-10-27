@@ -22,7 +22,7 @@ const Listado_de_componentes = () => {
     name:"",
   })
   const [modalEliminar, setModalEliminar] = React.useState(false)
-   const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState({
     text: '',
     type: ''
   });
