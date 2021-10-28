@@ -222,7 +222,17 @@ class TicketViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'create':
             return TicketSerializer
-        return ItemTicketSerializer   
+        return ItemTicketSerializer  
+
+    def get_queryset(self):
+        queryset = Ticket.objects.all()
+        date = self.request.query_params.get('date')
+        user = self.request.query_params.get('user')
+        if date is not None:
+            queryset = queryset.filter(date=date)
+        if user is not None:
+            queryset = queryset.filter(user=user)
+        return queryset        
 
 
 
