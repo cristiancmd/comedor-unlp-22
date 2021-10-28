@@ -1,0 +1,23 @@
+#columna_para_el_precio_en_pagar_tickets {
+    width: 8rem;
+}
+
+#columna_para_eliminar_en_pagar_tickets{
+    width: 3rem;
+}
+
+#numero_de_tarjeta_pagar_ticket {
+    width: 25.75rem;
+}
+
+#codigo_de_seguridad_pagar_ticket {
+    width: 11.5rem;
+}
+
+#fecha_de_vencimiento_pagar_ticket {
+    width: 12rem;
+}
+
+#titular_pagar_ticket {
+    width: 21.1rem;
+}
