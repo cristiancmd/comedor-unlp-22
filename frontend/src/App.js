@@ -31,7 +31,7 @@ function App() {
     </div>
   );
   return (
-
+    // !!   a las rutas del cliente se les debe agregar staff={ false }
     <Router>
       <Switch>
         <Route exact path='/header_login' component={header_login} />
