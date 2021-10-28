@@ -330,7 +330,7 @@ const Pagar_tickets = ({mis_tickets, set_mis_tickets}) => {
             </ModalBody>
 
             <ModalFooter className="d-flex justify-content-center">
-              <Link to="/algun_lado"><button className="btn btn-primary">Volver al home</button></Link>
+              <Link to="/mistickets"><button className="btn btn-primary">Ver mis tickets</button></Link>
             </ModalFooter>
           </Modal>
         </>

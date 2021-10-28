@@ -59,10 +59,10 @@ const Header = () => {
           )}
           {!getUserStaff() && (
             <div className="nav flex-row col-4 " style={{ paddingLeft: "2%" }}>
-              <Link to={"/comprar-tickets"} className="nav-link">
+              <Link to={"/tickets/comprar"} className="nav-link">
                 Comprar
               </Link>
-              <Link to={""} className="nav-link">
+              <Link to={"/mistickets"} className="nav-link">
                 Mis tickets
               </Link>
             </div>

@@ -81,7 +81,7 @@ const Login = () => {
         history.push("/");
       }
       else{
-        history.push("/comprar-tickets");
+        history.push("/tickets/comprar");
         
       }
     } catch (err) {
