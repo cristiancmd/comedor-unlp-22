@@ -15,6 +15,12 @@ const Header = () => {
     } else return null;
   };
 
+  const getUserStaff = () => {
+    if (user) {
+      return user.user.is_staff;
+    } else return false;
+  };
+
   useEffect(() => {
     console.log("header user:  ", user);
   }, []);
@@ -30,24 +36,37 @@ const Header = () => {
       </div>
 
       <nav
-        className="navbar navbar-expand-lg navbar-dark  "
+        className="navbar navbar-expand-md navbar-dark  "
         style={{ backgroundColor: "rgb(138, 7, 7)" }}
       >
         <div className="container-fluid">
           <Link to={"/home"}>
             <img src={icono_home} width="50px" alt="home" />
           </Link>
-          <div className="navbar-nav  " style={{ paddingLeft: "2%" }}>
-            <Link to={"/menus"} className="nav-link">
-              Menús
-            </Link>
-            <Link to={"/platos"} className="nav-link ">
-              Platos
-            </Link>
-            <Link to={"/ingredientes"} className="nav-link ">
-              Ingredientes
-            </Link>
-          </div>
+
+          {getUserStaff() && (
+            <div className="nav flex-row col-4  " style={{ paddingLeft: "2%" }}>
+              <Link to={"/menus"} className="nav-link">
+                Menús
+              </Link>
+              <Link to={"/platos"} className="nav-link ">
+                Platos
+              </Link>
+              <Link to={"/ingredientes"} className="nav-link ">
+                Ingredientes
+              </Link>
+            </div>
+          )}
+          {!getUserStaff() && (
+            <div className="nav flex-row col-4 " style={{ paddingLeft: "2%" }}>
+              <Link to={"/comprar-tickets"} className="nav-link">
+                Comprar
+              </Link>
+              <Link to={""} className="nav-link">
+                Mis tickets
+              </Link>
+            </div>
+          )}
           <div className="container-fluid float-end">
             <Link
               to={"/login"}

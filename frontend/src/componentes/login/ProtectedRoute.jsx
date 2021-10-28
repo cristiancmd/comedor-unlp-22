@@ -11,9 +11,17 @@ function ProtectedRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) => {
-        if (user) {
+        if(user && !user.user.is_staff && rest.staff){
+          return (
+            <Redirect
+              to={{ pathname: "/login", state: { from: props.location } }}
+            />
+          );
+        }
+        else if (user) {
           return <Component />;
-        } else {
+        } 
+        else {
           return (
             <Redirect
               to={{ pathname: "/login", state: { from: props.location } }}

@@ -31,26 +31,27 @@ function App() {
     </div>
   );
   return (
-
+    // !!   a las rutas del cliente se les debe agregar staff={ false }
     <Router>
       <Switch>
         <Route exact path='/header_login' component={header_login} />
         <Route exact path='/login' component={login} />
-        <ProtectedRoute path="/home" component={menus_habilitados} />
-        <ProtectedRoute exact path='/header' component={header} />
-        <ProtectedRoute exact path='/menus' component={listado_de_menus} />
-        <ProtectedRoute exact path='/menus/nuevo' component={cargar_menu} />
-        <ProtectedRoute exact path='/menus/detalle/:id' component={detalle_menu} />
-        <ProtectedRoute exact path='/tickets/comprar' component={comprar_tickets}/>
-        <ProtectedRoute exact path='/platos' component={listado_de_componentes} />
-        <ProtectedRoute exact path='/platos/nuevo' component={cargar_componente} />
-        <ProtectedRoute exact path='/platos/detalle/:id' component={detalle_componente} />
-        <ProtectedRoute exact path='/ingredientes' component={ingredients} />
-        <ProtectedRoute exact path='/ingredientes/nuevo' component={CargarIngrediente} />
-        <ProtectedRoute exact path='/ingredientes/editar/:id' component={EditarIngrediente} />
-        <ProtectedRoute exact path='/habilitar/:id' component={habilitar_menu} />
-        <ProtectedRoute exact path='/listados' />
-        <ProtectedRoute exact path='/' component={listado_de_menus} />
+        <ProtectedRoute path="/home" component={menus_habilitados} staff={true }/>
+        <ProtectedRoute exact path='/header' component={header} staff={true } />
+        <ProtectedRoute exact path='/menus' component={listado_de_menus} staff={true } />
+        <ProtectedRoute exact path='/menus/nuevo' component={cargar_menu} staff={true } />
+        <ProtectedRoute exact path='/menus/detalle/:id' component={detalle_menu} staff={true } />
+        <ProtectedRoute exact path='/platos' component={listado_de_componentes} staff={true } />
+        <ProtectedRoute exact path='/platos/nuevo' component={cargar_componente} staff={true } />
+        <ProtectedRoute exact path='/platos/detalle/:id' component={detalle_componente} staff={true } />
+        <ProtectedRoute exact path='/ingredientes' component={ingredients} staff={true }/>
+        <ProtectedRoute exact path='/ingredientes/nuevo' component={CargarIngrediente} staff={true }/>
+        <ProtectedRoute exact path='/ingredientes/editar/:id' component={EditarIngrediente} staff={true }/>
+        <ProtectedRoute exact path='/habilitar/:id' component={habilitar_menu} staff={true } />
+        <ProtectedRoute exact path='/listados' component={listado_de_menus} staff={true }/>
+        <ProtectedRoute exact path='/' component={listado_de_menus} staff={true }/>
+        <ProtectedRoute exact path='/tickets/comprar' component={comprar_tickets} staff={ false }/>
+        <ProtectedRoute exact path='/mistickets' component={ "" } staff={ false }/>
 
         {/* dejar al final -> */}
         <Route component={NotFound} /> 

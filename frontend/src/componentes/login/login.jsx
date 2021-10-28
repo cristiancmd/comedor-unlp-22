@@ -77,7 +77,13 @@ const Login = () => {
       window.localStorage.setItem("user", JSON.stringify(user));
       setToken(user.access_token);
       // setAxios();
-      history.push("/");
+      if(user.user.is_staff){
+        history.push("/");
+      }
+      else{
+        history.push("/comprar-tickets");
+        
+      }
     } catch (err) {
       if (error.response) {
         console.log("Error: ", err.response.data);
