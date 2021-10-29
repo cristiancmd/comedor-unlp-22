@@ -246,98 +246,100 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
 
         <div className="row mt-4 mb-3">
           <div className="col-10 offset-1">
-            <h2 className="text-center">Pagar tickets</h2>
+            <h1 className="text-center">Pagar tickets</h1>
           </div>
         </div>
 
         <div className="container-fluid col-10 mt-2">
-          <h3 className="text-start mb-3">Datos de la tarjeta</h3>
+          <h3 className="text-start mb-4">Datos de la tarjeta</h3>
 
-          <div className="container row-4 justify-content-left pt-2 ">
-            <div>
-              <h6 className="text">Titular de la cuenta (Apellido Nombre)</h6>
-              <div className="row pb-3 ">
-                <input
-                  type="text"
-                  className="form-control text-center"
-                  id="titular_pagar_ticket"
-                  placeholder="Ingrese su apellido y nombre"
-                  onChange={capturar_el_ingreso_de_titular}
-                />
+          <div className="row justify-content-around ">
+            <div class="col-4">
+              <div>
+                <h6 className="text">Titular de la cuenta</h6>
+                <div className="row pb-3 ">
+                  <input
+                    type="text"
+                    className="form-control text-center"
+                    id="titular_pagar_ticket"
+                    placeholder="Ingrese su apellido y nombre"
+                    onChange={capturar_el_ingreso_de_titular}
+                  />
+                </div>
+                {error_titular ? (
+                  <h7 className="text-danger row pb-3">
+                    Ingrese su apellido y nombre con el formato pedido
+                  </h7>
+                ) : (
+                  ""
+                )}
               </div>
-              {error_titular ? (
-                <h7 className="text-danger row pb-3">
-                  Ingrese su apellido y nombre con el formato pedido
-                </h7>
-              ) : (
-                ""
-              )}
+              <div>
+                <h6 className="text">Número de la tarjeta</h6>
+                <div className="row pb-3 ">
+                  <input
+                    type="text"
+                    maxlength="19"
+                    className="form-control text-center"
+                    id="numero_de_tarjeta_pagar_ticket"
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    onChange={capturar_el_ingreso_de_numero}
+                  />
+                </div>
+                {error_numero_de_tarjeta ? (
+                  <h7 className="text-danger row pb-3">
+                    Ingrese su número de tarjeta con el formato pedido
+                  </h7>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
-            <div>
-              <h6 className="text">
-                Número de la tarjeta (XXXX-XXXX-XXXX-XXXX)
-              </h6>
-              <div className="row pb-3 ">
-                <input
-                  type="text"
-                  maxlength="19"
-                  pattern="[0-9]+"
-                  className="form-control text-center"
-                  id="numero_de_tarjeta_pagar_ticket"
-                  placeholder="Ingrese su número de tarjeta"
-                  onChange={capturar_el_ingreso_de_numero}
-                />
+            <div class="col-4">
+              <div>
+                <h6 className="text">Fecha de vencimiento</h6>
+                <div className="row pb-3 ">
+                  <input
+                    type="date"
+                    className="form-control text-center text-secondary"
+                    id="fecha_de_vencimiento_pagar_ticket"
+                    onChange={capturar_el_ingreso_de_fecha}
+                  />
+                </div>
+                {error_fecha ? (
+                  <h7 className="text-danger row pb-3">
+                    Complete los tres campos de la fecha (día, mes y año)
+                  </h7>
+                ) : (
+                  ""
+                )}
               </div>
-              {error_numero_de_tarjeta ? (
-                <h7 className="text-danger row pb-3">
-                  Ingrese su número de tarjeta con el formato pedido
-                </h7>
-              ) : (
-                ""
-              )}
-            </div>
-            <div>
-              <h6 className="text">Código de seguridad</h6>
-              <div className="row pb-3 ">
-                <input
-                  type="text"
-                  maxlength="3"
-                  className="form-control text-center"
-                  id="codigo_de_seguridad_pagar_ticket"
-                  placeholder="Ingrese su código"
-                  onChange={capturar_el_ingreso_de_codigo}
-                />
+              <div>
+                <h6 className="text">Código de seguridad</h6>
+                <div className="row pb-3 ">
+                  <input
+                    type="text"
+                    maxlength="3"
+                    className="form-control text-center"
+                    id="codigo_de_seguridad_pagar_ticket"
+                    placeholder="Ingrese su código"
+                    onChange={capturar_el_ingreso_de_codigo}
+                  />
+                </div>
+                {error_codigo_de_seguridad ? (
+                  <h7 className="text-danger row pb-3">Código inválido</h7>
+                ) : (
+                  ""
+                )}
+                {error_codigo_de_seguridad_vacio ? (
+                  <h7 className="text-danger row pb-3">Código vacío</h7>
+                ) : (
+                  ""
+                )}
               </div>
-              {error_codigo_de_seguridad ? (
-                <h7 className="text-danger row pb-3">Código inválido</h7>
-              ) : (
-                ""
-              )}
-              {error_codigo_de_seguridad_vacio ? (
-                <h7 className="text-danger row pb-3">Código vacío</h7>
-              ) : (
-                ""
-              )}
-            </div>
-            <div>
-              <h6 className="text">Fecha de vencimiento</h6>
-              <div className="row pb-3 ">
-                <input
-                  type="date"
-                  className="form-control text-center text-secondary"
-                  id="fecha_de_vencimiento_pagar_ticket"
-                  onChange={capturar_el_ingreso_de_fecha}
-                />
-              </div>
-              {error_fecha ? (
-                <h7 className="text-danger row pb-3">
-                  Complete los tres campos de la fecha (día, mes y año)
-                </h7>
-              ) : (
-                ""
-              )}
             </div>
           </div>
+
           <br />
           <h3 className="text-start mb-3">Tickets</h3>
         </div>
