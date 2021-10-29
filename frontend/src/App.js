@@ -18,6 +18,8 @@ import cargar_menu from './componentes/cargar_menu/cargar_menu';
 import detalle_menu from './componentes/detalle_menu/detalle_menu';
 import detalle_componente from './componentes/detalle_componente/detalle_componente';
 import comprar_tickets from './componentes/comprar_tickets/comprar_tickets';
+import canjear_ticket from './componentes/canjear_ticket/canjear_ticket';
+import mis_tickets from './componentes/mis_tickets/mis_tickets';
 import ProtectedRoute from './componentes/login/ProtectedRoute';
 
 function App() {
@@ -51,7 +53,8 @@ function App() {
         <ProtectedRoute exact path='/listados' component={listado_de_menus} staff={true }/>
         <ProtectedRoute exact path='/' component={listado_de_menus} staff={true }/>
         <ProtectedRoute exact path='/tickets/comprar' component={comprar_tickets} staff={ false }/>
-        <ProtectedRoute exact path='/mistickets' component={ "" } staff={ false }/>
+        <ProtectedRoute exact path='/mistickets' component={mis_tickets} staff={ false }/>
+        <ProtectedRoute exact path='/tickets/canjear' component={canjear_ticket} staff={true }/>
 
         {/* dejar al final -> */}
         <Route component={NotFound} /> 
