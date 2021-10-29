@@ -45,7 +45,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [AllowAny]
 
     @action(detail=False, methods=['post'], permission_classes=[AllowAny])
     def login(self, request):
@@ -68,8 +68,8 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        if request.user.is_staff == False:
-             raise exceptions.PermissionDenied()
+        # if request.user.is_staff == False:
+        #      raise exceptions.PermissionDenied()
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -79,12 +79,19 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        try:
-            if instance != self.request.user.customuser and not request.user.is_staff and not request.user.is_admin:
-                raise exceptions.PermissionDenied()
-        except: raise exceptions.PermissionDenied()
+        # try:
+        #     if instance != self.request.user.customuser and not request.user.is_staff and not request.user.is_admin:
+        #         raise exceptions.PermissionDenied()
+        # except: raise exceptions.PermissionDenied()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+    def get_queryset(self):
+        queryset = CustomUser.objects.all()
+        dni = self.request.query_params.get('dni')
+        if dni is not None:
+            queryset = queryset.filter(dni=dni)
+        return queryset   
 
 
 #############
