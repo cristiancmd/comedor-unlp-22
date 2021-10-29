@@ -53,23 +53,11 @@ const Formulario = ({ set_modal_componente }) => {
     setValue('type', e.value)
     await setNuevoComponente({...nuevo_componente, "type": e.value});
   }
-  //
-  // const guardar_componente = async (data, c)=> {
-  //   console.log('fiaasda', data, c)
-  //   c.preventDefault();
-  //
-  //   await axios.post(`${url}/components/`, nuevo_componente).then(response=>{
-  //   }).catch(error=>{
-  //     console.log(error.message);
-  //   })
-  // }
-
+  
   const onSubmit = async (data, e) => {
     console.log(data)
     await axios.post(`${url}/components/`, data).then(response=>{
-      // props.setError(false);
-      // props.setSaving(false);
-      console.log("Lo recontra guardó viejaaaaaaaa")
+      window.location.href = "http://localhost:3000/platos";
     }).catch(error=>{
       console.log(error.message);
     })

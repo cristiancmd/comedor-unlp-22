@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle, faMinusCircle} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import Select from 'react-select';
 import IngredientForm from "../ingredientes/form";
 import './cargar_componente.css';
@@ -12,11 +12,10 @@ const AgregarIngrediente = (props) => {
   const url = "http://localhost:8000/api";
 
   const [data, setData] = useState([]);
-  const [ingrediente_elegido, set_ingrediente_elegido] = useState([]);
-  const [measure, setMeasure] = useState([]);
-  const [mostrar_ingrediente, set_mostrar_ingrediente] = useState(false);
-  const [ingredientes_a_mostrar, set_ingrediente_a_mostrar] = useState([]);
   const [newIngredient, setNewIngredient] = useState(false);
+  const [measure, setMeasure] = useState([]);
+  const [formIndex, setFormIndex] = useState(null);
+  const [ingredientes_a_mostrar, set_ingrediente_a_mostrar] = useState([]);
   const [error, setError] = useState(false);
   const [saving, setSaving] = useState(false);
   const [cantidad_elegida, set_cantidad_elegida] = useState("1");
@@ -67,11 +66,9 @@ const AgregarIngrediente = (props) => {
   useEffect(() => {
     peticionGet()
     opciones()
+    ingredientes_a_mostrar.map((item, index)=> console.log(index, item))
   }, [newIngredient]);
 
-  // useEffect(() => {
-  //   props.setValue('ingredients', ingredientes_a_mostrar)
-  // }, [ingredientes_a_mostrar])
 
   const getMeasure = (id) => {
     let ingrediente = data.filter(item => item.id === id)
@@ -91,21 +88,36 @@ const AgregarIngrediente = (props) => {
     remove(index);
   };
 
-  const capturar_ingrediente = (event, index) => {
-    set_ingrediente_elegido({id: event.value, name: event.label});
-    ingredientes_a_mostrar[index] = {"ingredient_id": event.value, "amount": cantidad_elegida}
-    measure[index] = getMeasure(event.value);
-    props.setValue(`ingredients[${index}].ingredient_id`, event.value);
+  const capturar_ingrediente = async (ingredient, index) => {
+    ingredientes_a_mostrar[index] = {"ingredient_id": ingredient.value, "amount": cantidad_elegida}
+    measure[index] = getMeasure(ingredient.value);
+    props.setValue(`ingredients[${index}].ingredient_id`, ingredient.value);
   }
 
-  const capturar_cantidad = async (event, index)=> {
+  const capturar_cantidad = (event, index)=> {
     event.persist();
     set_cantidad_elegida(event.target.value);
     props.setValue(`ingredients[${index}].amount`, event.target.value)
-    ingredientes_a_mostrar[index] = {"ingredient_id": ingrediente_elegido.value, "amount": event.target.value}
+    ingredientes_a_mostrar[index] = {"ingredient_id": ingredientes_a_mostrar[index].ingredient_id, "amount": event.target.value}
   }
 
-  const formClose = () => {
+  const openIngredientForm = (index) => {
+    setNewIngredient(true);
+    setFormIndex(index);
+  }
+
+  const ingredientHandleSubmit = async (data, e) => {
+    await axios.post(`${url}/ingredients/`, data).then(response=>{
+      setError(false);
+      setSaving(false);
+      setNewIngredient(false);
+      capturar_ingrediente({"value":response.data.id, "label":response.data.name}, formIndex);
+    }).catch(error=>{
+      console.log(error.message);
+    })
+  }
+
+  const closeIngredientForm = () => {
     setNewIngredient(false);
   }
 
@@ -127,6 +139,7 @@ const AgregarIngrediente = (props) => {
                           options={opciones()}
                           {...props.register(`ingredients[${index}].ingredient_id`, { required: true})}
                           onChange={(e) => capturar_ingrediente(e, index)}
+                          defaultValue={`ingredients[${index}].ingredient_id`}
                   />
                 </div>
               </div>
@@ -151,7 +164,7 @@ const AgregarIngrediente = (props) => {
               <div className="col-1 offset-1">
                 <button type="button" title="Agrega un nuevo ingrediente al listado"
                         className="btn btn-secondary d-flex justify-content-center w-100"
-                        onClick={() => setNewIngredient(true)}>
+                        onClick={() => openIngredientForm(index)}>
                   <span><FontAwesomeIcon icon={faPlusCircle}/></span>
                 </button>
               </div>
@@ -188,8 +201,8 @@ const AgregarIngrediente = (props) => {
         Agregar un nuevo ingrediente
       </ModalHeader>
       <ModalBody>
-        <IngredientForm formClose={formClose} setError={setError} setSaving={setSaving} ingredient={ingredient}
-                        setIngredient={setIngredient} handleSubmit={props.handleSubmit}/>
+        <IngredientForm formClose={closeIngredientForm} setError={setError} setSaving={setSaving} ingredient={ingredient}
+                        setIngredient={setIngredient} handleSubmit={ingredientHandleSubmit}/>
       </ModalBody>
     </Modal>
   </>)
