@@ -7,17 +7,17 @@
 }
 
 #numero_de_tarjeta_pagar_ticket {
-    width: 25.75rem;
+    width: 25rem;
 }
 
 #codigo_de_seguridad_pagar_ticket {
-    width: 11.5rem;
+    width: 11rem;
 }
 
 #fecha_de_vencimiento_pagar_ticket {
-    width: 12rem;
+    width: 11rem;
 }
 
 #titular_pagar_ticket {
-    width: 21.1rem;
+    width: 25rem;
 }
