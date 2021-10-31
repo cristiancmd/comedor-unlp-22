@@ -5,13 +5,26 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useContext } from "react";
 import { UserContext } from "../../UserContext";
+import axios from "axios"
 
 const Header = () => {
   const { user, loginUser } = useContext(UserContext); // utilizar esta linea en los componentes necesarios
 
+  const url_usuario = "http://localhost:8000/api/usuarios/";
+
+  const [usuario, set_usuario] = React.useState([]);
+
+  const get_usuario = () => {
+    axios.get(url_usuario).then(response => {
+        set_usuario(response.data.filter(usuario => usuario.id == user.user.id)[0])
+    }).catch(error=>{
+        console.log(error.message);
+    })
+}
+  
   const getUserName = () => {
     if (user) {
-      return user.user.username;
+      return usuario.firstname;
     } else return null;
   };
 
@@ -23,6 +36,7 @@ const Header = () => {
 
   useEffect(() => {
     console.log("header user:  ", user);
+    get_usuario()
   }, []);
 
   const logOut = () => {
