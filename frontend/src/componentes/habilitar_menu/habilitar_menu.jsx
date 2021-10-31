@@ -122,6 +122,7 @@ const Habilitar_menu = () => {
                             clearIcon={null} 
                             onChange={capturar_el_ingreso_de_fecha}
                             onInput={(d) => eliminar_lo_que_se_escribe(d)}
+                            minDate={new Date()}
                         />
 
                         <div>
