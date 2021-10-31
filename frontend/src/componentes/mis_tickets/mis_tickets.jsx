@@ -24,7 +24,7 @@ const Mis_tickets = () => {
   
     const get_tickets = () => {
         axios.get(url_tickets, {params: {user: user.user.id}}).then(response => {
-            set_tickets(response.data.filter(ticket => ticket.date >= fecha_actual()))
+            set_tickets(response.data.filter(ticket => ticket.date >= fecha_actual()).sort((ticket1, ticket2) => ticket1.date > ticket2.date))
         }).catch(error=>{
             console.log(error.message);
         })
