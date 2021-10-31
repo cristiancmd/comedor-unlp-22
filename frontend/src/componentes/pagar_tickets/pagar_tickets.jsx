@@ -221,7 +221,7 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
           console.log(error.response);
           if (error.response.status === 400) {
             setErrorMessage(
-              "Ya existen tickets para las fechas seleccionadas. Por favor selecciona menus en otras fechas."
+              "Ya existen tickets para las fechas seleccionadas. Por favor seleccione menús en otras fechas."
             );
             setError(true);
           }

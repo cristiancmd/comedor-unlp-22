@@ -98,7 +98,7 @@ const Mis_tickets = () => {
             </div>
 
             <main>
-                <h1 className="text-center">Mis tickets</h1>   
+                <h2 className="text-center">Mis tickets</h2>   
                 <div className="row mt-5">
                     <div className="col-10 offset-1">
                         <table className="table">
