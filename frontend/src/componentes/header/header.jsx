@@ -40,35 +40,42 @@ const Header = () => {
         style={{ backgroundColor: "rgb(138, 7, 7)" }}
       >
         <div className="container-fluid">
-          <Link to={"/home"}>
-            <img src={icono_home} width="50px" alt="home" />
-          </Link>
 
           {getUserStaff() && (
-            <div className="nav flex-row col-4  " style={{ paddingLeft: "2%" }}>
-              <Link to={"/menus"} className="nav-link">
-                Menús
+            <>
+              <Link to={"/home"}>
+                <img src={icono_home} width="50px" alt="home" />
               </Link>
-              <Link to={"/platos"} className="nav-link ">
-                Platos
-              </Link>
-              <Link to={"/ingredientes"} className="nav-link ">
-                Ingredientes
-              </Link>
-              <Link to={"/tickets/canjear"} className="nav-link ">
-                Canjear ticket
-              </Link>
-            </div>
+              <div className="nav flex-row col-4  " style={{ paddingLeft: "2%" }}>
+                <Link to={"/menus"} className="nav-link">
+                  Menús
+                </Link>
+                <Link to={"/platos"} className="nav-link ">
+                  Platos
+                </Link>
+                <Link to={"/ingredientes"} className="nav-link ">
+                  Ingredientes
+                </Link>
+                <Link to={"/tickets/canjear"} className="nav-link ">
+                  Canjear ticket
+                </Link>
+              </div>
+            </>
           )}
           {!getUserStaff() && (
-            <div className="nav flex-row col-4 " style={{ paddingLeft: "2%" }}>
-              <Link to={"/tickets/comprar"} className="nav-link">
-                Comprar tickets
+            <>
+              <Link to={"/mistickets"}>
+                <img src={icono_home} width="50px" alt="home" />
               </Link>
-              <Link to={"/mistickets"} className="nav-link">
-                Mis tickets
-              </Link>
-            </div>
+              <div className="nav flex-row col-4 " style={{ paddingLeft: "2%" }}>
+                <Link to={"/tickets/comprar"} className="nav-link">
+                  Comprar tickets
+                </Link>
+                <Link to={"/mistickets"} className="nav-link">
+                  Mis tickets
+                </Link>
+              </div>
+            </>
           )}
           <div className="container-fluid float-end">
             <Link
