@@ -174,6 +174,7 @@ class Ticket(models.Model):
     take_away = models.BooleanField(_("Vianda"), default=False)
     campus = models.ForeignKey(Campus, related_name="tickets", on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, verbose_name="Pertenece a", related_name="tickets", on_delete=models.CASCADE)
+    canjeado = models.BooleanField(_("Canjeado"), default=False)
 
     class Meta:
         verbose_name = _("Ticket")

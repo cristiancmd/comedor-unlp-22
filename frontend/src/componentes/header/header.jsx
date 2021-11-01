@@ -23,9 +23,13 @@ const Header = () => {
 }
   
   const getUserName = () => {
-    if (user) {
+    if (usuario) {
       return usuario.firstname;
-    } else return null;
+    } else {
+      console.log(user.user.username)
+      return user.user.username;
+    }
+    
   };
 
   const getUserStaff = () => {
@@ -35,7 +39,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log("header user:  ", user);
+    // console.log("header user:  ", user);
     get_usuario()
   }, []);
 
@@ -60,7 +64,7 @@ const Header = () => {
               <Link to={"/home"}>
                 <img src={icono_home} width="50px" alt="home" />
               </Link>
-              <div className="nav flex-row col-4  " style={{ paddingLeft: "2%" }}>
+              <div className="nav flex-row col-6  " style={{ paddingLeft: "2%" }}>
                 <Link to={"/menus"} className="nav-link">
                   Menús
                 </Link>

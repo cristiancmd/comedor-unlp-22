@@ -108,6 +108,7 @@ const Mis_tickets = () => {
                                     <th>Menú</th>
                                     <th>Modalidad</th>
                                     <th>Sede</th>
+                                    <th>Canjeado</th>
                                 </tr>
                             </thead>
             
@@ -120,6 +121,7 @@ const Mis_tickets = () => {
                                         <td className="pt-3">{nombre_del_menu(ticket.menu)}</td>
                                         <td className="pt-3">{ticket.take_away?"Vianda":"Comedor"}</td>
                                         <td className="pt-3">{nombre_de_la_sede(ticket.campus)}</td>
+                                        <td className="pt-3">{ticket.canjeado?"SI":"NO"}</td>
                                     </tr>
                                 )
                                 })}
