@@ -1,5 +1,6 @@
 #price{
     padding-left: 1rem !important;
+    margin-left: 0 !important;
 }
 
 
@@ -12,6 +13,13 @@
     width: 80%;
 }
 
+
+.price .input-group-text{
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
 #name{
     width: 82.5%;
+
 }
