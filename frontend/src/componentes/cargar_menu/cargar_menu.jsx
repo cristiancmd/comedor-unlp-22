@@ -289,19 +289,26 @@ const Cargar_menu = () => {
                   {errors.drink_id?.type === 'required' && "Este campo es requerido"}
                 </div>
               </div>
-              <div className="row mb-3 justify-content-between align-items-end">
+              <div className="row mb-3 justify-content-between align-items-baseline">
                 <div className="col-4">
                   <div className="form-group">
                     <label htmlFor="price">Precio</label>
-                    <input type="number"
-                           id="price"
-                           name="price"
-                           placeholder="300"
-                           className="form-control"
-                           {...register("price", { pattern: /^[0-9]+$/i })}
-                           onChange={capturar_precio}
-                           value={menu.price}
-                      />
+                    <div className="input-group px-0">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text">$</span>
+                      </div>
+                      <input type="number"
+                             id="price"
+                             name="price"
+                             aria-label="Precio expresado en pesos"
+                             placeholder="300"
+                             min="0"
+                             className="form-control"
+                             {...register("price", { pattern: /^[0-9]+$/i })}
+                             onChange={capturar_precio}
+                             value={menu.price}
+                        />
+                    </div>
                   </div>
                 </div>
                 <div className="col-4">
