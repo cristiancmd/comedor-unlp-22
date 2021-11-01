@@ -71,16 +71,23 @@ const Listado_de_menus = () => {
               <th className="col-1"><span className="tilde_celiaco">&#10003;</span></th>:
               <th className="col-1"><span className="tilde_celiaco">&#x2715;</span></th>
             }
-            <td className="col-4">
-              <Link to={"/menus/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
-              {"   "}
-              {
-                menu.enabled?
-                <button className="btn btn-secondary" onClick={()=>{seleccionarMenu(menu); setModalDeshabilitar(true)}}>Desabilitar</button>:
-                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success">Habilitar</button></Link>
-              }
-              {"   "}
-              <button className="btn btn-danger" onClick={()=>{seleccionarMenu(menu); setModalEliminar(true)}}>Eliminar</button>
+            <td >
+              
+              <div className="row justify-content-evenly">
+                <div className="col-1"> 
+                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success ">Vender</button></Link>
+
+                </div>
+                < div className="col-1">
+                <Link to={"/menus/detalle/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
+
+                </div>
+                <div className="col-1" >
+                <button className="btn btn-danger" onClick={()=>{seleccionarMenu(menu); setModalEliminar(true)}}>Eliminar</button>
+
+                </div>
+
+              </div>
             </td>
           </tr>
         )
