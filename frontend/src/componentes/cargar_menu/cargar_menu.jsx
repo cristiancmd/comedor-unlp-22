@@ -29,7 +29,7 @@ const Cargar_menu = () => {
 
   const [menu, setMenu] = useState({
     "name": "",
-    "price": 0,
+    "price": "",
     "celiac": false,
     "vegetarian": false,
     "starter_id": [],
