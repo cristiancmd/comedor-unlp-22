@@ -15,15 +15,12 @@ const Cargar_menu = () => {
 
   const url = "http://localhost:8000/api";
 
-  const [nombre_elegido, set_nombre_elegido] = useState([])
-  const [entrada_elegida, set_entrada_elegida] = useState([])
-  const [plato_principal_elegido, set_plato_principal_elegido] = useState([])
-  const [postre_elegido, set_postre_elegido] = useState([])
-  const [bebida_elegida, set_bebida_elegida] = useState([])
-  const [precio_elegido, set_precio_elegido] = useState([])
-  const [checkbox_vegetariano, set_checkbox_vegetariano] = useState(false)
-  const [checkbox_celiaco, set_checkbox_celiaco] = useState(false)
   const [modal_componente, set_modal_componente] = useState(false)
+  const [component, setComponent] = useState({
+    "name":"",
+    "type":"",
+    "ingredients":[],
+  })
   const [las_opciones_de_entrada, set_opciones_de_entrada] = useState([])
   const [las_opciones_de_plato_principal, set_las_opciones_de_plato_principal] = useState([])
   const [las_opciones_de_postre, set_las_opciones_de_postre] = useState([])
@@ -32,9 +29,9 @@ const Cargar_menu = () => {
 
   const [menu, setMenu] = useState({
     "name": "",
-    "price": "",
-    "celiac": "",
-    "vegetarian": "",
+    "price": 0,
+    "celiac": false,
+    "vegetarian": false,
     "starter_id": [],
     "principal_id": [],
     "dessert_id": [],
@@ -43,10 +40,11 @@ const Cargar_menu = () => {
 
   useEffect(() => {
     peticionGet()
+    setValue("price", 0);
   }, [])
 
   useEffect(() => {
-    peticionGet()
+    peticionGet();
   }, [modal_componente])
 
   const peticionGet = () => {
@@ -76,7 +74,7 @@ const Cargar_menu = () => {
 
   const opciones_plato_principal = (datos) => {
     let devolver = []
-    let platos_principales = datos.filter(componente => componente.type === 2)
+      let platos_principales = datos.filter(componente => componente.type === 2)
     platos_principales.map(componente => {
       devolver.push({label:componente.name,value:componente.id})
     })
@@ -101,26 +99,27 @@ const Cargar_menu = () => {
     set_las_opciones_de_postre(devolver)
   }
 
+  const newComponent = (type, label) => {
+    setComponent({...component, "type": {value: type, label: label}});
+    set_modal_componente(true)
+  }
+
   const capturar_entrada = event => {
-    // set_entrada_elegida(event.value);
     setMenu({...menu, "starter_id": event.value});
     setValue("starter_id", [event.value]);
   }
 
   const capturar_plato_principal = event => {
-    // set_plato_principal_elegido(event.value);
     setMenu({...menu, "principal_id": event.value});
     setValue("principal_id", [event.value]);
   }
 
   const capturar_postre = event => {
-    // set_postre_elegido(event.value);
     setMenu({...menu, "dessert_id": event.value});
     setValue("dessert_id", [event.value]);
   }
 
   const capturar_bebida = event => {
-    // set_bebida_elegida(event.value);
     setMenu({...menu, "drink_id": event.value});
     setValue("drink_id", [event.value]);
   }
@@ -131,26 +130,27 @@ const Cargar_menu = () => {
   }
 
   const capturar_vegetariano = event => {
-    set_checkbox_vegetariano(event.target.checked);
     setMenu({...menu, "vegetarian": event.target.checked});
     setValue("vegetarian", event.target.checked);
   }
 
   const capturar_celiaco = event => {
-    set_checkbox_celiaco(event.target.checked);
     setMenu({...menu, "celiac": event.target.checked});
     setValue("celiac", event.target.checked);
   }
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-
     await axios.post(`${url}/menus/`, data).then(response=>{
+      window.location.href = "http://localhost:3000/menus";
     }).catch(error=>{
       console.log(error.message);
     })
 
-    window.location.href = "http://localhost:3000/menus";
+  }
+
+  const cerrar_modal = () => {
+    set_modal_componente(false)
   }
 
   return (
@@ -197,7 +197,7 @@ const Cargar_menu = () => {
                       name="starter_id"
                       options={las_opciones_de_entrada}
                       placeholder={"Seleccione un plato..."}
-                      {...register("starter_id", { required: true})}
+                      {...register("starter_id", {required: true})}
                       onChange={(e) => capturar_entrada(e)}
                       defaultValue={menu.starter_id}
                     />
@@ -205,7 +205,7 @@ const Cargar_menu = () => {
                 </div>
                 <div className="col-2">
                   <button className="btn btn-secondary d-flex justify-content-center w-100"
-                          onClick={()=>set_modal_componente(true)}
+                          onClick={()=>newComponent(1, "Entrada")}
                           title="Agrega una nueva entrada al listado">
                     <span><FontAwesomeIcon icon={faPlusCircle}/></span>
                   </button>
@@ -224,13 +224,13 @@ const Cargar_menu = () => {
                       placeholder={"Seleccione un plato..."}
                       {...register("principal_id", { required: true})}
                       onChange={(e) => capturar_plato_principal(e)}
-                      defaultValue={menu.principal_id}
+                      defaultValue={component?.id ? component.id : menu.principal_id}
                     />
                   </div>
                 </div>
                 <div className="col-2">
                   <button className="btn btn-secondary d-flex justify-content-center w-100"
-                          onClick={()=>set_modal_componente(true)}
+                          onClick={()=>newComponent(2, "Principal")}
                           title="Agrega un nuevo plato principal al listado">
                     <span><FontAwesomeIcon icon={faPlusCircle}/></span>
                   </button>
@@ -255,7 +255,7 @@ const Cargar_menu = () => {
                 </div>
                 <div className="col-2">
                   <button className="btn btn-secondary d-flex justify-content-center w-100"
-                          onClick={()=>set_modal_componente(true)}
+                          onClick={()=>newComponent(3, "Postre")}
                           title="Agrega un nuevo postre al listado">
                     <span><FontAwesomeIcon icon={faPlusCircle}/></span>
                   </button>
@@ -274,13 +274,13 @@ const Cargar_menu = () => {
                       placeholder={"Seleccione un plato..."}
                       {...register("drink_id", { required: true})}
                       onChange={(e) => capturar_bebida(e)}
-                      defaultValue={menu.drink_id}
+                      defaultValue={() => menu.drink_id}
                     />
                   </div>
                 </div>
                 <div className="col-2">
                   <button className="btn btn-secondary d-flex justify-content-center w-100"
-                          onClick={()=>set_modal_componente(true)}
+                          onClick={()=>newComponent(4, "Bebida")}
                           title="Agrega una nueva bebida al listado">
                     <span><FontAwesomeIcon icon={faPlusCircle}/></span>
                   </button>
@@ -351,7 +351,7 @@ const Cargar_menu = () => {
         <ModalHeader className="d-flex justify-content-center">
           Crear un nuevo plato
         </ModalHeader>
-        <Formulario set_modal_componente={set_modal_componente}/>
+        <ModalBody><Formulario menu_cerrar_modal={cerrar_modal} component={component} setComponent={setComponent}/></ModalBody>
         <ModalFooter></ModalFooter> {/* SIN EL FOOTER SE VE FEO */}
       </Modal>
     </>

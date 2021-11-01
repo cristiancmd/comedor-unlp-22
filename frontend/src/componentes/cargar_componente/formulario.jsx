@@ -8,7 +8,7 @@ import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import { useForm, Controller } from 'react-hook-form';
 import AgregarIngrediente from './AgregarIngrediente';
 
-const Formulario = ({ set_modal_componente }) => {
+const Formulario = ({ menu_cerrar_modal, component, setComponent }) => {
   const url = "http://localhost:8000/api";
 
   const [newIngredient, setNewIngredient] = useState(false);
@@ -34,6 +34,10 @@ const Formulario = ({ set_modal_componente }) => {
 
   useEffect(() => {
     peticionGetTipos()
+    if (component){
+      setValue('type', component.type.value)
+      setNuevoComponente({...nuevo_componente, "type": component.type.value});
+    }
   }, [])
 
   const peticionGetTipos = () => {
@@ -53,20 +57,31 @@ const Formulario = ({ set_modal_componente }) => {
     setValue('type', e.value)
     await setNuevoComponente({...nuevo_componente, "type": e.value});
   }
-  
+
   const onSubmit = async (data, e) => {
-    console.log(data)
     await axios.post(`${url}/components/`, data).then(response=>{
-      window.location.href = "http://localhost:3000/platos";
+      if (setComponent){
+        // setComponent({...component, "id": response.data.id, "name": response.data.name, "type":
+        //   { value: response.data.type,
+        //     label: "Entrada",
+        //   }});
+        menu_cerrar_modal();
+      }
+      else{
+        window.location.href = "http://localhost:3000/platos";
+      }
     }).catch(error=>{
       console.log(error.message);
     })
   }
+
+
   const cerrar_modal = async c => {
     c.preventDefault()
-    set_modal_componente(false)
+    if (menu_cerrar_modal){
+      menu_cerrar_modal();
+    }
   }
-  const required = value => value ? undefined : 'Required'
 
   return (
     <>
@@ -100,10 +115,11 @@ const Formulario = ({ set_modal_componente }) => {
                     <Select
                       name="type"
                       options={tipos}
-                      placeholder={"Seleccione un tipo de plato..."}
-                      {...register("type", { required: true})}
+                      placeholder={"Seleccione un tipo..."}
+                      {...register("type", {required: true})}
                       onChange={(e) => capturar_tipo(e)}
-                      defaultValue={nuevo_componente.type}
+                      defaultValue={component?.type ? component.type : nuevo_componente.type }
+                      isDisabled={component?.type ?  true : false }
                     />
                     <div className="error">
                       {errors.type?.type === 'required' && "Este campo es requerido"}
@@ -112,12 +128,6 @@ const Formulario = ({ set_modal_componente }) => {
                 </div>
               </div>
             </div>
-            {/*<div className="row justify-content-between align-items-end">*/}
-            {/*  <div className="form-group">*/}
-            {/*      <label htmlFor="name">Ingredientes</label>*/}
-            {/*      <p>Puede seleccionar la cantidad de ingredientes que deseé: </p>*/}
-            {/*  </div>*/}
-            {/*</div>*/}
             <AgregarIngrediente
               register={register}
               errors={errors}
