@@ -1,6 +1,6 @@
 import './cargar_menu.css'
 import Header from '../header/header'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios"
 import Select from 'react-select'
 import { Link } from 'react-router-dom'
@@ -8,227 +8,354 @@ import { Breadcrumb, BreadcrumbItem, Modal, ModalHeader, ModalBody, ModalFooter 
 import Formulario from '../cargar_componente/formulario'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
+import {Form} from 'reactstrap';
+import { useForm, Controller } from 'react-hook-form';
 
 const Cargar_menu = () => {
 
-    const url = "http://localhost:8000/api/components/";
-    const url_menus = "http://localhost:8000/api/menus/";
+  const url = "http://localhost:8000/api";
 
-    const [data, setData] = React.useState([])
-    const [nombre_elegido, set_nombre_elegido] = React.useState([])
-    const [entrada_elegida, set_entrada_elegida] = React.useState([])
-    const [plato_principal_elegido, set_plato_principal_elegido] = React.useState([])
-    const [postre_elegido, set_postre_elegido] = React.useState([])
-    const [bebida_elegida, set_bebida_elegida] = React.useState([])
-    const [precio_elegido, set_precio_elegido] = React.useState([])
-    const [checkbox_vegetariano, set_checkbox_vegetariano] = React.useState(false)
-    const [checkbox_celiaco, set_checkbox_celiaco] = React.useState(false)
-    const [modal_componente, set_modal_componente] = React.useState(false)
-    const [las_opciones_de_entrada, set_las_opciones_de_entrada] = React.useState([])
-    const [las_opciones_de_plato_principal, set_las_opciones_de_plato_principal] = React.useState([])
-    const [las_opciones_de_postre, set_las_opciones_de_postre] = React.useState([])
-    const [las_opciones_de_bebida, set_las_opciones_de_bebida] = React.useState([])
+  const [modal_componente, set_modal_componente] = useState(false)
+  const [component, setComponent] = useState({
+    "name":"",
+    "type":"",
+    "ingredients":[],
+  })
+  const [las_opciones_de_entrada, set_opciones_de_entrada] = useState([])
+  const [las_opciones_de_plato_principal, set_las_opciones_de_plato_principal] = useState([])
+  const [las_opciones_de_postre, set_las_opciones_de_postre] = useState([])
+  const [las_opciones_de_bebida, set_las_opciones_de_bebida] = useState([])
+  const {register, formState: { errors }, setValue, setError,  handleSubmit} = useForm();
 
-    React.useEffect(() => {
-        peticionGet()
-    }, [])
+  const [menu, setMenu] = useState({
+    "name": "",
+    "price": 0,
+    "celiac": false,
+    "vegetarian": false,
+    "starter_id": [],
+    "principal_id": [],
+    "dessert_id": [],
+    "drink_id": [],
+  });
 
-    React.useEffect(() => {
-        peticionGet()
-    }, [modal_componente])
+  useEffect(() => {
+    peticionGet()
+    setValue("price", 0);
+  }, [])
 
-    const peticionGet = () => {
-        axios.get(url).then(response => {
-            setData(response.data);
-            opciones_entrada(response.data)
-            opciones_plato_principal(response.data)
-            opciones_postre(response.data)
-            opciones_bebida(response.data)
-        }).catch(error=>{
-            console.log(error.message);
-        })
-    }
+  useEffect(() => {
+    peticionGet();
+  }, [modal_componente])
 
-    const capturar_nombre = async n => {
-        n.persist();
-        set_nombre_elegido(n.target.value);
-    }
+  const peticionGet = () => {
+    axios.get(`${url}/components/`).then(response => {
+      opciones_entrada(response.data)
+      opciones_plato_principal(response.data)
+      opciones_postre(response.data)
+      opciones_bebida(response.data)
+    }).catch(error=>{
+      console.log(error.message);
+    })
+  }
 
-    const opciones_entrada = (datos) => {
-        let devolver = []
-        let entradas = datos.filter(componente => componente.type === 1)
-        entradas.map(componente => {
-            devolver.push({label:componente.name,value:componente.id})
-        })
-        set_las_opciones_de_entrada(devolver)
-    }
+  const capturar_nombre = async event => {
+    event.persist();
+    await setMenu({...menu, "name": event.target.value});
+  }
 
-    const opciones_plato_principal = (datos) => {
-        let devolver = []
-        let platos_principales = datos.filter(componente => componente.type === 2)
-        platos_principales.map(componente => {
-            devolver.push({label:componente.name,value:componente.id})
-        })
-        set_las_opciones_de_plato_principal(devolver)
-    }
+  const opciones_entrada = (datos) => {
+    let devolver = []
+    let entradas = datos.filter(componente => componente.type === 1)
+    entradas.map(componente => {
+      devolver.push({label:componente.name,value:componente.id})
+    })
+    set_opciones_de_entrada(devolver)
+  }
 
-    const opciones_bebida = (datos) => {
-        let devolver = []
-        let bebidas = datos.filter(componente => componente.type === 3)
-        bebidas.map(componente => {
-            devolver.push({label:componente.name,value:componente.id})
-        })
-        set_las_opciones_de_bebida(devolver)
-    }
+  const opciones_plato_principal = (datos) => {
+    let devolver = []
+      let platos_principales = datos.filter(componente => componente.type === 2)
+    platos_principales.map(componente => {
+      devolver.push({label:componente.name,value:componente.id})
+    })
+    set_las_opciones_de_plato_principal(devolver)
+  }
 
-    const opciones_postre = (datos) => {
-        let devolver = []
-        let postres = datos.filter(componente => componente.type === 4)
-        postres.map(componente => {
-            devolver.push({label:componente.name,value:componente.id})
-        })
-        set_las_opciones_de_postre(devolver)
-    }
+  const opciones_bebida = (datos) => {
+    let devolver = []
+    let bebidas = datos.filter(componente => componente.type === 3)
+    bebidas.map(componente => {
+      devolver.push({label:componente.name,value:componente.id})
+    })
+    set_las_opciones_de_bebida(devolver)
+  }
 
-    const capturar_entrada = e => {
-        set_entrada_elegida(e.value);
-    }
+  const opciones_postre = (datos) => {
+    let devolver = []
+    let postres = datos.filter(componente => componente.type === 4)
+    postres.map(componente => {
+      devolver.push({label:componente.name,value:componente.id})
+    })
+    set_las_opciones_de_postre(devolver)
+  }
 
-    const capturar_plato_principal = p => {
-        set_plato_principal_elegido(p.value);
-    }
+  const newComponent = (type, label) => {
+    setComponent({...component, "type": {value: type, label: label}});
+    set_modal_componente(true)
+  }
 
-    const capturar_postre = p => {
-        set_postre_elegido(p.value);
-    }
+  const capturar_entrada = event => {
+    setMenu({...menu, "starter_id": event.value});
+    setValue("starter_id", [event.value]);
+  }
 
-    const capturar_bebida = b => {
-        set_bebida_elegida(b.value);
-    }
+  const capturar_plato_principal = event => {
+    setMenu({...menu, "principal_id": event.value});
+    setValue("principal_id", [event.value]);
+  }
 
-    const capturar_precio = async p => {
-        p.persist();
-        set_precio_elegido(p.target.value);
-    }
+  const capturar_postre = event => {
+    setMenu({...menu, "dessert_id": event.value});
+    setValue("dessert_id", [event.value]);
+  }
 
-    const capturar_vegetariano = v => {
-        set_checkbox_vegetariano(v.target.checked);
-    }
+  const capturar_bebida = event => {
+    setMenu({...menu, "drink_id": event.value});
+    setValue("drink_id", [event.value]);
+  }
 
-    const capturar_celiaco = c => {
-        set_checkbox_celiaco(c.target.checked);
-    }
+  const capturar_precio = async event => {
+    event.persist();
+    await setMenu({...menu, "price": event.target.value});
+  }
 
-    const guardar_menu = async m => {
-        m.preventDefault();
-        let menu = {
-            "name": nombre_elegido,
-            "price": precio_elegido,
-            "celiac": checkbox_celiaco,
-            "vegetarian": checkbox_vegetariano,
-            "starter_id": [entrada_elegida],
-            "principal_id": [plato_principal_elegido],
-            "dessert_id": [postre_elegido],
-            "drink_id": [bebida_elegida],
-        }
+  const capturar_vegetariano = event => {
+    setMenu({...menu, "vegetarian": event.target.checked});
+    setValue("vegetarian", event.target.checked);
+  }
 
-        await axios.post(url_menus,menu).then(response=>{
-        }).catch(error=>{
-            console.log(error.message);
-        })
+  const capturar_celiaco = event => {
+    setMenu({...menu, "celiac": event.target.checked});
+    setValue("celiac", event.target.checked);
+  }
 
-        window.location.href = "http://localhost:3000/menus";
-    }
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    await axios.post(`${url}/menus/`, data).then(response=>{
+      window.location.href = "http://localhost:3000/menus";
+    }).catch(error=>{
+      console.log(error.message);
+    })
 
-    return (
-        <>
-            {Header()}
-            <main>
-                <div>
-                  <Breadcrumb tag="nav" listTag="div">
-                    <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
-                    <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
-                    <BreadcrumbItem active tag="span">Cargar menú</BreadcrumbItem>
-                  </Breadcrumb>
-                </div>
-                <h1 className="d-flex justify-content-center">Cargar menú</h1>
-                <div className="d-flex justify-content-center">
-                    <div id="contenedor_cargar_menu">
-                        
-                        <h4 className="mt-3">Nombre</h4>
-                        <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un nombre" onChange={capturar_nombre}/>
-                        
+  }
 
-                        <h4>Entrada</h4>
-                        <Select className="select_cargar_menu" options={las_opciones_de_entrada} onChange={capturar_entrada}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
-                        </button>
+  const cerrar_modal = () => {
+    set_modal_componente(false)
+  }
 
-                        <div className="clearfix"></div>
-
-                        <h4>Plato principal</h4>
-                        <Select className="select_cargar_menu" options={las_opciones_de_plato_principal} onChange={capturar_plato_principal}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
-                        </button>
-
-                        <div className="clearfix"></div>
-
-                        <h4>Postre</h4>
-                        <Select className="select_cargar_menu" options={las_opciones_de_postre} onChange={capturar_postre}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
-                        </button>
-
-                        <div className="clearfix"></div>
-
-                        <h4>Bebida</h4>
-                        <Select className="select_cargar_menu" options={las_opciones_de_bebida} onChange={capturar_bebida}/>
-                        <button id="nuevo_componente_cargar_menu" className="btn btn-secondary" onClick={()=>set_modal_componente(true)}>
-                            <span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>Crear
-                        </button>
-
-                        <div className="clearfix"></div>
-
-                        <h4>Precio</h4>
-                        <input id="nombre_cargar_menu" className="form-control" type="text" placeholder="Ingrese un precio" onChange={capturar_precio}/>
-
-                        <div className="clearfix"></div>
-
-                        <div className="d-flex justify-content-around mt-3">
-                            <h4>Apto para vegetarianos</h4>
-                            <h4>Apto para celíacos</h4>
-                        </div>
-
-                        <div className="d-flex justify-content-around">
-                            <input type="checkbox" checked={checkbox_vegetariano} onChange={capturar_vegetariano}/>
-                            <input type="checkbox" checked={checkbox_celiaco} onChange={capturar_celiaco}/>
-                        </div>
-
-                        <div className="clearfix"></div>
-
-                        <div className="row justify-content-center mt-5">
-                            <div className="col-3">
-                                <Link to={"/menus"}><button className="btn btn-secondary">Cancelar</button></Link>
-                            </div>
-                            <div className="col-3 d-flex justify-content-end">
-                                <button className="btn btn-primary" onClick={guardar_menu}>Guardar</button>
-                            </div>
-                        </div>
+  return (
+    <>
+      {Header()}
+      <main>
+        <div>
+          <Breadcrumb tag="nav" listTag="div">
+            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
+            <BreadcrumbItem active tag="span">Cargar menú</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
+        <h1 className="d-flex justify-content-center">Cargar menú</h1>
+        <div className="row">
+          <div className="col-6 offset-3">
+            <Form className="text-left" onSubmit={handleSubmit(onSubmit)}>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-12">
+                  <div className="form-group">
+                    <label htmlFor="name">Nombre *</label>
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           placeholder="Ingrese un nombre..."
+                           className="form-control"
+                           {...register("name", { required: true, maxLength: 30, pattern: /^['a-zA-ZÀ-ÿ\u00f1\u00d1'\s-]+$/i })}
+                           onChange={capturar_nombre}
+                           value={menu.name}
+                      />
+                    <div className="error">
+                      {errors.name?.type === 'required' && "Este campo es requerido"}
+                      {errors.name?.type === 'maxLength' && "El límite de caracteres es de 30"}
+                      {errors.name?.type === 'pattern' && "Este campo solo acepta caracteres alfabéticos"}
                     </div>
+                  </div>
                 </div>
-            </main>
+              </div>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-10">
+                  <div className="form-group">
+                    <label htmlFor="starter_id">Entrada *</label>
+                    <Select
+                      name="starter_id"
+                      options={las_opciones_de_entrada}
+                      placeholder={"Seleccione un plato..."}
+                      {...register("starter_id", {required: true})}
+                      onChange={(e) => capturar_entrada(e)}
+                      defaultValue={menu.starter_id}
+                    />
+                  </div>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-secondary d-flex justify-content-center w-100"
+                          onClick={()=>newComponent(1, "Entrada")}
+                          title="Agrega una nueva entrada al listado">
+                    <span><FontAwesomeIcon icon={faPlusCircle}/></span>
+                  </button>
+                </div>
+                <div className="error">
+                  {errors.starter_id?.type === 'required' && "Este campo es requerido"}
+                </div>
+              </div>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-10">
+                  <div className="form-group">
+                    <label htmlFor="principal_id">Plato principal *</label>
+                    <Select
+                      name="principal_id"
+                      options={las_opciones_de_plato_principal}
+                      placeholder={"Seleccione un plato..."}
+                      {...register("principal_id", { required: true})}
+                      onChange={(e) => capturar_plato_principal(e)}
+                      defaultValue={component?.id ? component.id : menu.principal_id}
+                    />
+                  </div>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-secondary d-flex justify-content-center w-100"
+                          onClick={()=>newComponent(2, "Principal")}
+                          title="Agrega un nuevo plato principal al listado">
+                    <span><FontAwesomeIcon icon={faPlusCircle}/></span>
+                  </button>
+                </div>
+                <div className="error">
+                  {errors.principal_id?.type === 'required' && "Este campo es requerido"}
+                </div>
+              </div>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-10">
+                  <div className="form-group">
+                    <label htmlFor="dessert_id">Postre *</label>
+                    <Select
+                      name="dessert_id"
+                      options={las_opciones_de_postre}
+                      placeholder={"Seleccione un plato..."}
+                      {...register("dessert_id", { required: true})}
+                      onChange={(e) => capturar_postre(e)}
+                      defaultValue={menu.dessert_id}
+                    />
+                  </div>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-secondary d-flex justify-content-center w-100"
+                          onClick={()=>newComponent(3, "Postre")}
+                          title="Agrega un nuevo postre al listado">
+                    <span><FontAwesomeIcon icon={faPlusCircle}/></span>
+                  </button>
+                </div>
+                <div className="error">
+                  {errors.dessert_id?.type === 'required' && "Este campo es requerido"}
+                </div>
+              </div>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-10">
+                  <div className="form-group">
+                    <label htmlFor="drink_id">Bebida *</label>
+                    <Select
+                      name="drink_id"
+                      options={las_opciones_de_bebida}
+                      placeholder={"Seleccione un plato..."}
+                      {...register("drink_id", { required: true})}
+                      onChange={(e) => capturar_bebida(e)}
+                      defaultValue={() => menu.drink_id}
+                    />
+                  </div>
+                </div>
+                <div className="col-2">
+                  <button className="btn btn-secondary d-flex justify-content-center w-100"
+                          onClick={()=>newComponent(4, "Bebida")}
+                          title="Agrega una nueva bebida al listado">
+                    <span><FontAwesomeIcon icon={faPlusCircle}/></span>
+                  </button>
+                </div>
+                <div className="error">
+                  {errors.drink_id?.type === 'required' && "Este campo es requerido"}
+                </div>
+              </div>
+              <div className="row mb-3 justify-content-between align-items-end">
+                <div className="col-4">
+                  <div className="form-group">
+                    <label htmlFor="price">Precio</label>
+                    <input type="number"
+                           id="price"
+                           name="price"
+                           placeholder="300"
+                           className="form-control"
+                           {...register("price", { pattern: /^[0-9]+$/i })}
+                           onChange={capturar_precio}
+                           value={menu.price}
+                      />
+                  </div>
+                </div>
+                <div className="col-4">
+                  <div className="form-group text-center pb-2">
+                    <label htmlFor="vegetarian">Vegetariano</label>
+                    <div className="w-100 mt-1 text-center">
+                      <input type="checkbox"
+                           id="vegetarian"
+                           name="vegetarian"
+                           onChange={capturar_vegetariano}
+                           checked={menu.vegetarian}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-4">
+                  <div className="form-group text-center pb-2">
+                    <label htmlFor="celiac">Apto celíaco</label>
+                    <div className="w-100 mt-1 text-center">
+                      <input type="checkbox"
+                           id="celiac"
+                           name="celiac"
+                           onChange={capturar_celiaco}
+                           checked={menu.celiac}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="error">
+                    {errors.price?.type === 'pattern' && "Este campo solo acepta caracteres numéricos"}
+                  </div>
+              </div>
+              <div className="row justify-content-center mt-5">
+                <div className="col-3">
+                  <Link to={"/menus"}><button className="btn btn-secondary">Cancelar</button></Link>
+                </div>
+                <div className="col-3 d-flex justify-content-end">
+                  <button type="submit" className="btn btn-primary">Guardar</button>
+                </div>
+              </div>
+            </Form>
+          </div>
+        </div>
+      </main>
 
-            <Modal isOpen={modal_componente} id="modal_cargar_componente">
-                <ModalHeader className="d-flex justify-content-center">
-                    Crear un nuevo plato
-                </ModalHeader>
-                <Formulario set_modal_componente={set_modal_componente}/>
-                <ModalFooter></ModalFooter> {/* SIN EL FOOTER SE VE FEO */}
-            </Modal>
-        </>
-    )
+      <Modal isOpen={modal_componente} id="modal_cargar_componente">
+        <ModalHeader className="d-flex justify-content-center">
+          Crear un nuevo plato
+        </ModalHeader>
+        <ModalBody><Formulario menu_cerrar_modal={cerrar_modal} component={component} setComponent={setComponent}/></ModalBody>
+        <ModalFooter></ModalFooter> {/* SIN EL FOOTER SE VE FEO */}
+      </Modal>
+    </>
+  )
 }
 
 export default Cargar_menu
