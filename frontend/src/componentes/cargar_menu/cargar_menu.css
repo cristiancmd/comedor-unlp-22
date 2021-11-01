@@ -2,6 +2,7 @@
     padding-left: 1rem !important;
 }
 
+
 #modal_cargar_componente {
     max-width: 70%;
 }
@@ -9,4 +10,8 @@
 .select_cargar_menu {
     float: left;
     width: 80%;
+}
+
+#name{
+    width: 82.5%;
 }
