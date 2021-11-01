@@ -1,5 +1,6 @@
 #price{
     padding-left: 1rem !important;
+    margin-left: 0 !important;
 }
 
 #modal_cargar_componente {
@@ -9,4 +10,9 @@
 .select_cargar_menu {
     float: left;
     width: 80%;
+}
+
+.price .input-group-text{
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
 }

@@ -291,7 +291,7 @@ const Cargar_menu = () => {
               </div>
               <div className="row mb-3 justify-content-between align-items-baseline">
                 <div className="col-4">
-                  <div className="form-group">
+                  <div className="form-group price">
                     <label htmlFor="price">Precio</label>
                     <div className="input-group px-0">
                       <div className="input-group-prepend">
