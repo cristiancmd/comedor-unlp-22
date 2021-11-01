@@ -1,11 +1,5 @@
-#titulo_cargar_menu {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-#nombre_cargar_menu {
-    width: 80%;
-    margin-bottom: 1%;
+#price{
+    padding-left: 1rem !important;
 }
 
 #modal_cargar_componente {
