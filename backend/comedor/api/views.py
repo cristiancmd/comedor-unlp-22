@@ -1,4 +1,6 @@
+
 from django.http.response import Http404
+from rest_framework.fields import DateTimeField
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
@@ -232,7 +234,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         return ItemTicketSerializer  
 
     def get_queryset(self):
-        queryset = Ticket.objects.all()
+        queryset = Ticket.objects.filter(canjeado= False).order_by('date')
         date = self.request.query_params.get('date')
         user = self.request.query_params.get('user')
         if date is not None:
