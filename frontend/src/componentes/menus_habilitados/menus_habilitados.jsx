@@ -54,7 +54,7 @@ const Menus_habilitados = () => {
                   <Breadcrumb tag="nav" listTag="div">
                     <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
                     <BreadcrumbItem tag="a" href="/menus">Menús</BreadcrumbItem>
-                    <BreadcrumbItem active tag="span">Menus habilitados</BreadcrumbItem>
+                    <BreadcrumbItem active tag="span">Menús habilitados</BreadcrumbItem>
                   </Breadcrumb>
                 </div>
             <main>

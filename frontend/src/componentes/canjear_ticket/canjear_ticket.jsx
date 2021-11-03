@@ -38,7 +38,7 @@ const Canjear_ticket = () => {
     useEffect(() => {
         if (verificando) {
             set_verificando(false)
-            if (ticket.length === 0) {
+            if (ticket.length === 0 || ticket[0].canjeado) {
                 set_sin_ticket(true)
             }
             else {

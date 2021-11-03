@@ -24,7 +24,7 @@ const Mis_tickets = () => {
   
     const get_tickets = () => {
         axios.get(url_tickets, {params: {user: user.user.id}}).then(response => {
-            set_tickets(response.data.filter(ticket => ticket.date >= fecha_actual()).sort((ticket1, ticket2) => ticket1.date > ticket2.date))
+            set_tickets(response.data)
         }).catch(error=>{
             console.log(error.message);
         })
@@ -71,21 +71,6 @@ const Mis_tickets = () => {
         una_fecha = una_fecha[2] + "-" + una_fecha[1] + "-" + una_fecha[0]
         return una_fecha
     }
-
-    const fecha_actual = () => {
-        let hoy = new Date()
-        let año = hoy.getFullYear()
-        let mes = hoy.getMonth() + 1
-        if (mes.toString().length === 1) {
-            mes = '0' + mes
-        }
-        let dia = hoy.getDate()
-        if (dia.toString().length === 1) {
-            dia = '0' + dia
-        }
-        hoy = año + "-" + mes + "-" + dia
-        return hoy
-    }
     
     return (
         <>
@@ -108,7 +93,6 @@ const Mis_tickets = () => {
                                     <th>Menú</th>
                                     <th>Modalidad</th>
                                     <th>Sede</th>
-                                    <th>Canjeado</th>
                                 </tr>
                             </thead>
             
@@ -121,7 +105,6 @@ const Mis_tickets = () => {
                                         <td className="pt-3">{nombre_del_menu(ticket.menu)}</td>
                                         <td className="pt-3">{ticket.take_away?"Vianda":"Comedor"}</td>
                                         <td className="pt-3">{nombre_de_la_sede(ticket.campus)}</td>
-                                        <td className="pt-3">{ticket.canjeado?"SI":"NO"}</td>
                                     </tr>
                                 )
                                 })}

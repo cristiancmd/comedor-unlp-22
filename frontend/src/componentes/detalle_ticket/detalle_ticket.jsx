@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import axios from "axios"
 import Header from '../header/header'
-import {Breadcrumb, BreadcrumbItem} from "reactstrap"
+import {Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalFooter} from "reactstrap"
 import { useParams, Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Detalle_ticket = () => {
 
@@ -15,6 +17,8 @@ const Detalle_ticket = () => {
     const [usuarios, set_usuarios] = React.useState([]);
     const [menus, set_menus] = React.useState([]);
     const [sedes, set_sedes] = React.useState([]);
+
+    const [modal_canjear, set_modal_canjear] = React.useState(false);
 
     const {id} = useParams()
 
@@ -94,6 +98,13 @@ const Detalle_ticket = () => {
         return nombre
     }
 
+    const canjear = () => {
+        axios.patch(url_ticket+id+"/",{canjeado:true}).then(response => {
+        }).catch(error=>{
+            console.log(error.message);
+        })
+    }
+
     return (
         <>
             {Header()}
@@ -148,9 +159,35 @@ const Detalle_ticket = () => {
 
                 <div className="d-flex justify-content-center mt-5">
                     <Link to={"/tickets/canjear"}><button className="btn btn-secondary me-3">Cancelar</button></Link>
-                    <Link to={"/tickets/canjear"}><button className="btn btn-primary ms-3">Canjear</button></Link>
+                    <button className="btn btn-primary ms-3" onClick={()=>{canjear();set_modal_canjear(true)}}>Canjear</button>
                 </div>
             </main>
+
+            <Modal isOpen={modal_canjear} className="modal-dialog-centered">
+                <ModalBody>
+                    <div className="mt-4 row justify-content-center">
+                        <div className="col text-center">
+                            <FontAwesomeIcon
+                                icon={faCheckCircle}
+                                color={"#6BC04B"}
+                                className="fa-3x"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row justify-content-center">
+                        <div className="col text-center">
+                            <p className="mt-4 fs-4">El ticket se ha canjeado con éxito</p>
+                        </div>
+                    </div>
+                </ModalBody>
+
+                <ModalFooter className="d-flex justify-content-center">
+                    <Link to="/tickets/canjear">
+                        <button className="btn btn-primary">Aceptar</button>
+                    </Link>
+                </ModalFooter>
+            </Modal>
         </>
     )
 }
