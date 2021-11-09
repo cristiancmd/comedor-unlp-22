@@ -14,6 +14,7 @@ import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 // @feli .. asi se reutiliza un componente! :
 import ServerError from "../Modals/ServerError";
+import InputMask from 'react-input-mask';
 
 const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
   const url_menus = "http://localhost:8000/api/menus/";
@@ -132,7 +133,9 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
 
   const capturar_el_ingreso_de_numero = async (n) => {
     n.persist();
-    set_numero_elegido(n.target.value);
+    let number = n.target.value.replace("/[^0-9]{4}/", "-");
+    console.log(number)
+    set_numero_elegido(number);
   };
 
   const capturar_el_ingreso_de_codigo = async (c) => {
@@ -226,6 +229,8 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
             setError(true);
           }
         });
+    }else{
+      window.scrollTo(0, 150);
     }
   };
 
@@ -254,7 +259,7 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
           <h3 className="text-start mb-4">Datos de la tarjeta</h3>
 
           <div className="row justify-content-around ">
-            <div class="col-4">
+            <div className="col-4">
               <div>
                 <h6 className="text">Titular de la cuenta</h6>
                 <div className="row pb-3 ">
@@ -262,14 +267,15 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
                     type="text"
                     className="form-control text-center"
                     id="titular_pagar_ticket"
+                    autoFocus={true}
                     placeholder="Ingrese su apellido y nombre"
                     onChange={capturar_el_ingreso_de_titular}
                   />
                 </div>
                 {error_titular ? (
-                  <h7 className="text-danger row pb-3">
+                  <span className="text-danger row pb-3">
                     Ingrese su apellido y nombre con el formato pedido
-                  </h7>
+                  </span>
                 ) : (
                   ""
                 )}
@@ -277,25 +283,27 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
               <div>
                 <h6 className="text">Número de la tarjeta</h6>
                 <div className="row pb-3 ">
-                  <input
+                  <InputMask
                     type="text"
-                    maxlength="19"
                     className="form-control text-center"
                     id="numero_de_tarjeta_pagar_ticket"
+                    name="numero_de_tarjeta_pagar_ticket"
                     placeholder="XXXX-XXXX-XXXX-XXXX"
+                    mask="9999-9999-9999-9999"
+                    value={numero_elegido}
                     onChange={capturar_el_ingreso_de_numero}
                   />
                 </div>
                 {error_numero_de_tarjeta ? (
-                  <h7 className="text-danger row pb-3">
+                  <span className="text-danger row pb-3">
                     Ingrese su número de tarjeta con el formato pedido
-                  </h7>
+                  </span>
                 ) : (
                   ""
                 )}
               </div>
             </div>
-            <div class="col-4">
+            <div className="col-4">
               <div>
                 <h6 className="text">Fecha de vencimiento</h6>
                 <div className="row pb-3 ">
@@ -307,9 +315,9 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
                   />
                 </div>
                 {error_fecha ? (
-                  <h7 className="text-danger row pb-3">
+                  <span className="text-danger row pb-3">
                     Complete los tres campos de la fecha (día, mes y año)
-                  </h7>
+                  </span>
                 ) : (
                   ""
                 )}
@@ -317,22 +325,23 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
               <div>
                 <h6 className="text">Código de seguridad</h6>
                 <div className="row pb-3 ">
-                  <input
+                  <InputMask
                     type="text"
-                    maxlength="3"
                     className="form-control text-center"
                     id="codigo_de_seguridad_pagar_ticket"
                     placeholder="Ingrese su código"
+                    mask="999"
+                    placeholder="XXX"
                     onChange={capturar_el_ingreso_de_codigo}
                   />
                 </div>
                 {error_codigo_de_seguridad ? (
-                  <h7 className="text-danger row pb-3">Código inválido</h7>
+                  <span className="text-danger row pb-3">Código inválido</span>
                 ) : (
                   ""
                 )}
                 {error_codigo_de_seguridad_vacio ? (
-                  <h7 className="text-danger row pb-3">Código vacío</h7>
+                  <span className="text-danger row pb-3">Código vacío</span>
                 ) : (
                   ""
                 )}
