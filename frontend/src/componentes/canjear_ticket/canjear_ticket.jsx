@@ -39,9 +39,11 @@ const Canjear_ticket = () => {
         if (verificando) {
             set_verificando(false)
             if (ticket.length === 0 || ticket[0].canjeado) {
+                console.log(ticket)
                 set_sin_ticket(true)
             }
             else {
+                console.log('exito', ticket)
                 window.location.href = "/tickets/detalle/"+ticket[0].id;
             }
         }
@@ -57,9 +59,13 @@ const Canjear_ticket = () => {
         await set_fecha(f.target.value);
     }
 
-    const get_usuario = () => {
+    const get_usuario =  () => {
         axios.get(url_usuario,{params:{dni:dni}}).then(response => {
-            get_ticket(response.data.id)
+            console.log('res1', response) 
+            if(response.data.length>0){
+                console.log('get user', response.data)
+                get_ticket(response.data[0].id)
+        }else {set_sin_ticket(true)}
         }).catch(error=>{
             console.log(error.message);
         })
@@ -67,6 +73,7 @@ const Canjear_ticket = () => {
 
     const get_ticket = (usuario) => {
         axios.get(url_ticket, {params: {user: usuario, date: fecha}}).then(response => {
+            console.log('res2', response)
             set_ticket(response.data)
         }).catch(error=>{
             console.log(error.message);
