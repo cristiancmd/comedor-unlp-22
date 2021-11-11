@@ -60,8 +60,8 @@ const Canjear_ticket = () => {
     await set_fecha(f.target.value);
   };
 
-  const get_usuario = () => {
-    axios
+  const get_usuario = async () => {
+    await axios
       .get(url_usuario, { params: { dni: dni } })
       .then((response) => {
         if (response.data.length > 0) {
@@ -76,8 +76,8 @@ const Canjear_ticket = () => {
       });
   };
 
-  const get_ticket = (usuario) => {
-    axios
+  const get_ticket = async (usuario) => {
+    await axios
       .get(url_ticket, { params: { user: usuario, date: fecha } })
       .then((response) => {
         set_ticket(response.data);
@@ -142,7 +142,7 @@ const Canjear_ticket = () => {
               />
             </div>
             {error_dni ? (
-              <h7 className="text-danger row pb-3 ms-1">Ingrese su DNI</h7>
+              <h6 className="text-danger pb-2 mt-2">Ingrese su DNI</h6>
             ) : (
               ""
             )}
@@ -157,9 +157,9 @@ const Canjear_ticket = () => {
               />
             </div>
             {error_fecha ? (
-              <h7 className="text-danger row pb-3 ms-1">
+              <h6 className="text-danger pb-2 mt-2">
                 Complete los tres campos de la fecha (día, mes y año)
-              </h7>
+              </h6>
             ) : (
               ""
             )}
@@ -167,9 +167,9 @@ const Canjear_ticket = () => {
         </div>
         <div className="d-flex justify-content-center mt-4">
           {sin_ticket ? (
-            <h4 className="text-danger">
+            <h5 className="text-danger">
               Este cliente no tiene un ticket para la fecha seleccionada
-            </h4>
+            </h5>
           ) : (
             ""
           )}
