@@ -26,7 +26,7 @@ const Header = () => {
     if (usuario) {
       return usuario.firstname;
     } else {
-      console.log(user.user.username)
+      // console.log(user.user.username)
       return user.user.username;
     }
     

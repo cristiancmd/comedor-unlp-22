@@ -12,13 +12,20 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 
 
+
+class OneItemTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
 class ItemTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'
+        depth = 1
         
 class TicketSerializer(serializers.ListSerializer):
-    child = ItemTicketSerializer()
+    child = OneItemTicketSerializer()
  
     def create(self, validated_data):
         datas = validated_data

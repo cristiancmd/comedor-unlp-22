@@ -14,6 +14,7 @@ from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
 from django.db.models.functions import Lower
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, DjangoModelPermissions
+from time import sleep
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -237,6 +238,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         queryset = Ticket.objects.filter(canjeado= False).order_by('date')
         date = self.request.query_params.get('date')
         user = self.request.query_params.get('user')
+        sleep(0.01)
         if date is not None:
             queryset = queryset.filter(date=date)
         if user is not None:
