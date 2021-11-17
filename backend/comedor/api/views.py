@@ -1,4 +1,4 @@
-
+from datetime import date as generic_date
 from django.http.response import Http404
 from rest_framework.fields import DateTimeField
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
@@ -187,13 +187,13 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     authentication_classes = (TokenAuthentication,)
 
+
 #deprecado
 class EnabledDateViewSet(viewsets.ModelViewSet):
     queryset = EnabledDate.objects.all()
     serializer_class = EnabledDateSerializer
     authentication_classes = (TokenAuthentication,)
 
-    
 
 class MenuWithDateViewSet(viewsets.ModelViewSet):
     queryset = MenuWithDate.objects.all()
@@ -206,7 +206,8 @@ class MenuWithDateViewSet(viewsets.ModelViewSet):
         return MenuWithDateDisplaySerializer   
 
     def get_queryset(self):
-        queryset = MenuWithDate.objects.all()
+        today = generic_date.today()
+        queryset = MenuWithDate.objects.filter(date__gte=today)
         date = self.request.query_params.get('date')
         if date is not None:
             queryset = queryset.filter(date=date)
@@ -218,6 +219,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
 
+
 class CampusViewSet(viewsets.ModelViewSet):
     queryset = Campus.objects.all().order_by(Lower("name"))
     serializer_class = CampusSerializer
@@ -227,7 +229,7 @@ class CampusViewSet(viewsets.ModelViewSet):
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = ItemTicketSerializer
-    authentication_classes = (TokenAuthentication,)    
+    authentication_classes = (TokenAuthentication,)
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -235,7 +237,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         return ItemTicketSerializer  
 
     def get_queryset(self):
-        queryset = Ticket.objects.filter(canjeado= False).order_by('date')
+        queryset = Ticket.objects.filter(canjeado=False).order_by('date')
         date = self.request.query_params.get('date')
         user = self.request.query_params.get('user')
         sleep(0.01)
@@ -243,7 +245,7 @@ class TicketViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(date=date)
         if user is not None:
             queryset = queryset.filter(user=user)
-        return queryset        
+        return queryset
 
 
 

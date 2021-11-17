@@ -25,12 +25,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
 
   useEffect(() => {
     campusGet();
-    console.log(data);
+    buscar_menus();
   }, [])
 
   const campusGet = () => {
     axios.get(`${url}/campuses`).then(response => {
-      console.log(response);
       setCampus(response.data);
     }).catch(error=>{
         console.log(error.message);
@@ -48,25 +47,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
   };
 
   const buscar_menus = () => {
-    if (fecha_elegida === "1000-01-01" || fecha_elegida === "") {
-      set_error_fecha(true)
-    }
-    else {
-      set_error_fecha(false)
-    }
-    if (sede_elegida === "") {
-      set_error_sede(true)
-    }
-    else {
-      set_error_sede(false)
-    }
-    if (fecha_elegida !== "1000-01-01" && sede_elegida !== "") {
-      axios.get(`${url}/enabledmenus`, {params: {date:fecha_elegida}}).then(response => {
-        setData(response.data.filter(menu => menu.campus.id == sede_elegida));
-      }).catch(error => {
-        console.log(error.message);
-      })
-    }
+    axios.get(`${url}/enabledmenus`).then(response => {
+      setData(response.data);
+    }).catch(error => {
+      console.log(error.message);
+    })
   }
 
   const agregar_al_carrito = (menu_habilitado_id,menu_id,precio) => {
@@ -107,6 +92,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
     set_mis_tickets(tickets_seleccionados)
     set_termine_de_elegir(true)
   }
+  const filterResult = data.filter(
+    (item) => sede_elegida != '' ? item.campus.id == sede_elegida : item
+  ).filter(
+    (item) => fecha_elegida !== "1000-01-01" ? item.date == fecha_elegida : item
+  )
 
   return (
     <>
@@ -164,9 +154,9 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                 {error_sede?<h5 className="text-danger mb-0">Seleccione una sede</h5>:""}
               </div>
             </div>
-            <div>
-              <button className="btn btn-outline-success mt-4" onClick={buscar_menus}>Buscar</button>
-            </div>
+            {/*<div>*/}
+            {/*  <button className="btn btn-outline-success mt-4" onClick={buscar_menus}>Buscar</button>*/}
+            {/*</div>*/}
           </div>
         </div>
 
@@ -185,8 +175,8 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
               </thead>
 
               <tbody>
-                {data.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
-                {data.map(data => {
+                { (sede_elegida == '' || fecha_elegida === "1000-01-01") ? <tr><td colSpan="12"><h6>Seleccione una fecha y una sede.</h6></td></tr>
+                  : filterResult.map(data => {
                   return (
                     <tr key={data.id}>
                       <td>{data.menu.name}</td>
@@ -224,6 +214,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                     </tr>
                   )
                 })}
+                { sede_elegida != '' && fecha_elegida !== "1000-01-01" && filterResult.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
               </tbody>
             </table>
           </div>
