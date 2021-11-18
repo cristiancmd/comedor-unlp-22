@@ -22,3 +22,7 @@
     padding: .25rem;
     font-size: .8rem;
 }
+
+#input_fecha_elegir_tickets {
+	background-image: url("../../imagenes/icono_calendario.png")
+}

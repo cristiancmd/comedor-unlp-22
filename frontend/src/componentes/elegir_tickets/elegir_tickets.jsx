@@ -122,14 +122,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
             <div className="row justify-content-between">
               <div className="col-4">
                 <label className="fs-5">Fecha</label>
-                <div className="input-group justify-content-between">
-                  <input type="date" className="form-control ps-0"
+                <div className="justify-content-between">
+                  <input type="date" className="form-control ps-2" id="input_fecha_elegir_tickets"
                     aria-describedby="basic-addon2"
                     onChange={capturar_el_ingreso_de_fecha}
                   />
-                  <div className="input-group-append">
-                    <span id="basic-addon2"><FontAwesomeIcon icon={faCalendarAlt}/></span>
-                  </div>
                 </div>
                 {error_fecha?<h5 className="text-danger mb-0">Complete los tres campos de la fecha (día, mes y año)</h5>:""}
               </div>
