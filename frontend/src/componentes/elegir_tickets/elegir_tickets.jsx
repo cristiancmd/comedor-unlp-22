@@ -16,6 +16,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
   const [fecha_elegida, set_fecha_elegida] = useState("1000-01-01");
   const [sede_elegida, set_sede_elegida] = useState("");
   const [amount, setAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [menus_seleccionados, set_menus_seleccionados] = useState([]);
   const [tickets_seleccionados, set_tickets_seleccionados] = useState([]);
   const [error_fecha, set_error_fecha] = useState(false);
@@ -64,14 +65,17 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
       "user":user.user.id
     }
     setAmount(amount+1)
+    setTotalPrice(totalPrice+precio)
     set_menus_seleccionados([...menus_seleccionados,menu_habilitado_id])
     set_tickets_seleccionados([...tickets_seleccionados,ticket])
   };
 
-  const quitar_del_carrito = (menu_habilitado_id,menu_id) => {
+  const quitar_del_carrito = (menu_habilitado_id,menu_id, precio) => {
     let menus = menus_seleccionados.filter(menu => menu !== menu_habilitado_id)
     let tickets = tickets_seleccionados.filter(ticket => (ticket.menu !== menu_id || ticket.date !== fecha_elegida || ticket.campus !== sede_elegida))
     setAmount(amount-1)
+    console.log(menu_id, menu_habilitado_id, menus)
+    setTotalPrice(totalPrice-precio)
     set_menus_seleccionados(menus)
     set_tickets_seleccionados(tickets)
   };
@@ -129,10 +133,13 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                 </div>
                 {error_fecha?<h5 className="text-danger mb-0">Complete los tres campos de la fecha (día, mes y año)</h5>:""}
               </div>
-              <div className="col-6 text-right d-flex justify-content-end align-items-end">
-                <a className="btn btn-primary" onClick={pagar}><span className="mr-05"><FontAwesomeIcon
-                  icon={faShoppingCart} className="me-2"/>Pagar tickets</span>
-                  {amount}</a>
+              <div className="col-6 text-right d-flex justify-content-end align-items-center">
+                <div className="row aling-content-last-baseline">
+                  <div className="col">
+                    <span className="mr-05"><FontAwesomeIcon icon={faShoppingCart} className="me-2"/>{amount}</span>
+                    <button type="button" className={(amount > 0) ? "btn btn-success" : "btn btn-secondary"} disabled={(amount > 0) ? "" : "disabled"} onClick={pagar}>Pagar ${totalPrice}</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="row mt-4 justify-content-between">
@@ -154,9 +161,6 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                 {error_sede?<h5 className="text-danger mb-0">Seleccione una sede</h5>:""}
               </div>
             </div>
-            {/*<div>*/}
-            {/*  <button className="btn btn-outline-success mt-4" onClick={buscar_menus}>Buscar</button>*/}
-            {/*</div>*/}
           </div>
         </div>
 
@@ -203,7 +207,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                       </td>
                       <td>
                         {ya_esta_elegido(data.id)?
-                          <span onClick={()=>quitar_del_carrito(data.id,data.menu.id)} className="btn btn-danger btn-sm">
+                          <span onClick={()=>quitar_del_carrito(data.id,data.menu.id, data.menu.price)} className="btn btn-danger btn-sm">
                             <span className="mr-05"><FontAwesomeIcon icon={faMinusCircle}/></span>Quitar del carrito
                           </span>:
                           <span onClick={()=>agregar_al_carrito(data.id,data.menu.id,data.menu.price)} className="btn btn-primary btn-sm">

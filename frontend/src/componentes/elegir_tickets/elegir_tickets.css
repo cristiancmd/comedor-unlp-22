@@ -2,6 +2,10 @@
     background: lightgray;
 }
 
+.align-items-last-baseline{
+	align-items: last baseline;
+}
+
 #comprar-tickets .form-control{
 	color: #454E56;
 }

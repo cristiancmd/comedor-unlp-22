@@ -318,7 +318,7 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
                 </div>
                 {error_fecha ? (
                   <span className="text-danger row pb-3">
-                    Complete los tres campos de la fecha (día, mes y año)
+                    Complete los campos de la fecha (mes y año)
                   </span>
                 ) : (
                   ""
