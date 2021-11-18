@@ -78,8 +78,7 @@ const Menus_habilitados = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        
-                    {data.length===0 && <h6 >Ningun resultado para la fecha seleccionada.</h6>   }
+                    {data.length===0 && <tr><td colSpan="12"><h6 >Ningun resultado para la fecha seleccionada.</h6> </td></tr>  }
                         {data.map(data => { 
                             return (
                                 <tr >

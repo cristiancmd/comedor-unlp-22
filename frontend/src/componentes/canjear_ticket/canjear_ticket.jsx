@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../header/header";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import {Spinner} from "react-bootstrap";
+import InputMask from 'react-input-mask';
 
 const Canjear_ticket = () => {
   const fecha_actual = () => {
@@ -129,15 +130,17 @@ const Canjear_ticket = () => {
       </div>
 
       <main>
-        <h1 className="text-center mt-5 mb-5">Canjear ticket</h1>
+        <h1 className="text-center mb-2">Canjear ticket</h1>
         <div className="d-flex justify-content-center">
           <div className="col-3 mt-4">
             <h4>DNI</h4>
             <div className="d-flex justify-content-center">
-              <input
+              <InputMask
+                autoFocus
                 type="text"
+                mask="99999999"
                 className="form-control"
-                placeholder="Ingrese su DNI"
+                placeholder="DNI del cliente"
                 onChange={capturar_el_ingreso_de_dni}
               />
             </div>
