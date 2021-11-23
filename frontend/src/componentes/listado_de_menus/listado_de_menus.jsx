@@ -75,7 +75,7 @@ const Listado_de_menus = () => {
               
               <div className="row justify-content-evenly">
                 <div className="col-1"> 
-                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success ">Vender</button></Link>
+                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success ">Habilitar</button></Link>
 
                 </div>
                 < div className="col-1">

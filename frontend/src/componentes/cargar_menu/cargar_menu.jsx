@@ -301,7 +301,7 @@ const Cargar_menu = () => {
                              id="price"
                              name="price"
                              aria-label="Precio expresado en pesos"
-                             placeholder="300"
+                             placeholder="0"
                              min="0"
                              className="form-control"
                              {...register("price", { pattern: /^[0-9]+$/i })}
