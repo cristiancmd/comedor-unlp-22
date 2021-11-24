@@ -1,4 +1,5 @@
 
+from django.db.models.aggregates import Sum
 from django.http.response import Http404
 from rest_framework.fields import DateTimeField
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
@@ -15,7 +16,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPer
 from django.db.models.functions import Lower
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, DjangoModelPermissions
 from time import sleep
-
+from django.db.models import Count
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -245,6 +246,47 @@ class TicketViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(user=user)
         return queryset        
 
+# class CantidadesViewSet(viewsets.ModelViewSet):
+@api_view(["GET"])
+def quantity_list(request):
+    queryset = Ticket.objects.all()
+    # serializer_class = CantidadesSerializer
+    # authentication_classes = (TokenAuthentication,)    
+
+# filter(canjeado= False)
+    queryset = Ticket.objects.filter(canjeado= False)
+    date = request.query_params.get('date')
+    campus = request.query_params.get('campus')
+        
+    if date is not None:
+        queryset = queryset.filter(date=date)
+    if campus is not None:
+        queryset = queryset.filter(campus=campus)
+        
+    queryset = queryset.values('menu').annotate(cantidad=Count('menu')).order_by('menu')
+    
+    respuesta = []
+    for data in queryset:
+        menuId = data['menu']
+        cantMenus = data['cantidad']
+        menu = Menu.objects.prefetch_related().get(id=menuId)
+        compIds = [menu.starter.first().id,menu.principal.first().id,menu.dessert.first().id,menu.drink.first().id]
+       
+        iw= IngredientsWithMeasure.objects.filter(component__in=compIds).annotate(cantidad=Sum('amount')).order_by('ingredient')
+        
+        valores= list(iw.values())
+        for i in valores:
+            i['cantidad']=i['cantidad']*cantMenus
+        respuesta.append(
+            {
+                'Menu': menuId,
+                'ingredientes':valores,
+                'cantMenus':cantMenus
+            }
+        )
+        print(respuesta)
+        
+    return Response(respuesta)        
 
 
 @api_view(["GET"])

@@ -12,46 +12,10 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 
 
-
-class OneItemTicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-
-class ItemTicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-        depth = 1
-        
-class TicketSerializer(serializers.ListSerializer):
-    child = OneItemTicketSerializer()
- 
-    def create(self, validated_data):
-        datas = validated_data
-        for data in datas:
-            dia = data['date']
-            usuario = data['user']
-            try:
-                if(Ticket.objects.filter(date=dia).filter(user=usuario).exists()):
-                    raise serializers.ValidationError()
-                else:  
-                    Ticket.objects.get_or_create(**data)
-            except: raise serializers.ValidationError("Error: Ya existe un ticket en la fecha  para el mismo usuario")
-        return datas      
-
-
-
-class CampusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Campus
-        fields = '__all__'
-        
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('__all__')
 
         extra_kwargs = {'password': {
             'write_only': True,
@@ -87,9 +51,48 @@ class UserLoginSerializer(serializers.Serializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     user = UserSerializer
+    
     class Meta(UserSerializer.Meta):
         model = CustomUser
         fields = UserSerializer.Meta.fields
+
+class OneItemTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+class ItemTicketSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+        depth = 1
+        
+        
+class TicketSerializer(serializers.ListSerializer):
+    child = OneItemTicketSerializer()
+ 
+    def create(self, validated_data):
+        datas = validated_data
+        for data in datas:
+            dia = data['date']
+            usuario = data['user']
+            try:
+                if(Ticket.objects.filter(date=dia).filter(user=usuario).exists()):
+                    raise serializers.ValidationError()
+                else:  
+                    Ticket.objects.get_or_create(**data)
+            except: raise serializers.ValidationError("Error: Ya existe un ticket en la fecha  para el mismo usuario")
+        return datas      
+
+
+
+class CampusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campus
+        fields = '__all__'
+        
+
 
 
 
@@ -248,7 +251,24 @@ class MenuSerializer(serializers.ModelSerializer):
 
 
     
+class CantidadesSerializer(serializers.Serializer):
+                                                                                            
+    
+    class Meta:
+        
+        fields = ('cantidades')   
+    
+    # def create(self, validated_data):
+    #     datas = validated_data.pop('date')
+    #     for data in datas:
+    #         validated_data['date'] = data
+    #         try:
+    #             menudate = MenuWithDate.objects.create(**validated_data)
+    #         except: raise serializers.ValidationError('Error: Fecha para menu y sede ya existente')
+    #     return menudate      
 
+    def list(self, validated_data):
+        pass
 
       
 

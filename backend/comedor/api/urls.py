@@ -11,9 +11,11 @@ router.register('campuses', CampusViewSet)
 router.register('tickets', TicketViewSet)
 
 
+
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/measure/', measure_list),
+    path('api/quantity/', quantity_list),
     path('api/component_type/', component_type_list),
     path('api/components/', Components.as_view()),
     path('api/ingredients/', Ingredients.as_view()),
