@@ -2,6 +2,10 @@
     background: lightgray;
 }
 
+.align-items-last-baseline{
+	align-items: last baseline;
+}
+
 #comprar-tickets .form-control{
 	color: #454E56;
 }
@@ -17,4 +21,8 @@
 #comprar-tickets .btn-group-sm > .btn, .btn-sm {
     padding: .25rem;
     font-size: .8rem;
+}
+
+#input_fecha_elegir_tickets {
+	background-image: url("../../imagenes/icono_calendario.png")
 }

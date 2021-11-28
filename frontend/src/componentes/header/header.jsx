@@ -64,7 +64,10 @@ const Header = () => {
               <Link to={"/home"}>
                 <img src={icono_home} width="50px" alt="home" />
               </Link>
-              <div className="nav flex-row col-6  " style={{ paddingLeft: "2%" }}>
+              <div className="nav flex-row col-6" >
+                 <Link to={"/tickets/canjear"} className="nav-link " style={{ paddingLeft: "5%" }}>
+                  Tickets
+                </Link>
                 <Link to={"/menus"} className="nav-link">
                   Menús
                 </Link>
@@ -73,9 +76,6 @@ const Header = () => {
                 </Link>
                 <Link to={"/ingredientes"} className="nav-link ">
                   Ingredientes
-                </Link>
-                <Link to={"/tickets/canjear"} className="nav-link ">
-                  Canjear ticket
                 </Link>
               </div>
             </>

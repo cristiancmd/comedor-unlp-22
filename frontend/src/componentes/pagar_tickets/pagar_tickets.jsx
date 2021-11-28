@@ -307,8 +307,10 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
               <div>
                 <h6 className="text">Fecha de vencimiento</h6>
                 <div className="row pb-3 ">
-                  <input
-                    type="date"
+                  <InputMask
+                    type="text"
+                    placeholder="MM/AA"
+                    mask="99/99"
                     className="form-control text-center text-secondary"
                     id="fecha_de_vencimiento_pagar_ticket"
                     onChange={capturar_el_ingreso_de_fecha}
@@ -316,7 +318,7 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
                 </div>
                 {error_fecha ? (
                   <span className="text-danger row pb-3">
-                    Complete los tres campos de la fecha (día, mes y año)
+                    Complete los campos de la fecha (mes y año)
                   </span>
                 ) : (
                   ""

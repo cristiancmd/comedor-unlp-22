@@ -1,5 +1,6 @@
 
 from django.db.models.aggregates import Sum
+from datetime import date as generic_date
 from django.http.response import Http404
 from rest_framework.fields import DateTimeField
 from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
@@ -17,6 +18,7 @@ from django.db.models.functions import Lower
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, DjangoModelPermissions
 from time import sleep
 from django.db.models import Count
+from rest_framework.renderers import JSONRenderer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -188,13 +190,13 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
     authentication_classes = (TokenAuthentication,)
 
+
 #deprecado
 class EnabledDateViewSet(viewsets.ModelViewSet):
     queryset = EnabledDate.objects.all()
     serializer_class = EnabledDateSerializer
     authentication_classes = (TokenAuthentication,)
 
-    
 
 class MenuWithDateViewSet(viewsets.ModelViewSet):
     queryset = MenuWithDate.objects.all()
@@ -207,7 +209,8 @@ class MenuWithDateViewSet(viewsets.ModelViewSet):
         return MenuWithDateDisplaySerializer   
 
     def get_queryset(self):
-        queryset = MenuWithDate.objects.all()
+        today = generic_date.today()
+        queryset = MenuWithDate.objects.filter(date__gte=today)
         date = self.request.query_params.get('date')
         if date is not None:
             queryset = queryset.filter(date=date)
@@ -219,6 +222,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     authentication_classes = (TokenAuthentication,)
 
+
 class CampusViewSet(viewsets.ModelViewSet):
     queryset = Campus.objects.all().order_by(Lower("name"))
     serializer_class = CampusSerializer
@@ -228,7 +232,7 @@ class CampusViewSet(viewsets.ModelViewSet):
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = ItemTicketSerializer
-    authentication_classes = (TokenAuthentication,)    
+    authentication_classes = (TokenAuthentication,)
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -236,24 +240,20 @@ class TicketViewSet(viewsets.ModelViewSet):
         return ItemTicketSerializer  
 
     def get_queryset(self):
-        queryset = Ticket.objects.filter(canjeado= False).order_by('date')
+        queryset = Ticket.objects.filter(canjeado=False).order_by('date')
         date = self.request.query_params.get('date')
         user = self.request.query_params.get('user')
-        sleep(0.01)
+        
         if date is not None:
             queryset = queryset.filter(date=date)
         if user is not None:
             queryset = queryset.filter(user=user)
-        return queryset        
+        return queryset
 
-# class CantidadesViewSet(viewsets.ModelViewSet):
+
 @api_view(["GET"])
 def quantity_list(request):
-    queryset = Ticket.objects.all()
-    # serializer_class = CantidadesSerializer
-    # authentication_classes = (TokenAuthentication,)    
-
-# filter(canjeado= False)
+    
     queryset = Ticket.objects.filter(canjeado= False)
     date = request.query_params.get('date')
     campus = request.query_params.get('campus')
@@ -266,27 +266,40 @@ def quantity_list(request):
     queryset = queryset.values('menu').annotate(cantidad=Count('menu')).order_by('menu')
     
     respuesta = []
+    total = []
+    
     for data in queryset:
         menuId = data['menu']
         cantMenus = data['cantidad']
         menu = Menu.objects.prefetch_related().get(id=menuId)
         compIds = [menu.starter.first().id,menu.principal.first().id,menu.dessert.first().id,menu.drink.first().id]
-       
+
         iw= IngredientsWithMeasure.objects.filter(component__in=compIds).annotate(cantidad=Sum('amount')).order_by('ingredient')
         
-        valores= list(iw.values())
+        valores= list(iw.values('ingredient_id','cantidad'))
         for i in valores:
+            obj = Ingredient.objects.get(pk=i['ingredient_id'])
+            serializer = IngredientSerializer(obj)
+            i['ingredient']= serializer.data
             i['cantidad']=i['cantidad']*cantMenus
+            if not any(d.get('ingredient_id') == i['ingredient_id'] for d in total):
+	            total.append({'ingredient_id':i['ingredient_id'],'cantidad_total':i['cantidad'],'ingredient': serializer.data })
+            else:
+                index = next((e for e, item in enumerate(total) if item.get('ingredient_id') == i["ingredient_id"] ), None)
+                x = total[index].get("cantidad_total")
+                total[index].update({"cantidad_total": i["cantidad"]+x})
+   
         respuesta.append(
             {
-                'Menu': menuId,
-                'ingredientes':valores,
-                'cantMenus':cantMenus
+                'menu': menuId,
+                'name': menu.name,
+                'tickets_vendidos':cantMenus,
+                'ingredientes': valores,
+                
             }
         )
-        print(respuesta)
-        
-    return Response(respuesta)        
+            
+    return Response([respuesta, total])        
 
 
 @api_view(["GET"])

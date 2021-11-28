@@ -75,7 +75,7 @@ const Listado_de_menus = () => {
               
               <div className="row justify-content-evenly">
                 <div className="col-1"> 
-                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success ">Vender</button></Link>
+                <Link to={"/habilitar/"+menu.id}><button className="btn btn-success ">Habilitar</button></Link>
 
                 </div>
                 < div className="col-1">
@@ -124,11 +124,10 @@ const Listado_de_menus = () => {
               </div>
 
               <div className="col-6 text-right d-flex justify-content-between">
-                <Link to="/home"><button className="btn btn-secondary">Menús habilitados</button></Link>
+                <Link to="/menus/habilitados"><button className="btn btn-secondary">Menús habilitados</button></Link>
                 <a href="/menus/nuevo"  className="btn btn-primary"><span className="mr-05"><FontAwesomeIcon icon={faPlusCircle}/></span>
                     Cargar menú</a>
               </div>
-
             </div>
           </div>
         </div>

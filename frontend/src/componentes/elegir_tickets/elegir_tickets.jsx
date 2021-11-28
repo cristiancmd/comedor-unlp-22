@@ -16,6 +16,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
   const [fecha_elegida, set_fecha_elegida] = useState("1000-01-01");
   const [sede_elegida, set_sede_elegida] = useState("");
   const [amount, setAmount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [menus_seleccionados, set_menus_seleccionados] = useState([]);
   const [tickets_seleccionados, set_tickets_seleccionados] = useState([]);
   const [error_fecha, set_error_fecha] = useState(false);
@@ -25,12 +26,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
 
   useEffect(() => {
     campusGet();
-    console.log(data);
+    buscar_menus();
   }, [])
 
   const campusGet = () => {
     axios.get(`${url}/campuses`).then(response => {
-      console.log(response);
       setCampus(response.data);
     }).catch(error=>{
         console.log(error.message);
@@ -48,25 +48,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
   };
 
   const buscar_menus = () => {
-    if (fecha_elegida === "1000-01-01" || fecha_elegida === "") {
-      set_error_fecha(true)
-    }
-    else {
-      set_error_fecha(false)
-    }
-    if (sede_elegida === "") {
-      set_error_sede(true)
-    }
-    else {
-      set_error_sede(false)
-    }
-    if (fecha_elegida !== "1000-01-01" && sede_elegida !== "") {
-      axios.get(`${url}/enabledmenus`, {params: {date:fecha_elegida}}).then(response => {
-        setData(response.data.filter(menu => menu.campus.id == sede_elegida));
-      }).catch(error => {
-        console.log(error.message);
-      })
-    }
+    axios.get(`${url}/enabledmenus`).then(response => {
+      setData(response.data);
+    }).catch(error => {
+      console.log(error.message);
+    })
   }
 
   const agregar_al_carrito = (menu_habilitado_id,menu_id,precio) => {
@@ -79,14 +65,17 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
       "user":user.user.id
     }
     setAmount(amount+1)
+    setTotalPrice(totalPrice+precio)
     set_menus_seleccionados([...menus_seleccionados,menu_habilitado_id])
     set_tickets_seleccionados([...tickets_seleccionados,ticket])
   };
 
-  const quitar_del_carrito = (menu_habilitado_id,menu_id) => {
+  const quitar_del_carrito = (menu_habilitado_id,menu_id, precio) => {
     let menus = menus_seleccionados.filter(menu => menu !== menu_habilitado_id)
     let tickets = tickets_seleccionados.filter(ticket => (ticket.menu !== menu_id || ticket.date !== fecha_elegida || ticket.campus !== sede_elegida))
     setAmount(amount-1)
+    console.log(menu_id, menu_habilitado_id, menus)
+    setTotalPrice(totalPrice-precio)
     set_menus_seleccionados(menus)
     set_tickets_seleccionados(tickets)
   };
@@ -107,6 +96,11 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
     set_mis_tickets(tickets_seleccionados)
     set_termine_de_elegir(true)
   }
+  const filterResult = data.filter(
+    (item) => sede_elegida != '' ? item.campus.id == sede_elegida : item
+  ).filter(
+    (item) => fecha_elegida !== "1000-01-01" ? item.date == fecha_elegida : item
+  )
 
   return (
     <>
@@ -128,21 +122,21 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
             <div className="row justify-content-between">
               <div className="col-4">
                 <label className="fs-5">Fecha</label>
-                <div className="input-group justify-content-between">
-                  <input type="date" className="form-control ps-0"
+                <div className="justify-content-between">
+                  <input type="date" className="form-control ps-2" id="input_fecha_elegir_tickets"
                     aria-describedby="basic-addon2"
                     onChange={capturar_el_ingreso_de_fecha}
                   />
-                  <div className="input-group-append">
-                    <span id="basic-addon2"><FontAwesomeIcon icon={faCalendarAlt}/></span>
-                  </div>
                 </div>
                 {error_fecha?<h5 className="text-danger mb-0">Complete los tres campos de la fecha (día, mes y año)</h5>:""}
               </div>
-              <div className="col-6 text-right d-flex justify-content-end align-items-end">
-                <a className="btn btn-primary" onClick={pagar}><span className="mr-05"><FontAwesomeIcon
-                  icon={faShoppingCart} className="me-2"/>Pagar tickets</span>
-                  {amount}</a>
+              <div className="col-6 text-right d-flex justify-content-end align-items-center">
+                <div className="row aling-content-last-baseline">
+                  <div className="col">
+                    <span className="mr-05"><FontAwesomeIcon icon={faShoppingCart} className="me-2"/>{amount}</span>
+                    <button type="button" className={(amount > 0) ? "btn btn-success" : "btn btn-secondary"} disabled={(amount > 0) ? "" : "disabled"} onClick={pagar}>Pagar ${totalPrice}</button>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="row mt-4 justify-content-between">
@@ -164,9 +158,6 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                 {error_sede?<h5 className="text-danger mb-0">Seleccione una sede</h5>:""}
               </div>
             </div>
-            <div>
-              <button className="btn btn-outline-success mt-4" onClick={buscar_menus}>Buscar</button>
-            </div>
           </div>
         </div>
 
@@ -185,8 +176,8 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
               </thead>
 
               <tbody>
-                {data.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
-                {data.map(data => {
+                { (sede_elegida == '' || fecha_elegida === "1000-01-01") ? <tr><td colSpan="12"><h6>Seleccione una fecha y una sede.</h6></td></tr>
+                  : filterResult.map(data => {
                   return (
                     <tr key={data.id}>
                       <td>{data.menu.name}</td>
@@ -213,7 +204,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                       </td>
                       <td>
                         {ya_esta_elegido(data.id)?
-                          <span onClick={()=>quitar_del_carrito(data.id,data.menu.id)} className="btn btn-danger btn-sm">
+                          <span onClick={()=>quitar_del_carrito(data.id,data.menu.id, data.menu.price)} className="btn btn-danger btn-sm">
                             <span className="mr-05"><FontAwesomeIcon icon={faMinusCircle}/></span>Quitar del carrito
                           </span>:
                           <span onClick={()=>agregar_al_carrito(data.id,data.menu.id,data.menu.price)} className="btn btn-primary btn-sm">
@@ -224,6 +215,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
                     </tr>
                   )
                 })}
+                { sede_elegida != '' && fecha_elegida !== "1000-01-01" && filterResult.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
               </tbody>
             </table>
           </div>

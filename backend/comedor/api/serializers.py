@@ -3,6 +3,7 @@ from django.db.models import fields
 from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.utils import model_meta
 from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate, Ticket
 from rest_framework import serializers
@@ -251,25 +252,36 @@ class MenuSerializer(serializers.ModelSerializer):
 
 
     
-class CantidadesSerializer(serializers.Serializer):
-                                                                                            
+class CantidadesKeyRelated(PrimaryKeyRelatedField):
+    # ingredient_id = serializers.PrimaryKeyRelatedField(
+    #      many=True,read_only=False, queryset=Ingredient.objects.all())  
+    # ingredient_id = IngredientSerializer(many=True, read_only=True)
+    # ingredient = IngredientSerializer(many=True)
+    # ingredient_id = serializers.PrimaryKeyRelatedField(
+    #       queryset=Ingredient.objects.all(), many=True)
     
+    # class Meta:
+    #     model = Ingredient
+    #     fields = ('__all__')   
+    def get_queryset(self):
+        return Ingredient.objects.all()
+
+    
+
+class CantidadesSerializer(serializers.Serializer):
+    ingredient_id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    cantidad = IntegerField
+    
+
+    # class Meta:
+    #     model = Ingredient
+    #     fields = '__all__'
     class Meta:
         
-        fields = ('cantidades')   
+        fields = ('ingredient_id','cantidad')   
     
-    # def create(self, validated_data):
-    #     datas = validated_data.pop('date')
-    #     for data in datas:
-    #         validated_data['date'] = data
-    #         try:
-    #             menudate = MenuWithDate.objects.create(**validated_data)
-    #         except: raise serializers.ValidationError('Error: Fecha para menu y sede ya existente')
-    #     return menudate      
+    def create(self, validated_data):
+        return Ingredient(**validated_data)
 
-    def list(self, validated_data):
-        pass
-
-      
-
-        
+    def get_queryset(self):
+        return Ingredient.objects.all()
