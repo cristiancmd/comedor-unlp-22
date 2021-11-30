@@ -22,6 +22,7 @@ import canjear_ticket from './componentes/canjear_ticket/canjear_ticket';
 import detalle_ticket from './componentes/detalle_ticket/detalle_ticket';
 import mis_tickets from './componentes/mis_tickets/mis_tickets';
 import ProtectedRoute from './componentes/login/ProtectedRoute';
+import Ventas from './componentes/ventas/ventas';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
         <Route exact path='/login' component={login} />
         <ProtectedRoute path="/home" component={canjear_ticket} staff={true }/>
         <ProtectedRoute exact path='/header' component={header} staff={true } />
+        <ProtectedRoute exact path='/ventas' component={Ventas} staff={true } />
         <ProtectedRoute exact path='/menus' component={listado_de_menus} staff={true } />
         <ProtectedRoute exact path='/menus/nuevo' component={cargar_menu} staff={true } />
         <ProtectedRoute exact path='/menus/habilitados' component={menus_habilitados} staff={true } />

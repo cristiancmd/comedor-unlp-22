@@ -1,0 +1,28 @@
+#lista_de_titulos_de_columnas_menus_habilitados {
+    background: lightgray;
+}
+
+.align-items-last-baseline{
+	align-items: last baseline;
+}
+
+#comprar-tickets .form-control{
+	color: #454E56;
+}
+
+#comprar-tickets .input-group-append{
+	color: #6c757d;
+}
+
+#comprar-tickets .small{
+	font-size: 11px;
+}
+
+#comprar-tickets .btn-group-sm > .btn, .btn-sm {
+    padding: .25rem;
+    font-size: .8rem;
+}
+
+#icon_date {
+	background-image: url("../../imagenes/icono_calendario.png")
+}

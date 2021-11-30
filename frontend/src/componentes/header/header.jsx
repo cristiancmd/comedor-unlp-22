@@ -71,11 +71,14 @@ const Header = () => {
                 <Link to={"/menus"} className="nav-link">
                   Menús
                 </Link>
-                <Link to={"/platos"} className="nav-link ">
+                <Link to={"/platos"} className="nav-link">
                   Platos
                 </Link>
-                <Link to={"/ingredientes"} className="nav-link ">
+                <Link to={"/ingredientes"} className="nav-link">
                   Ingredientes
+                </Link>
+                <Link to={"/ventas"} className="nav-link">
+                  Ventas
                 </Link>
               </div>
             </>
