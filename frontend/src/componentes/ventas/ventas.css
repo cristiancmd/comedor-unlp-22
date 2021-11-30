@@ -26,3 +26,12 @@
 #icon_date {
 	background-image: url("../../imagenes/icono_calendario.png")
 }
+
+.ingredients-list{
+	text-align: left !important;
+	padding-left: 3rem !important;
+}
+
+.bg-total{
+	background-color: lightgray !important;
+}

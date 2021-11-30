@@ -9,7 +9,8 @@ const Ventas = () => {
 
   const url = "http://localhost:8000/api";
 
-  const [data, setData] = useState([]);
+  const [menus, setMenus] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
   const [campus, setCampus] = useState([]);
   const [fecha_elegida, set_fecha_elegida] = useState("1000-01-01");
   const [sede_elegida, set_sede_elegida] = useState("");
@@ -20,7 +21,6 @@ const Ventas = () => {
 
   useEffect(() => {
     campusGet();
-    buscar_menus();
   }, [])
 
   const campusGet = () => {
@@ -34,26 +34,29 @@ const Ventas = () => {
   const capturar_el_ingreso_de_fecha = async f => {
     f.persist();
     await set_fecha_elegida(f.target.value);
+    if (f.target.value !== "1000-01-01" && sede_elegida != ""){
+      buscar_menus(f.target.value, sede_elegida);
+    }
   }
 
   const capturar_el_ingreso_de_sede = async s => {
     s.persist()
     await set_sede_elegida(s.target.value)
+    if (fecha_elegida !== "1000-01-01" && s.target.value != ""){
+      buscar_menus(fecha_elegida, s.target.value);
+    }
   };
-
-  const buscar_menus = () => {
-    axios.get(`${url}/enabledmenus`).then(response => {
-      setData(response.data);
+  const buscar_menus = (fecha, sede) => {
+    axios.get(`${url}/quantity/?date=${fecha}&campus=${sede}`).then(response => {
+      if (response.data[0] && response.data[1]){
+        setMenus(response.data[0]);
+        console.log(response.data[1])
+        setIngredients(response.data[1]);
+      }
     }).catch(error => {
       console.log(error.message);
     })
   }
-
-  const filterResult = data.filter(
-    (item) => sede_elegida != '' ? item.campus.id == sede_elegida : item
-  ).filter(
-    (item) => fecha_elegida !== "1000-01-01" ? item.date === fecha_elegida : item
-  )
 
   return (
     <>
@@ -109,38 +112,41 @@ const Ventas = () => {
             <table className="table">
               <thead>
               <tr id="lista_de_titulos_de_columnas_menus_habilitados">
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Vegetariano</th>
-                <th>Celíaco</th>
+                <th>Menú</th>
+                <th>Cantidad de tickets vendidos</th>
+                <th>Cantidad de ingredientes</th>
               </tr>
               </thead>
-
               <tbody>
                 { (sede_elegida == '' || fecha_elegida === "1000-01-01") ? <tr><td colSpan="12"><h6>Seleccione una fecha y una sede.</h6></td></tr>
-                  : filterResult.map(data => {
+                  : menus.map(menu => {
                   return (
-                    <tr key={data.id}>
-                      <td>{data.menu.name}</td>
-                      <td>${data.menu.price}</td>
-                      <td>
-                        {
-                          data.menu.vegetarian?
-                          <span>&#10003;</span>:
-                          <span>&#x2715;</span>
-                        }
+                    <tr key={`ventas-${menu.id}`}>
+                      <td className="ingredients-list">{menu.name}</td>
+                      <td>{menu.tickets_vendidos}</td>
+                      <td className="ingredients-list"><ul className="list-unstyled">
+                        {menu.ingredientes.map(ingredient => (
+                          <li key={`ventas-ingredients-${ingredient.ingredient_id}`}>{ingredient.cantidad} {ingredient.ingredient.measure} {ingredient.ingredient.name}</li>
+                        ))}
+                        </ul>
                       </td>
-                      <td>
-                        {
-                          data.menu.celiac?
-                          <span>&#10003;</span>:
-                          <span>&#x2715;</span>
-                        }
-                      </td>
+
                     </tr>
                   )
                 })}
-                { sede_elegida != '' && fecha_elegida !== "1000-01-01" && filterResult.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
+                {ingredients.length !== 0 &&
+                  <tr className="bg-total">
+                    <td className="ingredients-list"><strong>Total</strong></td>
+                    <td></td>
+                    <td className="ingredients-list"><ul className="list-unstyled">
+                      {ingredients.map(ingredient => (
+                        <li key={`ventas-ingredients-2-${ingredient.ingredient_id}`}>{ingredient.cantidad_total} {ingredient.ingredient.measure} {ingredient.ingredient.name}</li>
+                      ))}
+                      </ul>
+                    </td>
+                  </tr>
+                }
+                { sede_elegida != '' && fecha_elegida !== "1000-01-01" && menus.length === 0 && <tr><td colSpan="12"><h6>Ningún resultado para la fecha y sede seleccionadas.</h6></td></tr>}
               </tbody>
             </table>
           </div>
