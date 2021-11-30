@@ -3,6 +3,7 @@ from django.db.models import fields
 from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
 from rest_framework.fields import IntegerField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.utils import model_meta
 from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate, Ticket
 from rest_framework import serializers
@@ -12,46 +13,10 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
 
 
-
-class OneItemTicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-
-class ItemTicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = '__all__'
-        depth = 1
-        
-class TicketSerializer(serializers.ListSerializer):
-    child = OneItemTicketSerializer()
- 
-    def create(self, validated_data):
-        datas = validated_data
-        for data in datas:
-            dia = data['date']
-            usuario = data['user']
-            try:
-                if(Ticket.objects.filter(date=dia).filter(user=usuario).exists()):
-                    raise serializers.ValidationError()
-                else:  
-                    Ticket.objects.get_or_create(**data)
-            except: raise serializers.ValidationError("Error: Ya existe un ticket en la fecha  para el mismo usuario")
-        return datas      
-
-
-
-class CampusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Campus
-        fields = '__all__'
-        
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('__all__')
 
         extra_kwargs = {'password': {
             'write_only': True,
@@ -87,9 +52,48 @@ class UserLoginSerializer(serializers.Serializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     user = UserSerializer
+    
     class Meta(UserSerializer.Meta):
         model = CustomUser
         fields = UserSerializer.Meta.fields
+
+class OneItemTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+class ItemTicketSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+        depth = 1
+        
+        
+class TicketSerializer(serializers.ListSerializer):
+    child = OneItemTicketSerializer()
+ 
+    def create(self, validated_data):
+        datas = validated_data
+        for data in datas:
+            dia = data['date']
+            usuario = data['user']
+            try:
+                if(Ticket.objects.filter(date=dia).filter(user=usuario).exists()):
+                    raise serializers.ValidationError()
+                else:  
+                    Ticket.objects.get_or_create(**data)
+            except: raise serializers.ValidationError("Error: Ya existe un ticket en la fecha  para el mismo usuario")
+        return datas      
+
+
+
+class CampusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campus
+        fields = '__all__'
+        
+
 
 
 
@@ -248,8 +252,36 @@ class MenuSerializer(serializers.ModelSerializer):
 
 
     
+class CantidadesKeyRelated(PrimaryKeyRelatedField):
+    # ingredient_id = serializers.PrimaryKeyRelatedField(
+    #      many=True,read_only=False, queryset=Ingredient.objects.all())  
+    # ingredient_id = IngredientSerializer(many=True, read_only=True)
+    # ingredient = IngredientSerializer(many=True)
+    # ingredient_id = serializers.PrimaryKeyRelatedField(
+    #       queryset=Ingredient.objects.all(), many=True)
+    
+    # class Meta:
+    #     model = Ingredient
+    #     fields = ('__all__')   
+    def get_queryset(self):
+        return Ingredient.objects.all()
 
+    
 
-      
+class CantidadesSerializer(serializers.Serializer):
+    ingredient_id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    cantidad = IntegerField
+    
 
+    # class Meta:
+    #     model = Ingredient
+    #     fields = '__all__'
+    class Meta:
         
+        fields = ('ingredient_id','cantidad')   
+    
+    def create(self, validated_data):
+        return Ingredient(**validated_data)
+
+    def get_queryset(self):
+        return Ingredient.objects.all()
