@@ -2,16 +2,17 @@
 from django.db.models import fields
 from django.db.models.fields import DateField
 from django.db.models.fields.files import ImageField
-from rest_framework.fields import IntegerField
+from rest_framework.exceptions import ValidationError
+from rest_framework.fields import IntegerField, NullBooleanField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.utils import model_meta
-from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuWithDate, Ticket
+from .models import Campus, CustomUser, EnabledDate, Ingredient, IngredientsWithMeasure, Component, Menu, MEASURE, MenuRating, MenuWithDate, Ticket
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import make_password
-
+from django.db.models import Avg
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,8 +94,12 @@ class CampusSerializer(serializers.ModelSerializer):
         model = Campus
         fields = '__all__'
         
-
-
+class MenuRatingSerializer(serializers.ModelSerializer):
+    userName = UserSerializer
+    class Meta:
+        model = MenuRating
+        fields = '__all__'
+        # depth = 1
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -227,13 +232,11 @@ class MenuWithDateDisplaySerializer(serializers.ModelSerializer):
 
 class MenuSerializer(serializers.ModelSerializer):
 
+                                             
     starter = ComponentSerializer(many=True, read_only=True)
     principal = ComponentSerializer(many=True, read_only=True)
     dessert = ComponentSerializer(many=True, read_only=True)
     drink = ComponentSerializer(many=True, read_only=True) 
-    # enabled_dates = serializers.PrimaryKeyRelatedField(many=True,required=False,
-    #                                                 read_only=False, queryset=EnabledDate.objects.all())
-     
 
     starter_id = serializers.PrimaryKeyRelatedField(many=True,
                                                     read_only=False, queryset=Component.objects.all(), source='starter')
@@ -244,44 +247,21 @@ class MenuSerializer(serializers.ModelSerializer):
     drink_id = serializers.PrimaryKeyRelatedField(many=True,
                                                   read_only=False, queryset=Component.objects.all(), source='drink')
 
+    ratingAvg = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Menu
-        fields = ('id', 'name', 'price','celiac','vegetarian', 'starter', 'principal', 'dessert', 'drink', 
+        fields = ('id', 'name', 'price','ratingAvg','celiac','vegetarian', 'starter', 'principal', 'dessert', 'drink', 
                    'starter_id', 'principal_id', 'dessert_id', 'drink_id','image')
 
 
-
-    
-class CantidadesKeyRelated(PrimaryKeyRelatedField):
-    # ingredient_id = serializers.PrimaryKeyRelatedField(
-    #      many=True,read_only=False, queryset=Ingredient.objects.all())  
-    # ingredient_id = IngredientSerializer(many=True, read_only=True)
-    # ingredient = IngredientSerializer(many=True)
-    # ingredient_id = serializers.PrimaryKeyRelatedField(
-    #       queryset=Ingredient.objects.all(), many=True)
-    
-    # class Meta:
-    #     model = Ingredient
-    #     fields = ('__all__')   
-    def get_queryset(self):
-        return Ingredient.objects.all()
-
-    
-
-class CantidadesSerializer(serializers.Serializer):
-    ingredient_id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
-    cantidad = IntegerField
-    
-
-    # class Meta:
-    #     model = Ingredient
-    #     fields = '__all__'
-    class Meta:
+    def get_ratingAvg(self, obj):
+        avg = MenuRating.objects.filter(menu=obj.pk).aggregate(Avg('rating'))
+        if avg['rating__avg'] is not None:
+            return round((avg['rating__avg']), 1) 
         
-        fields = ('ingredient_id','cantidad')   
-    
-    def create(self, validated_data):
-        return Ingredient(**validated_data)
 
-    def get_queryset(self):
-        return Ingredient.objects.all()
+
+
+
+    

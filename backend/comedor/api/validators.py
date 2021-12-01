@@ -20,3 +20,4 @@ def date_is_valid(value):
             raise ValidationError("La fecha del ticket debe ser mayor al día de hoy")
     except Exception as e:
         raise ValidationError("La fecha del ticket debe ser mayor al día de hoy")
+

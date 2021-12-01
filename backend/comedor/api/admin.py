@@ -21,4 +21,5 @@ admin.site.register(MenuWithDate)
 admin.site.register(Menu)
 admin.site.register(CustomUser)
 admin.site.register(Component, ComponentAdmin)
+admin.site.register(MenuRating)
 

@@ -9,6 +9,7 @@ router.register('usuarios', CustomUserViewSet)
 router.register('enabledmenus', MenuWithDateViewSet)
 router.register('campuses', CampusViewSet)
 router.register('tickets', TicketViewSet)
+router.register('ratings', MenuRatingViewSet)
 
 
 

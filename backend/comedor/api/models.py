@@ -182,3 +182,17 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f'{self.pk} - {self.date}'
+
+
+class MenuRating(models.Model):
+    menu = models.ForeignKey(Menu, verbose_name="Menú", related_name="menu_rating", on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name="Pertenece a", related_name="user_rating", on_delete=models.CASCADE)  
+    rating = models.FloatField(_("Calificacion"))
+    comment = models.CharField(_("Comentario"), blank=True, null=True , max_length=240)
+
+    class Meta:
+        verbose_name = _("Rating")
+        verbose_name_plural = _("Ratings")
+
+    def __str__(self):
+        return f'{self.pk} - {self.menu} - {self.rating} '

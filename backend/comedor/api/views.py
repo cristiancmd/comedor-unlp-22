@@ -191,12 +191,23 @@ class IngredientViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
 
 
-#deprecado
-class EnabledDateViewSet(viewsets.ModelViewSet):
-    queryset = EnabledDate.objects.all()
-    serializer_class = EnabledDateSerializer
+
+class MenuRatingViewSet(viewsets.ModelViewSet):
+    queryset = MenuRating.objects.all()
+    serializer_class = MenuRatingSerializer
     authentication_classes = (TokenAuthentication,)
 
+    def get_queryset(self):
+        queryset = MenuRating.objects.all()
+        menu = self.request.query_params.get('menu')
+        user = self.request.query_params.get('user')
+        
+        if menu is not None:
+            queryset = queryset.filter(menu=menu)
+        if user is not None:
+            queryset = queryset.filter(user=user)
+        return queryset
+    
 
 class MenuWithDateViewSet(viewsets.ModelViewSet):
     queryset = MenuWithDate.objects.all()
