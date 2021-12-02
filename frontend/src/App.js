@@ -23,6 +23,7 @@ import detalle_ticket from './componentes/detalle_ticket/detalle_ticket';
 import mis_tickets from './componentes/mis_tickets/mis_tickets';
 import ProtectedRoute from './componentes/login/ProtectedRoute';
 import Ventas from './componentes/ventas/ventas';
+import calificar_menus from './componentes/calificar_menus/calificar_menus';
 
 function App() {
 
@@ -60,6 +61,8 @@ function App() {
         <ProtectedRoute exact path='/mistickets' component={mis_tickets} staff={ false }/>
         <ProtectedRoute exact path='/tickets/canjear' component={canjear_ticket} staff={true }/>
         <ProtectedRoute exact path='/tickets/detalle/:id' component={detalle_ticket} staff={true }/>
+        <ProtectedRoute exact path='/calificar' component={calificar_menus} staff={ false }/>
+        <ProtectedRoute exact path='/menu/informacion/:id' component={calificar_menus} staff={ false }/>
 
         {/* dejar al final -> */}
         <Route component={NotFound} /> 
