@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Header from '../header/header';
 import { Rating } from 'react-simple-star-rating'
 
-const Calificar_menus = () => {
+const Listado_de_menus_con_la_calificación = () => {
 
   const url = "http://localhost:8000/api/menus/";
 
@@ -41,10 +41,11 @@ const Calificar_menus = () => {
               <th className="col-1"><span>&#x2715;</span></th>
             }
             <td><h5 className="col-1 float-end mt-2">{menu.ratingAvg}</h5></td>
-            <td>{
-              menu.ratingAvg !== null?
+            <td>
+              {menu.ratingAvg !== null?
               <Rating ratingValue={menu.ratingAvg} allowHalfIcon={true} readonly={true}/>:
-              'No hay calificación'}</td>
+              'El menú no posee calificaciones'}
+            </td>
             <td>
               <div className="col-1">
                 <Link to={"/menu/informacion/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
@@ -95,4 +96,4 @@ const Calificar_menus = () => {
 
 }
 
-export default Calificar_menus
+export default Listado_de_menus_con_la_calificación

@@ -95,7 +95,7 @@ const Header = () => {
                 <Link to={"/mistickets"} className="nav-link">
                   Mis tickets
                 </Link>
-                <Link to={"/calificar"} className="nav-link">
+                <Link to={"/menus/calificaciones"} className="nav-link">
                   Menús
                 </Link>
               </div>
