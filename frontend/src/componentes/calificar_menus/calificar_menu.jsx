@@ -87,11 +87,14 @@ const Calificar_menu = () => {
       <main>
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">
+            <BreadcrumbItem tag="a" href="/mistickets">
               Comedor
             </BreadcrumbItem>
-            <BreadcrumbItem tag="a" href="/menus">
+            <BreadcrumbItem tag="a" href="/menus/calificaciones">
               Menús
+            </BreadcrumbItem>
+            <BreadcrumbItem tag="a" href={"/menu/informacion/"+id}>
+              Detalle menú
             </BreadcrumbItem>
             <BreadcrumbItem active tag="span">
               Calificar menú

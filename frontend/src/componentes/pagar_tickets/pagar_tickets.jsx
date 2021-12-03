@@ -240,7 +240,7 @@ const Pagar_tickets = ({ mis_tickets, set_mis_tickets }) => {
       <main>
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">
+            <BreadcrumbItem tag="a" href="/mistickets">
               Comedor
             </BreadcrumbItem>
             <BreadcrumbItem active tag="span">

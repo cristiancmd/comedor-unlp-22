@@ -108,7 +108,7 @@ const Elegir_tickets = ({set_termine_de_elegir,set_mis_tickets}) => {
       <main id="comprar-tickets">
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/mistickets">Comedor</BreadcrumbItem>
             <BreadcrumbItem active tag="span">Comprar tickets</BreadcrumbItem>
           </Breadcrumb>
         </div>

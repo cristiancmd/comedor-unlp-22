@@ -64,7 +64,7 @@ const Listado_de_menus_con_la_calificación = () => {
       <main>
         <div>
           <Breadcrumb tag="nav" listTag="div">
-            <BreadcrumbItem tag="a" href="/home">Comedor</BreadcrumbItem>
+            <BreadcrumbItem tag="a" href="/mistickets">Comedor</BreadcrumbItem>
             <BreadcrumbItem active tag="span">Menús</BreadcrumbItem>
           </Breadcrumb>
         </div>
