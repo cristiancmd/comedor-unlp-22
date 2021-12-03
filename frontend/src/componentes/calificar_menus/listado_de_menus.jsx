@@ -40,8 +40,9 @@ const Listado_de_menus_con_la_calificación = () => {
               <th className="col-1"><span>&#10003;</span></th>:
               <th className="col-1"><span>&#x2715;</span></th>
             }
-            <td><h5 className="col-1 float-end mt-2">{menu.ratingAvg}</h5></td>
+            <td></td> {/* ALGO ESTÉTICO */}
             <td>
+              <h5 className="float-start mt-2">{menu.ratingAvg}</h5>
               {menu.ratingAvg !== null?
               <Rating ratingValue={menu.ratingAvg} allowHalfIcon={true} readonly={true}/>:
               'El menú no posee calificaciones'}
@@ -81,9 +82,9 @@ const Listado_de_menus_con_la_calificación = () => {
                 <th className="col-3">Nombre</th>
                 <th className="col-2">Vegetariano</th>
                 <th className="col-2">Celíaco</th>
-                <th className="col-1"></th>
+                <th className="col-1"></th> {/* ALGO ESTÉTICO */}
                 <th className="col-2">Calificación</th>
-                <th className="col-1"></th>
+                <th className="col-1"></th> {/* ALGO ESTÉTICO */}
               </tr>
             </thead>
             <DataList></DataList>

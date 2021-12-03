@@ -1,5 +1,5 @@
 import Header from "../header/header";
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 import { useParams } from "react-router-dom";
 import { Rating } from 'react-simple-star-rating'
+import { UserContext } from '../../UserContext';
 
 const Detalle_menu_a_calificar = () => {
 
@@ -16,6 +17,8 @@ const Detalle_menu_a_calificar = () => {
   const url_usuarios = "http://localhost:8000/api/usuarios/";
 
   const { id } = useParams();
+
+  const { user, loginUser } = useContext(UserContext)
 
   const [nombre, set_nombre] = React.useState([]);
   const [entrada, set_entrada] = React.useState([]);
@@ -84,6 +87,16 @@ const Detalle_menu_a_calificar = () => {
     return nombre_buscado + " " + apellido_buscado
   }
 
+  const ya_califico = () => {
+    let califico = false
+    comentarios.map((comentario)=>{
+      if (comentario.user == user.user.id) {
+        califico = true
+      }
+    })
+    return califico
+  }
+
   return (
     <>
       {Header()}
@@ -104,9 +117,13 @@ const Detalle_menu_a_calificar = () => {
         <h1 className="d-flex justify-content-center">Menú: {nombre}</h1>
 
         <div className="d-flex justify-content-center mt-5 mb-3">
-          <Link to={"/habilitar/" + id}>
-            <button className="btn btn-primary">Calificar</button>
-          </Link>
+          {
+            ya_califico()?
+            <button className="btn btn-secondary">Calificar</button>:
+            <Link to={"/menu/calificar/" + id}>
+              <button className="btn btn-primary">Calificar</button>
+            </Link>
+          }
         </div>
 
         <div className="d-flex justify-content-center">
@@ -161,8 +178,14 @@ const Detalle_menu_a_calificar = () => {
 
             <div className="clearfix"></div>
 
-            <h4 className="mt-5">Comentarios</h4>
+            {
+              comentarios.length == 0?
+              <h4 className="mt-5">No hay comentarios</h4> :
+              <h4 className="mt-5">Comentarios</h4>
+            }
+
             <hr/>
+
             {comentarios.map(comentario => {
               return (
                 <div>

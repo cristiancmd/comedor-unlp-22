@@ -25,6 +25,7 @@ import ProtectedRoute from './componentes/login/ProtectedRoute';
 import Ventas from './componentes/ventas/ventas';
 import listado_de_menus_con_la_calificación from './componentes/calificar_menus/listado_de_menus';
 import detalle_menu_a_calificar from './componentes/calificar_menus/detalle_menu';
+import calificar_menu from './componentes/calificar_menus/calificar_menu';
 
 function App() {
 
@@ -64,6 +65,7 @@ function App() {
         <ProtectedRoute exact path='/tickets/detalle/:id' component={detalle_ticket} staff={true }/>
         <ProtectedRoute exact path='/menus/calificaciones' component={listado_de_menus_con_la_calificación} staff={ false }/>
         <ProtectedRoute exact path='/menu/informacion/:id' component={detalle_menu_a_calificar} staff={ false }/>
+        <ProtectedRoute exact path='/menu/calificar/:id' component={calificar_menu} staff={ false }/>
 
         {/* dejar al final -> */}
         <Route component={NotFound} /> 
