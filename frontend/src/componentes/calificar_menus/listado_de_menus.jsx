@@ -41,14 +41,14 @@ const Listado_de_menus_con_la_calificación = () => {
               <th className="col-1"><span>&#x2715;</span></th>
             }
             <td></td> {/* ALGO ESTÉTICO */}
+            <td><h5 className="mt-2">{menu.ratingAvg}</h5></td>
             <td>
-              <h5 className="float-start mt-2">{menu.ratingAvg}</h5>
               {menu.ratingAvg !== null?
               <Rating ratingValue={menu.ratingAvg} allowHalfIcon={true} readonly={true}/>:
-              'El menú no posee calificaciones'}
+              <Rating ratingValue={0} readonly={true}/>}
             </td>
             <td>
-              <div className="col-1">
+              <div className="col-1 ms-4 me-4">
                 <Link to={"/menu/informacion/"+menu.id}><button className="btn btn-primary">Detalle</button></Link>
               </div>
             </td>
@@ -79,12 +79,13 @@ const Listado_de_menus_con_la_calificación = () => {
           <table className="table align-middle table-striped">
             <thead>
               <tr id="lista_de_titulos_de_columnas_de_componentes">
-                <th className="col-3">Nombre</th>
+                <th className="col-6">Nombre</th>
                 <th className="col-2">Vegetariano</th>
                 <th className="col-2">Celíaco</th>
+                <th className="col-2"></th> {/* ALGO ESTÉTICO */}
                 <th className="col-1"></th> {/* ALGO ESTÉTICO */}
-                <th className="col-2">Calificación</th>
-                <th className="col-1"></th> {/* ALGO ESTÉTICO */}
+                <th className="col-3">Calificación</th>
+                <th className="col-2"></th> {/* ALGO ESTÉTICO */}
               </tr>
             </thead>
             <DataList></DataList>

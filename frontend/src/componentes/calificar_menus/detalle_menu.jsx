@@ -135,7 +135,7 @@ const Detalle_menu_a_calificar = () => {
               <h5 className="float-start mt-2 me-2">{calificacion}</h5>
               {calificacion > 0?<Rating ratingValue={calificacion} allowHalfIcon={true} readonly={true}/>:""}  {/* calificacion > 0 = ARBITRARIEDAD DE REACT */}
             </div>:
-            <h4 className="form-control">El menú no posee calificaciones</h4>}
+            <Rating ratingValue={0} readonly={true}/>}
 
             <h4 className="mt-2">Entrada</h4>
             <h4 className="form-control">{entrada}</h4>
