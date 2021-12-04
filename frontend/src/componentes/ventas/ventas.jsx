@@ -74,7 +74,7 @@ const Ventas = () => {
           </div>
         </div>
         <div className="row mt-5">
-          <div className="col-8 offset-2">
+          <div className="col-6 offset-3">
             <div className="row">
               <div className="col-6">
                 <label className="fs-5">Fecha</label>
