@@ -24,7 +24,8 @@
 }
 
 #icon_date {
-	background-image: url("../../imagenes/icono_calendario_2.png")
+	background-image: url("../../imagenes/icono_calendario_2.png");
+	max-width: 250px;
 }
 
 .ingredients-list{

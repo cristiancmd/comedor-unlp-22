@@ -4,6 +4,7 @@ import axios from "axios"
 import Header from '../header/header'
 import {Breadcrumb, BreadcrumbItem} from "reactstrap";
 import { UserContext } from '../../UserContext';
+import * as ReactBootStrap from "react-bootstrap";
 
 const Ventas = () => {
 
@@ -16,6 +17,7 @@ const Ventas = () => {
   const [sede_elegida, set_sede_elegida] = useState("");
   const [error_fecha, set_error_fecha] = useState(false);
   const [error_sede, set_error_sede] = useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const { user, loginUser } = useContext(UserContext)
 
@@ -46,8 +48,9 @@ const Ventas = () => {
       buscar_menus(fecha_elegida, s.target.value);
     }
   };
-  const buscar_menus = (fecha, sede) => {
-    axios.get(`${url}/quantity/?date=${fecha}&campus=${sede}`).then(response => {
+  const buscar_menus = async (fecha, sede) => {
+    setLoading(true)
+    await axios.get(`${url}/quantity/?date=${fecha}&campus=${sede}`).then(response => {
       if (response.data[0] && response.data[1]){
         setMenus(response.data[0]);
         console.log(response.data[1])
@@ -56,6 +59,7 @@ const Ventas = () => {
     }).catch(error => {
       console.log(error.message);
     })
+    setLoading(false)
   }
 
   return (
@@ -108,6 +112,17 @@ const Ventas = () => {
         </div>
 
         <div className="row mt-5">
+          
+        {loading ? (
+          <div className="d-flex justify-content-center">
+            <div className="col-3">
+              <div className="d-flex justify-content-center mb-4">
+                <ReactBootStrap.Spinner animation="border"></ReactBootStrap.Spinner>
+              </div>
+            </div>
+          </div>
+        ) : (
+
           <div className="col-10 offset-1">
             <table className="table">
               <thead>
@@ -150,6 +165,7 @@ const Ventas = () => {
               </tbody>
             </table>
           </div>
+        ) }
         </div>
       </main>
     </>

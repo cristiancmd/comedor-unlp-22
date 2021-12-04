@@ -2,23 +2,19 @@ import Header from "../header/header";
 import React, { useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem
-} from "reactstrap";
+import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { useParams } from "react-router-dom";
-import { Rating } from 'react-simple-star-rating'
-import { UserContext } from '../../UserContext';
+import { Rating } from "react-simple-star-rating";
+import { UserContext } from "../../UserContext";
 
 const Detalle_menu_a_calificar = () => {
-
   const url = "http://localhost:8000/api";
   const url_comentarios = "http://localhost:8000/api/ratings/";
   const url_usuarios = "http://localhost:8000/api/usuarios/";
 
   const { id } = useParams();
 
-  const { user, loginUser } = useContext(UserContext)
+  const { user, loginUser } = useContext(UserContext);
 
   const [nombre, set_nombre] = React.useState([]);
   const [entrada, set_entrada] = React.useState([]);
@@ -60,42 +56,48 @@ const Detalle_menu_a_calificar = () => {
   };
 
   const get_comentarios = () => {
-    axios.get(url_comentarios,{params:{menu:id}}).then((response) => {
-      set_comentarios(response.data);
-    }).catch((error) => {
-      console.log(error.message);
-    });
+    axios
+      .get(url_comentarios, { params: { menu: id } })
+      .then((response) => {
+        set_comentarios(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   const get_usuarios = () => {
-    axios.get(url_usuarios).then((response) => {
-      set_usuarios(response.data);
-    }).catch((error) => {
-      console.log(error.message);
-    });
+    axios
+      .get(url_usuarios)
+      .then((response) => {
+        set_usuarios(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   const nombre_del_usuario = (id) => {
-    let nombre_buscado
-    let apellido_buscado
-    usuarios.map((usuario)=>{
+    let nombre_buscado;
+    let apellido_buscado;
+    usuarios.map((usuario) => {
       if (usuario.id == id) {
-        nombre_buscado = usuario.firstname
-        apellido_buscado = usuario.lastname
+        nombre_buscado = usuario.firstname;
+        apellido_buscado = usuario.lastname;
       }
-    })
-    return nombre_buscado + " " + apellido_buscado
-  }
+    });
+    return nombre_buscado + " " + apellido_buscado;
+  };
 
   const ya_califico = () => {
-    let califico = false
-    comentarios.map((comentario)=>{
+    let califico = false;
+    comentarios.map((comentario) => {
       if (comentario.user == user.user.id) {
-        califico = true
+        califico = true;
       }
-    })
-    return califico
-  }
+    });
+    return califico;
+  };
 
   return (
     <>
@@ -117,25 +119,37 @@ const Detalle_menu_a_calificar = () => {
         <h1 className="d-flex justify-content-center">Menú: {nombre}</h1>
 
         <div className="d-flex justify-content-center mt-5 mb-3">
-          {
-            ya_califico()?
-            <button className="btn btn-secondary">Calificar</button>:
+          {ya_califico() ? (
+            ""
+          ) : (
             <Link to={"/menu/calificar/" + id}>
               <button className="btn btn-primary">Calificar</button>
             </Link>
-          }
+          )}
         </div>
 
         <div className="d-flex justify-content-center">
           <div id="contenedor_cargar_menu">
-
-            <h4>Calificación</h4>
-            {calificacion !== null?
-            <div>
-              <h5 className="float-start mt-2 me-2">{calificacion}</h5>
-              {calificacion > 0?<Rating ratingValue={calificacion} allowHalfIcon={true} readonly={true}/>:""}  {/* calificacion > 0 = ARBITRARIEDAD DE REACT */}
-            </div>:
-            <Rating ratingValue={0} readonly={true}/>}
+            <center>
+              <h4>Calificación</h4>
+            </center>
+            {calificacion !== null ? (
+              <div className="d-flex justify-content-center">
+                <h5 className="float-start mt-2 me-2">{calificacion}</h5>
+                {calificacion > 0 ? (
+                  <Rating
+                    ratingValue={calificacion}
+                    allowHalfIcon={true}
+                    readonly={true}
+                  />
+                ) : (
+                  ""
+                )}{" "}
+                {/* calificacion > 0 = ARBITRARIEDAD DE REACT */}
+              </div>
+            ) : ( <center>
+              <Rating ratingValue={0} readonly={true} /> </center>
+            )}
 
             <h4 className="mt-2">Entrada</h4>
             <h4 className="form-control">{entrada}</h4>
@@ -159,42 +173,49 @@ const Detalle_menu_a_calificar = () => {
 
             <h4 className="mt-3">Precio</h4>
             <h4 className="form-control">{precio}</h4>
+            
+            <div className="clearfix"></div>
+            
+            {vegetariano ? (
+              <h5 className="mt-3">Apto para vegetarianos: Sí</h5>
+            ) : (
+              <h5 className="mt-3">Apto para vegetarianos: No</h5>
+            )}
 
             <div className="clearfix"></div>
-
-            {
-              vegetariano?
-              <h4 className="mt-3">Apto para vegetarianos: Sí</h4>:
-              <h4 className="mt-3">Apto para vegetarianos: No</h4>
-            }
-
-            <div className="clearfix"></div>
-
-            {
-              celiaco?
-              <h4 className="mt-3">Apto para celíacos: Sí</h4>:
-              <h4 className="mt-3">Apto para celíacos: No</h4>
-            }
+              
+            {celiaco ? (
+              <h5 className="mt-3">Apto para celíacos: Sí</h5>
+            ) : (
+              <h5 className="mt-3">Apto para celíacos: No</h5>
+            )}
 
             <div className="clearfix"></div>
-
-            {
-              comentarios.length == 0?
-              <h4 className="mt-5">No hay comentarios</h4> :
+              <hr/>
+            {comentarios.length == 0 ? (
+              <h4 className="mt-5">No hay comentarios</h4>
+            ) : (
               <h4 className="mt-5">Comentarios</h4>
-            }
+            )}
 
-            <hr/>
+            <hr />
 
-            {comentarios.map(comentario => {
+            {comentarios.map((comentario) => {
               return (
                 <div>
-                  <h5 className="mb-0">{nombre_del_usuario(comentario.user)}</h5>
-                  <Rating ratingValue={comentario.rating} allowHalfIcon={true} readonly={true} size={20}/>
-                  <h5>{comentario.comment}</h5>
-                  <hr/>
+                  <h5 className="mb-0">
+                    {nombre_del_usuario(comentario.user)}
+                  </h5>
+                  <Rating
+                    ratingValue={comentario.rating}
+                    allowHalfIcon={true}
+                    readonly={true}
+                    size={20}
+                  /><p/>
+                  <label>{comentario.comment}</label>
+                  <hr />
                 </div>
-              )
+              );
             })}
 
             <div className="clearfix"></div>
