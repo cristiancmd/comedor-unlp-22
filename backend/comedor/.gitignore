@@ -1,4 +1,4 @@
-comedor/local_settings.py
+# comedor/local_settings.py
 
 db.sqlite3
 

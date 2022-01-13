@@ -127,6 +127,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
 #S3 BUCKETS CONFIG
 
 AWS_ACCESS_KEY_ID = 'AKIA6FZHLAUOVJF7NTLO'
@@ -151,3 +152,10 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 </CORSRule>
 </CORSConfiguration>
 '''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
