@@ -7,46 +7,49 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../UserContext";
+import { Spinner } from "react-bootstrap";
 
 const Login = () => {
   let history = useHistory();
+  const [verificando, set_verificando] = React.useState(false);
 
   let token = null;
   const setToken = (t) => {
     token = `Token ${t}`;
     // console.log(token);
   };
-  
+
   const { user, loginUser } = useContext(UserContext);
 
-
-  const setAxios =  () => {
+  const setAxios = () => {
     axios.interceptors.request.use(
-     (config) => {
-       config.headers.authorization = `Token ${user.access_token}` ;
-       return config;
-     },
-     (error) => {
-       return Promise.reject(error);
-     }
-   );
- };
-
+      (config) => {
+        config.headers.authorization = `Token ${user.access_token}`;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  };
 
   useEffect(() => {}, [token]);
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("user");
-    if (loggedUser!=null && Object.entries(loggedUser).length > 0 && loggedUser.constructor === Object) {
-      console.log(loggedUser)
+    if (
+      loggedUser != null &&
+      Object.entries(loggedUser).length > 0 &&
+      loggedUser.constructor === Object
+    ) {
+      console.log(loggedUser);
       const u = JSON.parse(loggedUser);
       loginUser(u);
-      setAxios()
+      setAxios();
       setToken(u.access_token);
-      console.log(u)
-      
+      console.log(u);
     }
-  }, );
+  });
 
   const [datos, set_datos] = useState({
     username: "",
@@ -63,26 +66,28 @@ const Login = () => {
   };
 
   const login = async (credentials) => {
+    set_verificando(true);
     const { data } = await axios.post(`${api_url}/users/login/`, credentials);
-    
+
     return data;
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setError(false);
+
     try {
       const user = await login(datos);
       loginUser(user);
       window.localStorage.setItem("user", JSON.stringify(user));
       setToken(user.access_token);
       // setAxios();
-      if(user.user.is_staff){
+      if (user.user.is_staff) {
         history.push("/");
-      }
-      else{
+        set_verificando(false);
+      } else {
         history.push("/tickets/comprar");
-        
+        set_verificando(false);
       }
     } catch (err) {
       if (error.response) {
@@ -92,6 +97,7 @@ const Login = () => {
       }
       token = null;
       setError(true);
+      set_verificando(false);
     }
   };
 
@@ -99,64 +105,77 @@ const Login = () => {
     <>
       {Header_login()}
       <h1 id="titulo_login">Acceso a comedor</h1>
+      <div className="container mt-4">
+
+      {error === true && (
+        <div
+        id="mensaje_de_error_login"
+        className="alert alert-danger"
+        role="alert"
+        >
+                  {" "}
+                  Credenciales inválidas
+                </div>
+              )}
+
+              </div>
+
       <div id="contenedor">
         <div id="contenedor_de_icono">
           <img src={icono} id="icono" alt="icono" />
         </div>
-
+        
         <form onSubmit={submitHandler}>
-          <label
-            htmlFor="staticEmail"
-            className="col-sm-2 col-form-label"
-            id="dni_que_no_es_input"
-          >
-            DNI
-          </label>
-          <input
-            type="text"
-            id="dni"
-            name="username"
-            placeholder="DNI"
-            className="form-control"
-            onChange={capturar_datos}
-          />
+          <div className="container">
+            <label
+              htmlFor="staticEmail"
+              className="col-sm-2 col-form-label"
+              id="dni_que_no_es_input"
+            >
+              DNI
+            </label>
+            <input
+              type="text"
+              id="dni"
+              name="username"
+              placeholder="DNI"
+              className="form-control"
+              onChange={capturar_datos}
+            />
 
-          <label
-            htmlFor="inputPassword"
-            className="col-sm-2 col-form-label"
-            id="contraseña_que_no_es_input"
-          >
-            Contraseña
-          </label>
-          <input
-            type="password"
-            id="contraseña"
-            name="password"
-            placeholder="Contraseña"
-            className="form-control"
-            onChange={capturar_datos}
-          />
+            <label
+              htmlFor="inputPassword"
+              className="col-sm-2 col-form-label"
+              id="contraseña_que_no_es_input"
+            >
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="contraseña"
+              name="password"
+              placeholder="Contraseña"
+              className="form-control"
+              onChange={capturar_datos}
+            />
 
-          <button
-            id="boton_inicio_de_sesion"
-            type="submit"
-            value="Iniciar sesión"
-          >
-            {" "}
-            Iniciar sesion{" "}
-          </button>
-        </form>
-
-        {error === true && (
-          <div
-            id="mensaje_de_error_login"
-            className="alert alert-danger"
-            role="alert"
-          >
-            {" "}
-            Credenciales invalidas
+            <div className="d-flex justify-content-center mb-2 mt-4">
+              {verificando ? (
+                <Spinner animation="border"></Spinner>
+              ) : (
+                <button
+                  id="boton_inicio_de_sesion"
+                  type="submit"
+                  value="Iniciar sesión"
+                >
+                  {" "}
+                  Iniciar sesion{" "}
+                </button>
+              )}
+              
+            </div>
           </div>
-        )}
+        </form>
       </div>
     </>
   );

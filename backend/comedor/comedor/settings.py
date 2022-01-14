@@ -130,13 +130,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #S3 BUCKETS CONFIG
 
-AWS_ACCESS_KEY_ID = 'AKIA6FZHLAUOVJF7NTLO'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'comedor-unlp'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_ACCESS_KEY_ID = 'AKIA6FZHLAUOVJF7NTLO'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'comedor-unlp'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 
@@ -153,9 +153,3 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 </CORSConfiguration>
 '''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}

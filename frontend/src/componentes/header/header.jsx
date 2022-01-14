@@ -17,19 +17,20 @@ const Header = () => {
   const get_usuario = () => {
     axios.get(url_usuario).then(response => {
         set_usuario(response.data.filter(usuario => usuario.id == user.user.id)[0])
+        console.log('usuario es ', user)
     }).catch(error=>{
         console.log(error.message);
     })
 }
   
   const getUserName = () => {
-    if (usuario) {
-      return usuario.firstname;
+    let user = JSON.parse(localStorage.getItem("user"))
+    if (user.user.first_name) {
+      return user.user.first_name;
     } else {
-      // console.log(user.user.username)
-      return user.user.username;
+      if (user.user.username)
+        return user.user.username;
     }
-    
   };
 
   const getUserStaff = () => {
@@ -40,7 +41,10 @@ const Header = () => {
 
   useEffect(() => {
     // console.log("header user:  ", user);
-    get_usuario()
+    
+      get_usuario()
+
+    
   }, []);
 
   const logOut = () => {
