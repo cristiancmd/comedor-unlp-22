@@ -11,11 +11,13 @@ Proyecto para Métodos Ágiles para Aplicaciones Web, Facultad de Informática U
  ## Aplicacion deployada:
  [comedor-unlp-mapaw.herokuapp.com](https://comedor-unlp-mapaw.herokuapp.com/)
  
- ## Credenciales de Administrador de prueba:
- usuario: admin
+ ## Credenciales de Administrador para testeo:
+ 
+solicitar
  
  
- ## Credenciales de Cliente de prueba:
- usuario: cristian
+ ## Credenciales de Cliente para testeo:
+ 
+solicitar
  
  
