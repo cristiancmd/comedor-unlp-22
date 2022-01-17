@@ -28,7 +28,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'demo_db',
 #         'USER': 'postgres',
-#         'PASSWORD': 'postgres07155',
+#         'PASSWORD': '',
 #         'HOST': 'database-1.czy7xkvxfgbg.us-east-1.rds.amazonaws.com',
 #         'PORT': '5432'
 #     }
