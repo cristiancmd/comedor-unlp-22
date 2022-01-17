@@ -24,6 +24,6 @@ user: cristian
 
 password: 1234
 
-dni: 11111111
+dni para canjear un Ticket: 11111111
  
  
