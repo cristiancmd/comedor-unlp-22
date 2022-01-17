@@ -13,11 +13,13 @@ Proyecto para Métodos Ágiles para Aplicaciones Web, Facultad de Informática U
  
  ## Credenciales de Administrador para testeo:
  
-solicitar
+user: empleado
+password: 1234
  
  
  ## Credenciales de Cliente para testeo:
  
-solicitar
+user: cristian
+password: 1234
  
  
