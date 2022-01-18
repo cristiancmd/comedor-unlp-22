@@ -9,6 +9,9 @@ Proyecto para Métodos Ágiles para Aplicaciones Web, Facultad de Informática U
 
 
  ## Aplicacion deployada:
+ 
+ (podria tardar hasta 2 minutos en ingresar la primera vez dadas las limitaciones del servidor gratuito)
+
  [comedor-unlp-mapaw.herokuapp.com](https://comedor-unlp-mapaw.herokuapp.com/)
  
  ## Credenciales de rol Administrador para testeo:
